@@ -12,7 +12,6 @@ class Application : public ofBaseApp
 public:
 
   Renderer renderer;
-  ofxDatGuiTextInput* textInputImage;
   ofxDatGuiButton* boutonImporter;
   ofxDatGuiButton* boutonRogner;
 
@@ -30,6 +29,8 @@ public:
   void mouseReleased(int x, int y, int button);
   void mouseEntered(int x, int y);
   void mouseExited(int x, int y);
+
+  void openFileSelected(ofFileDialogResult openFileResult);
 
   void exit();
 };

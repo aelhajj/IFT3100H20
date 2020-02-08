@@ -9,8 +9,6 @@ void Application::setup()
   boutonImporter = (*gui).addButton("Importer Image");
   boutonRogner = (*gui).addButton("Rogner Image");
   (*gui).onButtonEvent(this, &Application::onButtonEvent);
-  (*gui).addTextInput("ImageInput", "Path Image");
-  textInputImage = (*gui).getTextInput("ImageInput");
   ofSetWindowTitle("importation d'une image");
 
   ofLog() << "<app::setup>";
@@ -22,7 +20,19 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
 {
   if(event.target == boutonImporter)
   {
-    renderer.image.load((*textInputImage).getText());
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an img");
+
+// Verification qu'un fichier a ete selectionnee
+    if (openFileResult.bSuccess)
+    {
+        ofLog() << "Selected img";
+
+        // Ouvrir le résultat
+        openFileSelected(openFileResult);
+    } else
+    {
+        ofLog() << "No img selected";
+    }
   }
   if(event.target == boutonRogner)
   {
@@ -43,6 +53,26 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
         renderer.image_heigth = height;
   }
 
+}
+void Application::openFileSelected(ofFileDialogResult openFileResult)
+{
+    ofLog() << "name of file :" << openFileResult.getName();
+    ofLog() << "path of file :" << openFileResult.getPath();
+
+    ofFile file (openFileResult.getPath());
+
+    if (file.exists())
+    {
+        // Sauvegarde de l'extension du fichier
+        string fileExtension = ofToUpper(file.getExtension());
+
+        // Vérification qu'il s'agit d'une image
+        if (fileExtension == "JPG" || fileExtension == "PNG")
+        {
+            renderer.image.load(openFileResult.getPath());
+        }
+
+    }
 }
 
 void Application::draw()
