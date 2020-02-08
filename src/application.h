@@ -1,0 +1,35 @@
+// IFT3100H20_ImageImport/application.h
+// Classe principale de l'application.
+
+#pragma once
+
+#include "ofMain.h"
+#include "renderer.h"
+#include "ofxDatGui.h"
+
+class Application : public ofBaseApp
+{
+public:
+
+  Renderer renderer;
+  ofxDatGuiTextInput* textInputImage;
+  ofxDatGuiButton* boutonImporter;
+  ofxDatGuiButton* boutonRogner;
+
+  void setup();
+  void draw();
+
+  void windowResized(int w, int h);
+
+  void dragEvent(ofDragInfo dragInfo);
+  void onButtonEvent(ofxDatGuiButtonEvent event);
+
+  void mouseMoved(int x, int y);
+  void mouseDragged(int x, int y, int button);
+  void mousePressed(int x, int y, int button);
+  void mouseReleased(int x, int y, int button);
+  void mouseEntered(int x, int y);
+  void mouseExited(int x, int y);
+
+  void exit();
+};
