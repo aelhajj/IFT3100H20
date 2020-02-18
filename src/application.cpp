@@ -3,18 +3,36 @@
 
 #include "application.h"
 
+
 void Application::setup()
 {
   ofxDatGui* gui = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT);
-  boutonImporter = (*gui).addButton("Importer Image");
-  boutonRogner = (*gui).addButton("Rogner Image");
-  (*gui).onButtonEvent(this, &Application::onButtonEvent);
+  vector<string> options = {"Curseur Rognage", "Curseur Selection", "Curseur3", "Curseur4", "Curseur5"};
+  menuCursor = gui->addDropdown("select cursor",options);
+  boutonImporter = gui->addButton("Importer Image");
+  boutonRogner = gui->addButton("Rogner Image");
+  gui->onDropdownEvent(this, &Application::onDropdownEvent);
+  gui->onButtonEvent(this, &Application::onButtonEvent);
   ofSetWindowTitle("importation d'une image");
 
   ofLog() << "<app::setup>";
 
   renderer.setup();
+  cursor = new NormalCursor(&renderer);
 }
+
+void Application::onDropdownEvent(ofxDatGuiDropdownEvent event)
+{
+  if (event.child == 0)
+  {
+    cursor = new CropCursor(&renderer);
+  }
+  else
+  {
+    cursor = new NormalCursor(&renderer);
+  }
+}
+
 
 void Application::onButtonEvent(ofxDatGuiButtonEvent event)
 {
@@ -38,19 +56,20 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
   {
         float width = renderer.croping_zone[2] - renderer.croping_zone[0];
         float height = renderer.croping_zone[3] - renderer.croping_zone[1];
-        int image_width = (int)(width / renderer.image_width * renderer.image.getWidth());
-        int image_heigth = (int)(height / renderer.image_heigth * renderer.image.getHeight());
-        int pixel_origin_x = (int)((float)renderer.croping_zone[0]/renderer.image_width * renderer.image.getWidth());
-        int pixel_origin_y = (int)((float)renderer.croping_zone[1]/renderer.image_heigth * renderer.image.getHeight());
-        renderer.image.cropFrom(renderer.image,
+        imageStruct* image = &(renderer.images[renderer.images.size() - 1]);
+        int image_width = (int)(width / image->image_width * image->image.getWidth());
+        int image_heigth = (int)(height / image->image_heigth * image->image.getHeight());
+        int pixel_origin_x = (int)((float)renderer.croping_zone[0]/image->image_width * image->image.getWidth()) - (int)((float)image->image_origin_x/image->image_width * image->image.getWidth());
+        int pixel_origin_y = (int)((float)renderer.croping_zone[1]/image->image_heigth * image->image.getHeight()) - (int)((float)image->image_origin_y/image->image_heigth * image->image.getHeight());
+        image->image.cropFrom(image->image,
                                 pixel_origin_x,
                                 pixel_origin_y,
                                 image_width,
                                 image_heigth);
-        renderer.image_origin_x = renderer.croping_zone[0];
-        renderer.image_origin_y = renderer.croping_zone[1];
-        renderer.image_width = width;
-        renderer.image_heigth = height;
+        image->image_origin_x = renderer.croping_zone[0];
+        image->image_origin_y = renderer.croping_zone[1];
+        image->image_width = width;
+        image->image_heigth = height;
   }
 
 }
@@ -69,7 +88,9 @@ void Application::openFileSelected(ofFileDialogResult openFileResult)
         // Vérification qu'il s'agit d'une image
         if (fileExtension == "JPG" || fileExtension == "PNG")
         {
-            renderer.image.load(openFileResult.getPath());
+            imageStruct image;
+            image.image.load(openFileResult.getPath());
+            renderer.images.push_back(image);
         }
 
     }
@@ -78,6 +99,7 @@ void Application::openFileSelected(ofFileDialogResult openFileResult)
 void Application::draw()
 {
   renderer.draw();
+  cursor->drawCursor();
 }
 
 void Application::windowResized(int w, int h)
@@ -101,45 +123,22 @@ void Application::dragEvent(ofDragInfo dragInfo)
 
 void Application::mouseMoved(int x, int y)
 {
-  renderer.mouse_current_x = x;
-  renderer.mouse_current_y = y;
-
+  cursor->onMouseMoved(x,y);
 }
 
 void Application::mouseDragged(int x, int y, int button)
 {
-  renderer.mouse_current_x = x;
-  renderer.mouse_current_y = y;
-
+  cursor->onMouseDragged(x,y);
 }
 
 void Application::mousePressed(int x, int y, int button)
 {
-  renderer.is_mouse_button_pressed = true;
-  renderer.croping_zone.clear();
-
-  renderer.mouse_current_x = x;
-  renderer.mouse_current_y = y;
-
-  renderer.mouse_press_x = x;
-  renderer.mouse_press_y = y;
-
+  cursor->onMousePressed(x,y);
 }
 
 void Application::mouseReleased(int x, int y, int button)
 {
-  renderer.is_mouse_button_pressed = false;
-  if(y > 100)
-  {
-    renderer.croping_zone.push_back(renderer.mouse_press_x);
-    renderer.croping_zone.push_back(renderer.mouse_press_y);
-    renderer.croping_zone.push_back(renderer.mouse_current_x);
-    renderer.croping_zone.push_back(renderer.mouse_current_y);
-  }
-
-  renderer.mouse_current_x = x;
-  renderer.mouse_current_y = y;
-
+  cursor->onMouseReleased(x,y);
 }
 
 void Application::mouseEntered(int x, int y)

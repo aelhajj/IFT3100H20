@@ -5,6 +5,7 @@
 
 #include "ofMain.h"
 #include "renderer.h"
+#include "cursor.h"
 #include "ofxDatGui.h"
 
 class Application : public ofBaseApp
@@ -14,7 +15,8 @@ public:
   Renderer renderer;
   ofxDatGuiButton* boutonImporter;
   ofxDatGuiButton* boutonRogner;
-
+  ofxDatGuiDropdown* menuCursor;
+  Cursor* cursor;
   void setup();
   void draw();
 
@@ -22,6 +24,7 @@ public:
 
   void dragEvent(ofDragInfo dragInfo);
   void onButtonEvent(ofxDatGuiButtonEvent event);
+  void onDropdownEvent(ofxDatGuiDropdownEvent event);
 
   void mouseMoved(int x, int y);
   void mouseDragged(int x, int y, int button);
