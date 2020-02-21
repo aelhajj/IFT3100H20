@@ -1,1 +1,3 @@
 ofxDatGui-master
+ofxHistogram
+ofxOpenCv

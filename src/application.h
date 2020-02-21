@@ -15,6 +15,7 @@ public:
   Renderer renderer;
   ofxDatGuiButton* boutonImporter;
   ofxDatGuiButton* boutonRogner;
+  ofxDatGuiButton* boutonHistogram;
   ofxDatGuiDropdown* menuCursor;
   Cursor* cursor;
   void setup();

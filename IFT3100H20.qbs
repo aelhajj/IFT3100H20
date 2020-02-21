@@ -14,6 +14,8 @@ Project{
         files: [
             'src/application.cpp',
             'src/application.h',
+            'src/cursor.h',
+            'src/histogram.h',
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
@@ -22,6 +24,9 @@ Project{
         ]
 
         of.addons: [
+            'ofxDatGui-master',
+            'ofxHistogram',
+            'ofxOpenCv',
         ]
 
         // additional flags for the project. the of module sets some

@@ -2,6 +2,7 @@
 // Classe responsable du rendu de l'application.
 
 #include "renderer.h"
+#include "histogram.h"
 
 void Renderer::setup()
 {
@@ -86,3 +87,10 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const
 //   ofDrawLine(x, y + offset, x, y + offset + length);
 //   ofDrawLine(x, y - offset, x, y - offset - length);
 // }
+
+void Renderer::draw_histogram()
+{
+  Histogram hist;
+
+  hist.makeHistogram(image);
+}

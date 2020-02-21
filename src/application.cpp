@@ -11,6 +11,7 @@ void Application::setup()
   menuCursor = gui->addDropdown("select cursor",options);
   boutonImporter = gui->addButton("Importer Image");
   boutonRogner = gui->addButton("Rogner Image");
+  boutonHistogram = gui->addButton("Afficher Histogramme");
   gui->onDropdownEvent(this, &Application::onDropdownEvent);
   gui->onButtonEvent(this, &Application::onButtonEvent);
   ofSetWindowTitle("importation d'une image");
@@ -70,6 +71,12 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
         image->image_origin_y = renderer.croping_zone[1];
         image->image_width = width;
         image->image_heigth = height;
+  }
+  if(event.target == boutonHistogram)
+  {
+    // fonctionne pas : 
+    // il faut ajouter l'option de select img.
+    renderer.draw_histogram();
   }
 
 }
