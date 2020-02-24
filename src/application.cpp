@@ -7,7 +7,7 @@
 void Application::setup()
 {
   ofxDatGui* gui = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT);
-  vector<string> options = {"Curseur Rognage", "Curseur Selection", "Curseur3", "Curseur4", "Curseur5"};
+  vector<string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation"};
   menuCursor = gui->addDropdown("select cursor",options);
   boutonImporter = gui->addButton("Importer Image");
   boutonRogner = gui->addButton("Rogner Image");
@@ -27,9 +27,21 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event)
   {
     cursor = new CropCursor(&renderer);
   }
-  else
+  else if (event.child == 1)
   {
     cursor = new NormalCursor(&renderer);
+  }
+  else if (event.child == 2)
+  {
+    cursor = new ZoomInCursor(&renderer);
+  }
+  else if (event.child == 3)
+  {
+    cursor = new ZoomOutCursor(&renderer);
+  }
+  else if (event.child == 4)
+  {
+    cursor = new RotationCursor(&renderer);
   }
 }
 
@@ -56,7 +68,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
   {
         float width = renderer.croping_zone[2] - renderer.croping_zone[0];
         float height = renderer.croping_zone[3] - renderer.croping_zone[1];
-        imageStruct* image = &(renderer.images[renderer.images.size() - 1]);
+        ImageStruct* image = &(renderer.images[renderer.images.size() - 1]);
         int image_width = (int)(width / image->image_width * image->image.getWidth());
         int image_heigth = (int)(height / image->image_heigth * image->image.getHeight());
         int pixel_origin_x = (int)((float)renderer.croping_zone[0]/image->image_width * image->image.getWidth()) - (int)((float)image->image_origin_x/image->image_width * image->image.getWidth());
@@ -88,7 +100,7 @@ void Application::openFileSelected(ofFileDialogResult openFileResult)
         // Vérification qu'il s'agit d'une image
         if (fileExtension == "JPG" || fileExtension == "PNG")
         {
-            imageStruct image;
+            ImageStruct image;
             image.image.load(openFileResult.getPath());
             renderer.images.push_back(image);
         }
