@@ -43,6 +43,7 @@ void Histogram::update()
 }
 void Histogram::drawHistogram(vector<float> & h) {
     ofBeginShape();
+    
     ofNoFill();
     ofSetLineWidth(3);
     for (int i=0; i<h.size(); i++) {
@@ -54,6 +55,8 @@ void Histogram::drawHistogram(vector<float> & h) {
 }
 void Histogram::draw()
 {
+    
+    
     ofSetColor(255, 0, 0);
     drawHistogram(histogramR);
 
@@ -63,5 +66,6 @@ void Histogram::draw()
     ofSetColor(0, 0, 255);
     drawHistogram(histogramB);
     ofSetColor(255);
+    
 
 }

@@ -72,7 +72,13 @@ void Renderer::draw()
 
   }
   if(viewHist)
+  {
+    ofPushMatrix();
+    ofTranslate(0,100);
     draw_histogram();
+    ofPopMatrix();
+  }
+    
   //cam.end();
   // dessiner le curseur
   //draw_cursor(mouse_current_x, mouse_current_y);
