@@ -74,9 +74,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
   }
   if(event.target == boutonHistogram)
   {
-    // fonctionne pas : 
-    // il faut ajouter l'option de select img.
-    renderer.draw_histogram();
+    renderer.viewHist = (!renderer.viewHist);
   }
 
 }

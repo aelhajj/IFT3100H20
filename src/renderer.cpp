@@ -9,6 +9,7 @@ void Renderer::setup()
   ofSetBackgroundColor(31);
   // importer une image située dans ./bin/data
   //image.load("agaragar.jpg");
+  
   imageStruct image;
   image.image.load("agaragar.jpg");
   image.image_origin_x = 0;
@@ -21,6 +22,7 @@ void Renderer::setup()
   offset_horizontal = 32;
   // redimensionner la fenêtre selon la résolution de l'image
   ofSetWindowShape(screen_width, screen_height);
+  viewHist = false;
 }
 
 void Renderer::draw()
@@ -53,9 +55,8 @@ void Renderer::draw()
     }
 
   }
-
-  // dessiner le curseur
-  //draw_cursor(mouse_current_x, mouse_current_y);
+  if(viewHist)
+    draw_histogram();
 
 }
 
@@ -88,9 +89,13 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const
 //   ofDrawLine(x, y - offset, x, y - offset - length);
 // }
 
+
 void Renderer::draw_histogram()
 {
-  Histogram hist;
+    Histogram hist;
+    hist.setup(images.at(0).image);
+    hist.update();
+    hist.draw();
 
-  hist.makeHistogram(image);
+  //hist.makeHistogram(images.at(0).image);
 }
