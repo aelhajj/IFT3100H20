@@ -4,13 +4,17 @@
 #include "renderer.h"
 #include "histogram.h"
 
+
 void Renderer::setup()
 {
+  //ofEnableDepthTest();
+
+  cam.setPosition(1000,1000 ,0);
+  cam.setDistance(1000);
   ofSetBackgroundColor(31);
   // importer une image située dans ./bin/data
   //image.load("agaragar.jpg");
-  
-  imageStruct image;
+  ImageStruct image;
   image.image.load("agaragar.jpg");
   image.image_origin_x = 0;
   image.image_origin_y = 0;
@@ -27,12 +31,24 @@ void Renderer::setup()
 
 void Renderer::draw()
 {
+
+  //cam.begin();
   // afficher l'image sur toute la surface de la fenêtre d'affichage
-  for (imageStruct image: images)
-  image.image.draw(image.image_origin_x,
-                   image.image_origin_y,
-                   image.image_width ,
-                   image.image_heigth);
+  for (ImageStruct image: images)
+  {
+	  ofPushMatrix();
+	  ofTranslate(image.image_width/2,image.image_heigth/2,0);
+	  image.image.setAnchorPercent(0.5f, 0.5f);
+	  ofRotate(image.image_rotation);
+
+    ofScale(image.scale);
+
+    image.draw();
+    ofPopMatrix();
+  }
+
+
+
 
   if (is_mouse_button_pressed)
   {
@@ -57,6 +73,9 @@ void Renderer::draw()
   }
   if(viewHist)
     draw_histogram();
+  //cam.end();
+  // dessiner le curseur
+  //draw_cursor(mouse_current_x, mouse_current_y);
 
 }
 

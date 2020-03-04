@@ -96,7 +96,7 @@ public:
        int delta_x = x - last_frame_x;
        int delta_y = y - last_frame_y;
 
-       imageSelected->changeImagePosition(delta_x, delta_y);
+       imageSelected->translate(delta_x, delta_y);
 
      }
      last_frame_x = x;
@@ -134,6 +134,150 @@ public:
    int last_frame_y;
    bool isImageSelected = false;
    ofImage image;
-   imageStruct* imageSelected;
+   ImageStruct* imageSelected;
    Renderer* renderer;
+};
+
+class ZoomInCursor : public Cursor
+{
+public:
+    ZoomInCursor(Renderer* r)
+    {
+      renderer = r;
+      image.load("ZoomIn.png");
+    }
+   void onMouseMoved(int x, int y)
+   {
+     renderer->mouse_current_x = x;
+     renderer->mouse_current_y = y;
+   }
+   void onMouseDragged(int x, int y)
+   {
+
+
+   }
+   void onMousePressed(int x, int y)
+   {
+      for (auto &im: renderer->images)
+      {
+
+        if (x > im.image_origin_x &&
+            x < (im.image_width + im.image_origin_x) &&
+            y > im.image_origin_y &&
+            y < (im.image_heigth + im.image_origin_y))
+            {
+              imageSelected = &im;
+              imageSelected->zoomIn();
+            }
+      }
+   }
+   void onMouseReleased(int x, int y)
+   {
+
+   }
+   void drawCursor()
+   {
+     image.draw(ofGetMouseX() - 10, ofGetMouseY() - 10, 50, 45 );
+   }
+
+ private:
+   Renderer* renderer;
+   ImageStruct* imageSelected;
+   ofImage image;
+};
+
+
+class ZoomOutCursor : public Cursor
+{
+public:
+    ZoomOutCursor(Renderer* r)
+    {
+      renderer = r;
+      image.load("ZoomOut.png");
+    }
+   void onMouseMoved(int x, int y)
+   {
+     renderer->mouse_current_x = x;
+     renderer->mouse_current_y = y;
+   }
+   void onMouseDragged(int x, int y)
+   {
+
+   }
+   void onMousePressed(int x, int y)
+   {
+      for (auto &im: renderer->images)
+      {
+
+        if (x > im.image_origin_x &&
+            x < (im.image_width + im.image_origin_x) &&
+            y > im.image_origin_y &&
+            y < (im.image_heigth + im.image_origin_y))
+            {
+              imageSelected = &im;
+              imageSelected->zoomOut();
+            }
+      }
+   }
+   void onMouseReleased(int x, int y)
+   {
+
+   }
+   void drawCursor()
+   {
+     image.draw(ofGetMouseX() - 10, ofGetMouseY() - 10, 50, 45 );
+   }
+
+ private:
+   Renderer* renderer;
+   ImageStruct* imageSelected;
+   ofImage image;
+};
+
+
+class RotationCursor : public Cursor
+{
+public:
+    RotationCursor(Renderer* r)
+    {
+      renderer = r;
+      image.load("rotate.png");
+    }
+   void onMouseMoved(int x, int y)
+   {
+     renderer->mouse_current_x = x;
+     renderer->mouse_current_y = y;
+   }
+   void onMouseDragged(int x, int y)
+   {
+
+   }
+   void onMousePressed(int x, int y)
+   {
+      for (auto &im: renderer->images)
+      {
+
+        if (x > im.image_origin_x &&
+            x < (im.image_width + im.image_origin_x) &&
+            y > im.image_origin_y &&
+            y < (im.image_heigth + im.image_origin_y))
+            {
+              imageSelected = &im;
+              imageSelected->rotate();
+            }
+      }
+   }
+   void onMouseReleased(int x, int y)
+   {
+
+   }
+   void drawCursor()
+   {
+     image.draw(ofGetMouseX() - 10, ofGetMouseY() - 10, 50, 45 );
+   }
+
+ private:
+   Renderer* renderer;
+   ImageStruct* imageSelected;
+   ofImage image;
 };
