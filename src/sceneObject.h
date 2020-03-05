@@ -4,27 +4,58 @@
 #include <vector>
 
 
-class SceneObject
-{
+class SceneObject {
 public:
-  void update()
-  {
-    for (SceneObject* child:children)
-    {
-      child->update();
-    }
-  }
-  void addChild(SceneObject& child)
-  {
-    children.push_back(&child);
-  }
 
-  virtual void draw() = 0;
-  virtual void translate(int x, int y) = 0;
-  virtual void rotate() = 0;
-  virtual void zoomIn() = 0;
-  virtual void zoomOut() = 0;
+    void update();
+
+    void addChild(SceneObject &child);
+
+
+    tuple<int, int> getPosition();
+
+    void setPosition(int _posX, int _posY);
+
+    int getWidth();
+
+    void setWidth(int _width);
+
+    int getHeight();
+
+    void setHeight(int _height);
+
+    int getThickness();
+
+    void setThickness(int _thickness);
+
+    bool getSelected(int _posX, int _posY);
+
+    void setSelected(bool _select);
+
+    void setScale(float _scale);
+
+    float getScale();
+
+    virtual void draw() = 0;
+
+    void translate(int _x, int _y);
+
+    void rotate();
+
+    void zoomIn();
+
+    void zoomOut();
+
+    void info();
+
+    int position_x;
+    int position_y;
+    int width;
+    int height;
+    float rotation = 0;
+    float scale = 1;
+    bool isSelected;
 
 private:
-  std::vector<SceneObject*> children;
+    std::vector<SceneObject *> children;
 };
