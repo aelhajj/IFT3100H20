@@ -8,19 +8,17 @@
 class ImageStruct : public SceneObject {
 public:
     ofImage image;
-    int image_origin_x = 0;
-    int image_origin_y = 0;
-    int image_width = 900;
-    int image_heigth = 900;
-    int image_rotation = 0;
-    float scale = 1;
+    //float position_x = 0;
+    //float position_y = 0;
+//    float width = 900;
+//    float heigth = 900;
 
 
+/*
     void translate(int x, int y) {
-        image_origin_x += x;
-        image_origin_y += y;
+        position_x += x;
+        position_y += y;
     }
-
     void zoomIn() {
         scale += 0.25;
     }
@@ -31,14 +29,20 @@ public:
     }
 
     void rotate() {
-        image_rotation += 5;
-    }
+        rotation += 5;
+    }*/
 
     void draw() {
-        image.draw(image_origin_x,
-                   image_origin_y,
-                   image_width,
-                   image_heigth);
+        //ofTranslate(width / 2, height / 2, 0);
+        //setAnchorPercent(0.5f, 0.5f);
+        //cout << "Image drawn at " << position_x << ":" << position_y << " with size " << width << "x" << height << endl;
+        ofRotate(rotation);
+        ofScale(scale);
+        image.draw(position_x,
+                   position_y,
+                   width,
+                   height);
+        
     }
 
 };

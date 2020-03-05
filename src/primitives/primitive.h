@@ -2,10 +2,12 @@
 
 #include "ofMain.h"
 #include <tuple>
+#include "sceneObject.h"
 
-class Primitive {
+class Primitive : public SceneObject
+{
     public:
-        Primitive(float _posX, float _posY, float _width, float _height, float _thickness, ofColor& fill_Color, ofColor& border_Color);
+        Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor& fill_Color, ofColor& border_Color);
 
         static int prim_size;
         
@@ -17,37 +19,42 @@ class Primitive {
         ofColor getBorderColor();
         void setBorderColor(ofColor _borderColor);
 
-        tuple<float, float> getPosition();
-        void setPosition(float _posX, float _posY);
+        tuple<int, int> getPosition();
+        void setPosition(int _posX, int _posY);
 
-        float getWidth();
-        void setWidth(float _width);
+        int getWidth();
+        void setWidth(int _width);
 
-        float getHeight();
-        void setHeight(float _height);
+        int getHeight();
+        void setHeight(int _height);
 
-        float getThickness();
-        void setThickness(float _thickness);
+        int getThickness();
+        void setThickness(int _thickness);
 
-        bool isSelected(float _posX, float _posY);
+        bool isSelected(int _posX, int _posY);
 
-        void setShape(float _posX, float _posY, float _setX, float _setY);
+        void setShape(int _posX, int _posY, int _setX, int _setY);
 
-        void translate(float _posX, float _posY);
+        //void translate(float _posX, float _posY);
 
-        bool operator==(Primitive primitive);
+        //bool operator==(Primitive primitive);
+
+       // void zoomIn();
+
+       // void zoomOut();
+
+       // void rotate();
 
         Primitive* copy();
 
         ~Primitive();
 
+        
+
+    //protected:
+        int thickness;
+
         ofColor fillColor;
         ofColor borderColor;
-
-        float position_x;
-        float position_y;
-        float width;
-        float height;
-        float thickness;
 
 };

@@ -2,7 +2,7 @@
 
 #include "circle.h"
 
-Circle::Circle(float _posX, float _posY, float _width, float _height, float _thickness, 
+Circle::Circle(int _posX, int _posY, int _width, int _height, int _thickness, 
             ofColor& _fill_Color, ofColor& _border_Color) :
             Primitive(_posX, _posY, _width, _height, _thickness, _fill_Color, _border_Color)
 {
@@ -28,28 +28,37 @@ void Circle::draw()
 }
 
 
-void Circle::setRadius(float _r)
+void Circle::setRadius(int _r)
 {
     r = _r;
 }
-float Circle::getRadius()
+int Circle::getRadius()
 {
     return r;
 }
-        //bool isSelected(float _posX, float _posY);
-
-        //void setShape(float _posX, float _posY, float _setX, float _setY);
-
-        //void translate(float _posX, float _posY);
-
-/*bool operator==(Primitive primitive)
+ /*       
+void Circle::translate(int _posX, int _posY)
 {
-    //todo.
-}*/
+    cout << "le cercle se deplace de " << _posX << " en X et de " << _posY << " en Y\n";
+    position_x += _posX;
+    position_y += _posY;
+}
 
-       // Primitive* copy();
+
+void Circle::zoomIn() {
+        scale += 0.25;
+    }
+
+void Circle::zoomOut() {
+        if (scale > 0.25)
+            scale -= 0.25;
+    }
+
+void Circle::rotate() {
+        rotation += 5;
+    }
+
+       // Primitive* copy();*/
 
 Circle::~Circle() {};
-
-        float r;
         //isfilled

@@ -14,24 +14,34 @@ void Renderer::setup() {
 
     // Interface de image
 
-    ImageStruct image;
-    image.image.load("agaragar.jpg");
-    image.image_origin_x = 0;
-    image.image_origin_y = 0;
-    image.image_width = 900;
-    image.image_heigth = 900;
+    
+    ImageStruct *image = new ImageStruct;
+    cout << "Avant image load" << endl;
+    image->image.load("agaragar.jpg");
+    cout << "Apres image load" << endl;
+    image->position_x = 0;
+    image->position_y = 0;
+    image->width = 900;
+    image->height = 900;
+    cout << endl << endl << "Renderer::setup()" << endl;
+
     images.push_back(image);
+    objects.push_back(image);
     ofColor test(44, 44, 44);
     ofColor test2(54, 66, 66);
 
+
     offset_vertical = 32;
     offset_horizontal = 32;
-    // redimensionner la fenêtre selon la résolution de l'image
-    ofSetWindowShape(screen_width, screen_height);
+    
     viewHist = false;
 
     Circle* circle = new Circle(300., 300., 200., 200., 40., test2, test);
-    shapes.push_back(circle);
+    objects.push_back(circle);
+
+    // redimensionner la fenêtre selon la résolution de l'image
+    ofSetWindowShape(screen_width, screen_height);
+
 
 }
 
@@ -39,15 +49,19 @@ void Renderer::draw() {
 
     //cam.begin();
     // afficher l'image sur toute la surface de la fenêtre d'affichage
-    for (ImageStruct image: images) {
+   // for (ImageStruct image: objects) {
+       for (SceneObject *obj : objects)
+       {
         ofPushMatrix();
-        ofTranslate(image.image_width / 2, image.image_heigth / 2, 0);
-        image.image.setAnchorPercent(0.5f, 0.5f);
-        ofRotate(image.image_rotation);
+      //  ofTranslate(image.width / 2, image.heigth / 2, 0);
+      //  image.image.setAnchorPercent(0.5f, 0.5f);
+      //  ofRotate(image.image_rotation);
 
-        ofScale(image.scale);
+      //  ofScale(image.scale);
 
-        image.draw();
+      //  image.draw();
+         obj->draw();
+
         ofPopMatrix();
     }
 
@@ -69,13 +83,13 @@ void Renderer::draw() {
 
     }
 
-    for (Primitive *shape: shapes)
+   /* for (Primitive *shape: shapes)
     {
         ofPushMatrix();
         shape->draw();
         ofPopMatrix();
     }
-
+*/
     if (viewHist) {
         ofPushMatrix();
         ofTranslate(0, 100);
@@ -119,10 +133,10 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
 
 
 void Renderer::draw_histogram() {
-    Histogram hist;
-    hist.setup(images.at(0).image);
+    /*Histogram hist;
+    hist.setup(images.at(0)->image);
     hist.update();
-    hist.draw();
+    hist.draw();*/
 
-    //hist.makeHistogram(images.at(0).image);
+    //hist.makeHistogram(objects.at(0).image);
 }

@@ -62,24 +62,24 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         }
     }
     if (event.target == boutonRogner) {
+        
         float width = renderer.croping_zone[2] - renderer.croping_zone[0];
         float height = renderer.croping_zone[3] - renderer.croping_zone[1];
-        ImageStruct *image = &(renderer.images[renderer.images.size() - 1]);
-        int image_width = (int) (width / image->image_width * image->image.getWidth());
-        int image_heigth = (int) (height / image->image_heigth * image->image.getHeight());
-        int pixel_origin_x = (int) ((float) renderer.croping_zone[0] / image->image_width * image->image.getWidth()) -
-                             (int) ((float) image->image_origin_x / image->image_width * image->image.getWidth());
-        int pixel_origin_y = (int) ((float) renderer.croping_zone[1] / image->image_heigth * image->image.getHeight()) -
-                             (int) ((float) image->image_origin_y / image->image_heigth * image->image.getHeight());
+        ImageStruct* image = renderer.images[renderer.images.size() - 1];
+        int image_width = (int)(width / image->width * image->image.getWidth());
+        int image_heigth = (int)(height / image->height * image->image.getHeight());
+        int pixel_origin_x = (int)((float)renderer.croping_zone[0]/image->width * image->image.getWidth()) - (int)((float)image->position_x/image->width * image->image.getWidth());
+        int pixel_origin_y = (int)((float)renderer.croping_zone[1]/image->height * image->image.getHeight()) - (int)((float)image->position_y/image->height * image->image.getHeight());
         image->image.cropFrom(image->image,
-                              pixel_origin_x,
-                              pixel_origin_y,
-                              image_width,
-                              image_heigth);
-        image->image_origin_x = renderer.croping_zone[0];
-        image->image_origin_y = renderer.croping_zone[1];
-        image->image_width = width;
-        image->image_heigth = height;
+                                pixel_origin_x,
+                                pixel_origin_y,
+                                image_width,
+                                image_heigth);
+        image->position_x = renderer.croping_zone[0];
+        image->position_y = renderer.croping_zone[1];
+        image->width = width;
+        image->height = height;
+
     }
     if (event.target == boutonHistogram) {
         renderer.viewHist = (!renderer.viewHist);
@@ -99,11 +99,11 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 
         // Vérification qu'il s'agit d'une image
         if (fileExtension == "JPG" || fileExtension == "PNG") {
-            ImageStruct image;
-            image.image.load(openFileResult.getPath());
+            ImageStruct *image = new ImageStruct;
+            image->image.load(openFileResult.getPath());
+            renderer.objects.push_back(image);
             renderer.images.push_back(image);
         }
-
     }
 }
 

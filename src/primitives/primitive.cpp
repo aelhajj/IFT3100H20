@@ -2,7 +2,7 @@
 
 #include "primitive.h"
 
-Primitive::Primitive(float _posX, float _posY, float _width, float _height, float _thickness, ofColor& _fillColor, ofColor& _borderColor)
+Primitive::Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor& _fillColor, ofColor& _borderColor)
 {
     position_x = _posX;
     position_y = _posY;
@@ -32,15 +32,15 @@ void Primitive::setBorderColor(ofColor _borderColor)
     borderColor = _borderColor;
 }
 
-float Primitive::getThickness() 
+int Primitive::getThickness() 
 {
     return thickness;
 }
-void Primitive::setThickness(float _thickness)
+void Primitive::setThickness(int _thickness)
 {
     thickness = _thickness;
 }
-
+/*
 tuple<float, float> Primitive::getPosition() 
 {
     return make_tuple(position_x, position_y);
@@ -71,8 +71,8 @@ void Primitive::setWidth(float _width)
 
 bool Primitive::isSelected(float posX, float posY) 
 {
-    
-}
+
+}*/
 
 //void Primitive::setShape(float posX, float posY, float setX, float setY);
 

@@ -13,10 +13,11 @@
 class Renderer {
 public:
     int f;
-    std::vector <ImageStruct> images;
+    std::vector <ImageStruct*> images;
     ofImage image;
 
-    std::vector <Primitive*> shapes;
+    //std::vector <Primitive*> shapes;
+    std::vector<SceneObject*> objects;
 
     int screen_height = 900;
     int screen_width = 900;

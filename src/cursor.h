@@ -90,11 +90,12 @@ public:
     }
 
     void onMouseDragged(int x, int y) {
-        if (isImageSelected) {
-            int delta_x = x - last_frame_x;
-            int delta_y = y - last_frame_y;
+        if (isSceneObjectSelected) {
+            //cout << "ALLO" << endl;
+            float delta_x = x - last_frame_x;
+            float delta_y = y - last_frame_y;
 
-            imageSelected->translate(delta_x, delta_y);
+            sceneObjectSelected->translate(delta_x, delta_y);
 
         }
         last_frame_x = x;
@@ -103,22 +104,25 @@ public:
     }
 
     void onMousePressed(int x, int y) {
-        for (auto &im: renderer->images) {
-            std::cout << "image : " << im.image_origin_x << " " << im.image_origin_y << std::endl;
-            std::cout << "width height : " << im.image_width << " " << im.image_heigth << std::endl;
-            std::cout << "click : " << x << " " << y << std::endl;
-            if (x > im.image_origin_x &&
-                x < (im.image_width + im.image_origin_x) &&
-                y > im.image_origin_y &&
-                y < (im.image_heigth + im.image_origin_y)) {
-                imageSelected = &im;
-                isImageSelected = true;
+        for (auto &obj: renderer->objects) {
+            obj->info();
+            /*std::cout << "image : " << obj->position_x << " " << obj->position_y << std::endl;
+            std::cout << "width height : " << obj->width << " " << obj->height << std::endl;
+            std::cout << "click : " << x << " " << y << std::endl;*/
+            if (x > obj->position_x &&
+                x < (obj->width + obj->position_x) &&
+                y > obj->position_y &&
+                y < (obj->height + obj->position_y)) {
+                    cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
+                sceneObjectSelected = obj;
+                isSceneObjectSelected = true;
+
             }
         }
     }
 
     void onMouseReleased(int x, int y) {
-        isImageSelected = false;
+        isSceneObjectSelected = false;
     }
 
     void drawCursor() {
@@ -128,9 +132,11 @@ public:
 private:
     int last_frame_x;
     int last_frame_y;
-    bool isImageSelected = false;
+    //bool isImageSelected = false;
+    bool isSceneObjectSelected = false;
+    SceneObject *sceneObjectSelected;
     ofImage image;
-    ImageStruct *imageSelected;
+   // ImageStruct *imageSelected;
     Renderer *renderer;
 };
 
@@ -152,14 +158,14 @@ public:
     }
 
     void onMousePressed(int x, int y) {
-        for (auto &im: renderer->images) {
+        for (auto &obj: renderer->objects) {
 
-            if (x > im.image_origin_x &&
-                x < (im.image_width + im.image_origin_x) &&
-                y > im.image_origin_y &&
-                y < (im.image_heigth + im.image_origin_y)) {
-                imageSelected = &im;
-                imageSelected->zoomIn();
+            if (x > obj->position_x &&
+                x < (obj->width + obj->position_x) &&
+                y > obj->position_y &&
+                y < (obj->height + obj->position_y)) {
+                sceneObjectSelected = obj;
+                sceneObjectSelected->zoomIn();
             }
         }
     }
@@ -174,7 +180,9 @@ public:
 
 private:
     Renderer *renderer;
-    ImageStruct *imageSelected;
+    // ImageStruct *imageSelected;
+    SceneObject *sceneObjectSelected;
+
     ofImage image;
 };
 
@@ -196,14 +204,14 @@ public:
     }
 
     void onMousePressed(int x, int y) {
-        for (auto &im: renderer->images) {
+        for (auto &obj: renderer->objects) {
 
-            if (x > im.image_origin_x &&
-                x < (im.image_width + im.image_origin_x) &&
-                y > im.image_origin_y &&
-                y < (im.image_heigth + im.image_origin_y)) {
-                imageSelected = &im;
-                imageSelected->zoomOut();
+            if (x > obj->position_x &&
+                x < (obj->width + obj->position_x) &&
+                y > obj->position_y &&
+                y < (obj->height + obj->position_y)) {
+                sceneObjectSelected = obj;
+               sceneObjectSelected->zoomOut();
             }
         }
     }
@@ -218,7 +226,8 @@ public:
 
 private:
     Renderer *renderer;
-    ImageStruct *imageSelected;
+    //ImageStruct *imageSelected;
+    SceneObject *sceneObjectSelected;
     ofImage image;
 };
 
@@ -240,14 +249,13 @@ public:
     }
 
     void onMousePressed(int x, int y) {
-        for (auto &im: renderer->images) {
-
-            if (x > im.image_origin_x &&
-                x < (im.image_width + im.image_origin_x) &&
-                y > im.image_origin_y &&
-                y < (im.image_heigth + im.image_origin_y)) {
-                imageSelected = &im;
-                imageSelected->rotate();
+        for (auto &obj: renderer->objects) {
+            if (x > obj->position_x &&
+                x < (obj->width + obj->position_x) &&
+               y > obj->position_y &&
+                y < (obj->height + obj->position_y)) {
+                sceneObjectSelected = obj;
+                sceneObjectSelected->rotate();
             }
         }
     }
@@ -262,6 +270,7 @@ public:
 
 private:
     Renderer *renderer;
-    ImageStruct *imageSelected;
+   // ImageStruct *imageSelected;
+    SceneObject *sceneObjectSelected;
     ofImage image;
 };
