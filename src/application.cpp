@@ -66,8 +66,9 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
   }
   if(event.target == boutonRogner)
   {
-        if (!renderer.croping_zone.empty())
-        {
+        std::cout << renderer.is_ready_croping << std::endl;
+         if (renderer.is_ready_croping)
+         {
           float width = renderer.croping_zone[2] - renderer.croping_zone[0];
           float height = renderer.croping_zone[3] - renderer.croping_zone[1];
           ImageStruct* image = &(renderer.images[renderer.images.size() - 1]);
@@ -84,6 +85,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event)
           image->image_origin_y = renderer.croping_zone[1];
           image->image_width = width;
           image->image_heigth = height;
+          renderer.is_ready_croping = false;
         }
 
   }

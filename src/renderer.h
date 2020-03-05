@@ -30,6 +30,7 @@ public:
   int radius;
 
   bool is_mouse_button_pressed;
+  bool is_ready_croping = false;
 
   std::vector<int> croping_zone;
 

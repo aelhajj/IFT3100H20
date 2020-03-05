@@ -51,6 +51,7 @@ public:
        renderer->croping_zone.push_back(renderer->mouse_press_y);
        renderer->croping_zone.push_back(renderer->mouse_current_x);
        renderer->croping_zone.push_back(renderer->mouse_current_y);
+       renderer->is_ready_croping = true;
      }
 
      renderer->mouse_current_x = x;
