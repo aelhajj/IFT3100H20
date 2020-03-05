@@ -8,33 +8,41 @@
 #include "cursor.h"
 #include "ofxDatGui.h"
 
-class Application : public ofBaseApp
-{
+class Application : public ofBaseApp {
 public:
 
-  Renderer renderer;
-  ofxDatGuiButton* boutonImporter;
-  ofxDatGuiButton* boutonRogner;
-  ofxDatGuiButton* boutonHistogram;
-  ofxDatGuiDropdown* menuCursor;
-  Cursor* cursor;
-  void setup();
-  void draw();
+    Renderer renderer;
+    ofxDatGuiButton *boutonImporter;
+    ofxDatGuiButton *boutonRogner;
+    ofxDatGuiButton *boutonHistogram;
+    ofxDatGuiDropdown *menuCursor;
+    Cursor *cursor;
 
-  void windowResized(int w, int h);
+    void setup();
 
-  void dragEvent(ofDragInfo dragInfo);
-  void onButtonEvent(ofxDatGuiButtonEvent event);
-  void onDropdownEvent(ofxDatGuiDropdownEvent event);
+    void draw();
 
-  void mouseMoved(int x, int y);
-  void mouseDragged(int x, int y, int button);
-  void mousePressed(int x, int y, int button);
-  void mouseReleased(int x, int y, int button);
-  void mouseEntered(int x, int y);
-  void mouseExited(int x, int y);
+    void windowResized(int w, int h);
 
-  void openFileSelected(ofFileDialogResult openFileResult);
+    void dragEvent(ofDragInfo dragInfo);
 
-  void exit();
+    void onButtonEvent(ofxDatGuiButtonEvent event);
+
+    void onDropdownEvent(ofxDatGuiDropdownEvent event);
+
+    void mouseMoved(int x, int y);
+
+    void mouseDragged(int x, int y, int button);
+
+    void mousePressed(int x, int y, int button);
+
+    void mouseReleased(int x, int y, int button);
+
+    void mouseEntered(int x, int y);
+
+    void mouseExited(int x, int y);
+
+    void openFileSelected(ofFileDialogResult openFileResult);
+
+    void exit();
 };
