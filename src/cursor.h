@@ -91,7 +91,6 @@ public:
 
     void onMouseDragged(int x, int y) {
         if (isSceneObjectSelected) {
-            //cout << "ALLO" << endl;
             float delta_x = x - last_frame_x;
             float delta_y = y - last_frame_y;
 
@@ -106,14 +105,11 @@ public:
     void onMousePressed(int x, int y) {
         for (auto &obj: renderer->objects) {
             obj->info();
-            /*std::cout << "image : " << obj->position_x << " " << obj->position_y << std::endl;
-            std::cout << "width height : " << obj->width << " " << obj->height << std::endl;
-            std::cout << "click : " << x << " " << y << std::endl;*/
-            if (x > obj->position_x &&
-                x < (obj->width + obj->position_x) &&
-                y > obj->position_y &&
-                y < (obj->height + obj->position_y)) {
-                    cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
+            if (x >= obj->position_x &&
+                x <= (obj->width + obj->position_x) &&
+                y >= obj->position_y &&
+                y <= (obj->height + obj->position_y)) {
+                //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
                 sceneObjectSelected = obj;
                 isSceneObjectSelected = true;
 
@@ -132,11 +128,9 @@ public:
 private:
     int last_frame_x;
     int last_frame_y;
-    //bool isImageSelected = false;
     bool isSceneObjectSelected = false;
     SceneObject *sceneObjectSelected;
     ofImage image;
-   // ImageStruct *imageSelected;
     Renderer *renderer;
 };
 
@@ -180,7 +174,6 @@ public:
 
 private:
     Renderer *renderer;
-    // ImageStruct *imageSelected;
     SceneObject *sceneObjectSelected;
 
     ofImage image;
@@ -211,7 +204,7 @@ public:
                 y > obj->position_y &&
                 y < (obj->height + obj->position_y)) {
                 sceneObjectSelected = obj;
-               sceneObjectSelected->zoomOut();
+                sceneObjectSelected->zoomOut();
             }
         }
     }
@@ -226,7 +219,6 @@ public:
 
 private:
     Renderer *renderer;
-    //ImageStruct *imageSelected;
     SceneObject *sceneObjectSelected;
     ofImage image;
 };
@@ -252,7 +244,7 @@ public:
         for (auto &obj: renderer->objects) {
             if (x > obj->position_x &&
                 x < (obj->width + obj->position_x) &&
-               y > obj->position_y &&
+                y > obj->position_y &&
                 y < (obj->height + obj->position_y)) {
                 sceneObjectSelected = obj;
                 sceneObjectSelected->rotate();
@@ -270,7 +262,6 @@ public:
 
 private:
     Renderer *renderer;
-   // ImageStruct *imageSelected;
     SceneObject *sceneObjectSelected;
     ofImage image;
 };

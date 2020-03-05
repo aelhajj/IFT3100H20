@@ -11,23 +11,29 @@ public:
 
     void addChild(SceneObject &child);
 
-    
+
     tuple<int, int> getPosition();
+
     void setPosition(int _posX, int _posY);
 
     int getWidth();
+
     void setWidth(int _width);
 
     int getHeight();
+
     void setHeight(int _height);
 
     int getThickness();
+
     void setThickness(int _thickness);
 
     bool getSelected(int _posX, int _posY);
+
     void setSelected(bool _select);
 
     void setScale(float _scale);
+
     float getScale();
 
     virtual void draw() = 0;
@@ -43,7 +49,7 @@ public:
     void info();
 
     int position_x;
-    int position_y; 
+    int position_y;
     int width;
     int height;
     float rotation = 0;

@@ -51,7 +51,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
     if (event.target == boutonImporter) {
         ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an img");
 
-// Verification qu'un fichier a ete selectionnee
+        // Verification qu'un fichier a ete selectionnee
         if (openFileResult.bSuccess) {
             ofLog() << "Selected img";
 
@@ -62,19 +62,21 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         }
     }
     if (event.target == boutonRogner) {
-        
+
         float width = renderer.croping_zone[2] - renderer.croping_zone[0];
         float height = renderer.croping_zone[3] - renderer.croping_zone[1];
-        ImageStruct* image = renderer.images[renderer.images.size() - 1];
-        int image_width = (int)(width / image->width * image->image.getWidth());
-        int image_heigth = (int)(height / image->height * image->image.getHeight());
-        int pixel_origin_x = (int)((float)renderer.croping_zone[0]/image->width * image->image.getWidth()) - (int)((float)image->position_x/image->width * image->image.getWidth());
-        int pixel_origin_y = (int)((float)renderer.croping_zone[1]/image->height * image->image.getHeight()) - (int)((float)image->position_y/image->height * image->image.getHeight());
+        ImageStruct *image = renderer.images[renderer.images.size() - 1];
+        int image_width = (int) (width / image->width * image->image.getWidth());
+        int image_heigth = (int) (height / image->height * image->image.getHeight());
+        int pixel_origin_x = (int) ((float) renderer.croping_zone[0] / image->width * image->image.getWidth()) -
+                             (int) ((float) image->position_x / image->width * image->image.getWidth());
+        int pixel_origin_y = (int) ((float) renderer.croping_zone[1] / image->height * image->image.getHeight()) -
+                             (int) ((float) image->position_y / image->height * image->image.getHeight());
         image->image.cropFrom(image->image,
-                                pixel_origin_x,
-                                pixel_origin_y,
-                                image_width,
-                                image_heigth);
+                              pixel_origin_x,
+                              pixel_origin_y,
+                              image_width,
+                              image_heigth);
         image->position_x = renderer.croping_zone[0];
         image->position_y = renderer.croping_zone[1];
         image->width = width;
@@ -101,6 +103,10 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
         if (fileExtension == "JPG" || fileExtension == "PNG") {
             ImageStruct *image = new ImageStruct;
             image->image.load(openFileResult.getPath());
+            image->width = image->image.getWidth();
+            image->height = image->image.getHeight();
+            image->position_x = 0;
+            image->position_y = 0;
             renderer.objects.push_back(image);
             renderer.images.push_back(image);
         }

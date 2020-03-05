@@ -1,9 +1,6 @@
-// IFT3100H20_ImageImport/renderer.cpp
-// Classe responsable du rendu de l'application.
 
 #include "renderer.h"
 #include "histogram.h"
-
 
 
 void Renderer::setup() {
@@ -14,15 +11,14 @@ void Renderer::setup() {
 
     // Interface de image
 
-    
     ImageStruct *image = new ImageStruct;
     cout << "Avant image load" << endl;
     image->image.load("agaragar.jpg");
     cout << "Apres image load" << endl;
     image->position_x = 0;
     image->position_y = 0;
-    image->width = 900;
-    image->height = 900;
+    image->width = image->image.getWidth();
+    image->height = image->image.getHeight();
     cout << endl << endl << "Renderer::setup()" << endl;
 
     images.push_back(image);
@@ -33,10 +29,10 @@ void Renderer::setup() {
 
     offset_vertical = 32;
     offset_horizontal = 32;
-    
+
     viewHist = false;
 
-    Circle* circle = new Circle(300., 300., 200., 200., 40., test2, test);
+    Circle *circle = new Circle(300., 300., 200., 200., 40., test2, test);
     objects.push_back(circle);
 
     // redimensionner la fenêtre selon la résolution de l'image
@@ -49,19 +45,11 @@ void Renderer::draw() {
 
     //cam.begin();
     // afficher l'image sur toute la surface de la fenêtre d'affichage
-   // for (ImageStruct image: objects) {
-       for (SceneObject *obj : objects)
-       {
+    for (SceneObject *obj : objects) {
         ofPushMatrix();
-      //  ofTranslate(image.width / 2, image.heigth / 2, 0);
-      //  image.image.setAnchorPercent(0.5f, 0.5f);
-      //  ofRotate(image.image_rotation);
-
-      //  ofScale(image.scale);
-
-      //  image.draw();
-         obj->draw();
-
+        //  ofTranslate(image.width / 2, image.heigth / 2, 0);
+        //  image.image.setAnchorPercent(0.5f, 0.5f);
+        obj->draw();
         ofPopMatrix();
     }
 
@@ -83,13 +71,6 @@ void Renderer::draw() {
 
     }
 
-   /* for (Primitive *shape: shapes)
-    {
-        ofPushMatrix();
-        shape->draw();
-        ofPopMatrix();
-    }
-*/
     if (viewHist) {
         ofPushMatrix();
         ofTranslate(0, 100);
@@ -133,10 +114,8 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
 
 
 void Renderer::draw_histogram() {
-    /*Histogram hist;
+    Histogram hist;
     hist.setup(images.at(0)->image);
     hist.update();
-    hist.draw();*/
-
-    //hist.makeHistogram(objects.at(0).image);
+    hist.draw();
 }

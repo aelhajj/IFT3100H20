@@ -4,8 +4,8 @@ void Histogram::setup(ofImage image) {
     this->image = image;
     this->height = image.getHeight();
     this->width = image.getWidth();
-    cout << "Histogram width: " << this->width << endl
-         << "Histogram height: " << this->height << endl;
+    //cout << "Histogram width: " << this->width << endl
+    //     << "Histogram height: " << this->height << endl;
 
     rgb.allocate(width, height);
     hsv.allocate(width, height);
@@ -54,8 +54,6 @@ void Histogram::drawHistogram(vector<float> &h) {
 }
 
 void Histogram::draw() {
-
-
     ofSetColor(255, 0, 0);
     drawHistogram(histogramR);
 
@@ -65,6 +63,4 @@ void Histogram::draw() {
     ofSetColor(0, 0, 255);
     drawHistogram(histogramB);
     ofSetColor(255);
-
-
 }

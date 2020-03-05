@@ -4,57 +4,53 @@
 #include <tuple>
 #include "sceneObject.h"
 
-class Primitive : public SceneObject
-{
-    public:
-        Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor& fill_Color, ofColor& border_Color);
+class Primitive : public SceneObject {
+public:
+    Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor &fill_Color,
+              ofColor &border_Color);
 
-        static int prim_size;
-        
-        virtual void draw(){}
+    static int prim_size;
 
-        ofColor getFillColor();
-        void setFillColor(ofColor _fillColor);
+    virtual void draw() {}
 
-        ofColor getBorderColor();
-        void setBorderColor(ofColor _borderColor);
+    ofColor getFillColor();
 
-        tuple<int, int> getPosition();
-        void setPosition(int _posX, int _posY);
+    void setFillColor(ofColor _fillColor);
 
-        int getWidth();
-        void setWidth(int _width);
+    ofColor getBorderColor();
 
-        int getHeight();
-        void setHeight(int _height);
+    void setBorderColor(ofColor _borderColor);
 
-        int getThickness();
-        void setThickness(int _thickness);
+    tuple<int, int> getPosition();
 
-        bool isSelected(int _posX, int _posY);
+    void setPosition(int _posX, int _posY);
 
-        void setShape(int _posX, int _posY, int _setX, int _setY);
+    int getWidth();
 
-        //void translate(float _posX, float _posY);
+    void setWidth(int _width);
 
-        //bool operator==(Primitive primitive);
+    int getHeight();
 
-       // void zoomIn();
+    void setHeight(int _height);
 
-       // void zoomOut();
+    int getThickness();
 
-       // void rotate();
+    void setThickness(int _thickness);
 
-        Primitive* copy();
+    bool isSelected(int _posX, int _posY);
 
-        ~Primitive();
+    void setShape(int _posX, int _posY, int _setX, int _setY);
 
-        
+
+    Primitive *copy();
+
+    ~Primitive();
+
 
     //protected:
-        int thickness;
+    int thickness;
 
-        ofColor fillColor;
-        ofColor borderColor;
+    ofColor fillColor;
+    ofColor borderColor;
 
 };

@@ -3,52 +3,48 @@
 #include "primitive.h"
 #include <cmath>
 
-class Circle: public Primitive
-{
-    public: 
-        Circle(int _posX, int _posY, int _width, int _height, int _thickness, 
-            ofColor& fill_Color, ofColor& border_Color);
+class Circle : public Primitive {
+public:
+    Circle(int _posX, int _posY, int _width, int _height, int _thickness,
+           ofColor &fill_Color, ofColor &border_Color);
 
-        void draw();
+    void draw();
 
-        ofColor getFillColor();
-        void setFillColor(ofColor _fillColor);
+    ofColor getFillColor();
 
-        ofColor getBorderColor();
-        void setBorderColor(ofColor _borderColor);
+    void setFillColor(ofColor _fillColor);
 
-        tuple<int, int> getPosition();
-        void setPosition(int _posX, int _posY);
+    ofColor getBorderColor();
 
-        int getWidth();
-        void setWidth(int _width);
+    void setBorderColor(ofColor _borderColor);
 
-        int getHeight();
-        void setHeight(int _height);
+    tuple<int, int> getPosition();
 
-        int getThickness();
-        void setThickness(float _thickness);
+    void setPosition(int _posX, int _posY);
 
-        int getRadius();
-        void setRadius(int _r);
+    int getWidth();
 
-        bool isSelected(int _posX, int _posY);
+    void setWidth(int _width);
 
-        void setShape(int _posX, int _posY, int _setX, int _setY);
+    int getHeight();
 
-       /* void translate(int _posX, int _posY);
+    void setHeight(int _height);
 
-        //bool operator==(Primitive primitive);
+    int getThickness();
 
-        void zoomIn() ;
+    void setThickness(float _thickness);
 
-        void zoomOut() ;
+    int getRadius();
 
-        void rotate() ;*/
+    void setRadius(int _r);
 
-        Primitive* copy();
+    bool isSelected(int _posX, int _posY);
 
-        ~Circle();
+    void setShape(int _posX, int _posY, int _setX, int _setY);
 
-        int r;
+    Primitive *copy();
+
+    ~Circle();
+
+    int r;
 };
