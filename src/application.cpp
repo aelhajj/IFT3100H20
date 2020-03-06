@@ -8,7 +8,7 @@ void Application::setup() {
     ofxDatGuiLog::quiet();
     ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
 
-    vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation"};
+    vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
 
     menuCursor = gui->addDropdown("select cursor", options);
 
@@ -53,7 +53,10 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
         cursor = new ZoomOutCursor(&renderer);
     } else if (event.child == 4) {
         cursor = new RotationCursor(&renderer);
+    } else if (event.child == 5) {
+        cursor = new DrawCursor(&renderer);
     }
+
 }
 
 

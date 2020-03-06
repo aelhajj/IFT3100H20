@@ -16,9 +16,14 @@ public:
     ofImage image;
 
     //std::vector <Primitive*> shapes;
+    int index = 0;
     std::vector<SceneObject *> objects;
+    std::vector<Primitive *> shapes;
     SceneObject *sceneObjectSelected = nullptr;
     ImageStruct *imageSelected = nullptr;
+    Primitive *shapeSelected = nullptr;
+
+    SceneObjectType draw_mode;
 
     int screen_height = 900;
     int screen_width = 900;
@@ -34,6 +39,7 @@ public:
 
     bool is_mouse_button_pressed;
     bool is_ready_croping = false;
+    bool is_draw_mode = false;
 
     ofColor background_color;
     ofColor stroke_color;
@@ -59,6 +65,8 @@ public:
     void draw_cursor(float x, float y) const;
 
     void draw_histogram();
+
+    void add_primitive(SceneObjectType type);
 
     ofEasyCam cam;
 

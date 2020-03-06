@@ -10,6 +10,11 @@ Circle::Circle(int _posX, int _posY, int _width, int _height, int _thickness,
     type = SceneObjectType::circle;
 }
 
+Circle::Circle() : Primitive() {
+    prim_size++;
+    type = SceneObjectType::circle;
+}
+
 void Circle::draw() {
 
     ofFill();
@@ -20,7 +25,7 @@ void Circle::draw() {
 
     ofNoFill();
     ofSetColor(borderColor);
-    ofSetLineWidth(thickness);
+    ofSetLineWidth(thickness * 10);
     ofSetCircleResolution(100);
     ofDrawCircle(position_x, position_y, r);
     ofSetColor(255, 255, 255);
@@ -33,6 +38,10 @@ void Circle::setRadius(int _r) {
 
 int Circle::getRadius() {
     return r;
+}
+
+void Circle::update() {
+    r = width / 2;
 }
 
 

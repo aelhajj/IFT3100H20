@@ -13,6 +13,10 @@ Primitive::Primitive(int _posX, int _posY, int _width, int _height, int _thickne
     height = _height;
 }
 
+Primitive::Primitive() {
+
+}
+
 ofColor Primitive::getFillColor() {
     return fillColor;
 }

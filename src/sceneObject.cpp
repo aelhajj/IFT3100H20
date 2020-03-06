@@ -1,10 +1,6 @@
 
 #include "sceneObject.h"
 
-void SceneObject::update() {
-
-}
-
 tuple<int, int> SceneObject::getPosition() {
     return make_tuple(position_x, position_y);
 }

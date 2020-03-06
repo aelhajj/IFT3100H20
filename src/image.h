@@ -13,6 +13,7 @@ public:
         type = SceneObjectType::image;
     }
 
+    void update() {}
 
     void draw() {
         //ofTranslate(width / 2, height / 2, 0);

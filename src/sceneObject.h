@@ -10,8 +10,6 @@ enum class SceneObjectType {
 class SceneObject {
 public:
 
-    void update();
-
     void addChild(SceneObject &child);
 
     tuple<int, int> getPosition();
@@ -47,6 +45,8 @@ public:
     void zoomOut();
 
     void info();
+
+    virtual void update() = 0;
 
     int position_x;
     int position_y;
