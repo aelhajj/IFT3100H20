@@ -11,6 +11,8 @@ public:
     Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor &fill_Color,
               ofColor &border_Color);
 
+    Primitive();
+
     static int prim_size;
 
     virtual void draw() {}
@@ -38,8 +40,6 @@ public:
     int getThickness();
 
     void setThickness(int _thickness);
-
-    bool isSelected(int _posX, int _posY);
 
     void setShape(int _posX, int _posY, int _setX, int _setY);
 

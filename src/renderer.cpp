@@ -11,15 +11,14 @@ void Renderer::setup() {
 
     // Interface de image
 
-    ImageStruct *image = new ImageStruct;
-    cout << "Avant image load" << endl;
+    ImageStruct *image = new ImageStruct();
+
     image->image.load("agaragar.jpg");
-    cout << "Apres image load" << endl;
-    image->position_x = 0;
+
+    image->position_x = 100;
     image->position_y = 0;
     image->width = image->image.getWidth();
     image->height = image->image.getHeight();
-    cout << endl << endl << "Renderer::setup()" << endl;
 
     images.push_back(image);
     objects.push_back(image);
@@ -40,10 +39,14 @@ void Renderer::setup() {
    // objects.push_back(rect);
    // objects.push_back(ligne);
    // objects.push_back(triang);
+    // Circle *circle = new Circle(300., 300., 200., 200., 40., test2, test);
+    // objects.push_back(circle);
 
     // redimensionner la fenêtre selon la résolution de l'image
     ofSetWindowShape(screen_width, screen_height);
 
+    // mode dessin par defaut
+    draw_mode = SceneObjectType::circle;
 
 }
 
@@ -78,7 +81,7 @@ void Renderer::draw() {
 
     if (viewHist) {
         ofPushMatrix();
-        ofTranslate(0, 100);
+        ofTranslate(0, 200);
         draw_histogram();
         ofPopMatrix();
     }
@@ -120,7 +123,11 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
 
 void Renderer::draw_histogram() {
     Histogram hist;
-    hist.setup(images.at(0)->image);
+
+    if (imageSelected != nullptr)
+        hist.setup(imageSelected->image);
+    else
+        hist.setup(images.at(0)->image);
     hist.update();
     hist.draw();
 }
@@ -147,6 +154,7 @@ void Renderer::add_primitive(SceneObjectType type) {
         
         case SceneObjectType::triangle:
             newShape = new Triangle();
+            //newShape = new Point();
             break;
 
         default:

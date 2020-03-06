@@ -52,6 +52,7 @@ public:
             renderer->croping_zone.push_back(renderer->mouse_press_y);
             renderer->croping_zone.push_back(renderer->mouse_current_x);
             renderer->croping_zone.push_back(renderer->mouse_current_y);
+            renderer->is_ready_croping = true;
         }
 
         renderer->mouse_current_x = x;
@@ -73,6 +74,7 @@ public:
 
 private:
     Renderer *renderer;
+
 };
 
 class NormalCursor : public Cursor {
@@ -104,13 +106,14 @@ public:
 
     void onMousePressed(int x, int y) {
         for (auto &obj: renderer->objects) {
-            obj->info();
+            //obj->info();
             if (x >= obj->position_x &&
                 x <= (obj->width + obj->position_x) &&
                 y >= obj->position_y &&
                 y <= (obj->height + obj->position_y)) {
                 //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
                 sceneObjectSelected = obj;
+                renderer->sceneObjectSelected = sceneObjectSelected;
                 isSceneObjectSelected = true;
 
             }
@@ -293,6 +296,7 @@ public:
         renderer->mouse_press_y = y;
     }
 /*
+
     void onMouseReleased(int x, int y) {
         renderer->is_mouse_button_pressed = false;
         renderer->mouse_current_x = x;

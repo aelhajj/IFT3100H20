@@ -5,9 +5,10 @@
 
 
 void Application::setup() {
+    ofxDatGuiLog::quiet();
     ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
 
-    vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation"};
+    vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
 
     menuCursor = gui->addDropdown("select cursor", options);
 
@@ -22,6 +23,15 @@ void Application::setup() {
 
     gui->onDropdownEvent(this, &Application::onDropdownEvent);
     gui->onButtonEvent(this, &Application::onButtonEvent);
+
+    ofxDatGuiFolder *primitive_folder = gui->addFolder("Primitive", ofColor::red);
+
+    background_color_picker = primitive_folder->addColorPicker("Canevas", ofColor(255, 0, 0, 5));
+    fill_color_picker = primitive_folder->addColorPicker("Remplissage", ofColor(255, 0, 0, 5));
+    stroke_color_picker = primitive_folder->addColorPicker("Stroke", ofColor(255, 0, 0, 5));
+    stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
+
+    primitive_folder->expand();
 
     ofSetWindowTitle("importation d'une image");
 
@@ -43,7 +53,10 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
         cursor = new ZoomOutCursor(&renderer);
     } else if (event.child == 4) {
         cursor = new RotationCursor(&renderer);
+    } else if (event.child == 5) {
+        cursor = new DrawCursor(&renderer);
     }
+
 }
 
 
@@ -101,7 +114,7 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 
         // Vérification qu'il s'agit d'une image
         if (fileExtension == "JPG" || fileExtension == "PNG") {
-            ImageStruct *image = new ImageStruct;
+            ImageStruct *image = new ImageStruct();
             image->image.load(openFileResult.getPath());
             image->width = image->image.getWidth();
             image->height = image->image.getHeight();

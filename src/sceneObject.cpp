@@ -1,16 +1,6 @@
 
 #include "sceneObject.h"
 
-void SceneObject::update() {
-    for (SceneObject *child:children) {
-        child->update();
-    }
-}
-
-void SceneObject::addChild(SceneObject &child) {
-    children.push_back(&child);
-}
-
 tuple<int, int> SceneObject::getPosition() {
     return make_tuple(position_x, position_y);
 }
@@ -43,10 +33,6 @@ void SceneObject::setWidth(int _width) {
     width = _width;
 }
 
-void SceneObject::setSelected(bool _selected) {
-    isSelected = _selected;
-}
-
 void SceneObject::translate(int x, int y) {
     position_x += x;
     position_y += y;
@@ -55,17 +41,11 @@ void SceneObject::translate(int x, int y) {
 void SceneObject::zoomIn() {
     float old_scale = scale;
     scale += 0.25;
-    // position_x += ((scale-old_scale) * position_x);
-    //position_y += ((scale-old_scale) * position_y);
 }
 
 void SceneObject::zoomOut() {
-    if (scale > 0.25) {
+    if (scale > 0.25)
         scale -= 0.25;
-        //   position_x -= (scale * position_x);
-        //  position_y -= (scale * position_y);
-    }
-
 }
 
 void SceneObject::rotate() {

@@ -10,14 +10,13 @@ enum class SceneObjectType {
 class SceneObject {
 public:
 
-    void update();
-
     void addChild(SceneObject &child);
-
 
     tuple<int, int> getPosition();
 
     void setPosition(int _posX, int _posY);
+
+    //void SceneObject::setType(SceneObjectType _type);
 
     int getWidth();
 
@@ -30,10 +29,6 @@ public:
     int getThickness();
 
     void setThickness(int _thickness);
-
-    bool getSelected(int _posX, int _posY);
-
-    void setSelected(bool _select);
 
     void setScale(float _scale);
 
@@ -51,6 +46,8 @@ public:
 
     void info();
 
+    virtual void update() = 0;
+
     int position_x;
     int position_y;
     int width;
@@ -58,7 +55,13 @@ public:
     float rotation = 0;
     float scale = 1;
     bool isSelected;
+    SceneObjectType type = SceneObjectType::none;
+    int thickness;
 
-private:
-    std::vector<SceneObject *> children;
+    ofColor fillColor;
+    ofColor borderColor;
+
+//private:
+    //std::vector<SceneObject *> children;
+
 };
