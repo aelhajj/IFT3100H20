@@ -40,6 +40,8 @@ public:
     void mouseEntered(int x, int y);
 
     void mouseExited(int x, int y);
+    
+    void keyReleased(int key);
 
     void openFileSelected(ofFileDialogResult openFileResult);
 

@@ -265,3 +265,65 @@ private:
     SceneObject *sceneObjectSelected;
     ofImage image;
 };
+
+class DrawCursor : public Cursor {
+public:
+    DrawCursor(Renderer *r) {
+        renderer = r;
+        image.load("drawCursor.png");
+    }
+
+    void onMouseMoved(int x, int y) {
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+    }
+
+    void onMouseDragged(int x, int y) {
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+    }
+
+    void onMousePressed(int x, int y) {
+        renderer->is_mouse_button_pressed = true;
+
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+
+        renderer->mouse_press_x = x;
+        renderer->mouse_press_y = y;
+    }
+/*
+    void onMouseReleased(int x, int y) {
+        renderer->is_mouse_button_pressed = false;
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+
+        // renderer -> objects.push_back()
+        renderer->add_primitive(renderer->draw_mode);
+        cout << "size" << renderer->objects.size() << endl;
+
+    }*/
+    void onMouseReleased(int x, int y) {
+        renderer->is_mouse_button_pressed = false;
+        if (y > 100) {
+            renderer->croping_zone.push_back(renderer->mouse_press_x);
+            renderer->croping_zone.push_back(renderer->mouse_press_y);
+            renderer->croping_zone.push_back(renderer->mouse_current_x);
+            renderer->croping_zone.push_back(renderer->mouse_current_y);
+            renderer->is_ready_croping = true;
+        }
+
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+        renderer->add_primitive(renderer->draw_mode);
+    }
+
+    void drawCursor() {
+        image.draw(ofGetMouseX() - 10, ofGetMouseY() - 10, 50, 45);
+    }
+
+private:
+    Renderer *renderer;
+    SceneObject *sceneObjectSelected;
+    ofImage image;
+};

@@ -3,6 +3,9 @@
 #include "ofMain.h"
 #include <vector>
 
+enum class SceneObjectType {
+    none, point, line, rectangle, triangle, circle, image
+};
 
 class SceneObject {
 public:

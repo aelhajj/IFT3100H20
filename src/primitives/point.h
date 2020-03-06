@@ -1,19 +1,18 @@
 
-#ifndef PRIMITIVE_H
-#define PRIMITIVE_H
+#ifndef POIN_H
+#define POIN_H
 
-#include "ofMain.h"
-#include <tuple>
-#include "sceneObject.h"
+#include "primitive.h"
+#include <cmath>
 
-class Primitive : public SceneObject {
+class Poin : public Primitive {
 public:
-    Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor &fill_Color,
-              ofColor &border_Color);
+    Poin(int _posX, int _posY, int _width, int _height, int _thickness,
+           ofColor &fill_Color, ofColor &border_Color);
 
-    static int prim_size;
+    Poin();
 
-    virtual void draw() {}
+    void draw();
 
     ofColor getFillColor();
 
@@ -37,17 +36,17 @@ public:
 
     int getThickness();
 
-    void setThickness(int _thickness);
-
-    bool isSelected(int _posX, int _posY);
+    void setThickness(float _thickness);
 
     void setShape(int _posX, int _posY, int _setX, int _setY);
 
+    void update();
 
     Primitive *copy();
 
-    ~Primitive();
+    ~Poin();
 
+    int r = 1;
 };
 
 #endif

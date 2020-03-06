@@ -1,4 +1,5 @@
-
+#ifndef CIRCLE_H
+#define CIRCLE_H
 
 #include "primitive.h"
 #include <cmath>
@@ -47,4 +48,7 @@ public:
     ~Circle();
 
     int r;
+
 };
+
+#endif

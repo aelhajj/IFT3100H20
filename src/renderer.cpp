@@ -32,8 +32,14 @@ void Renderer::setup() {
 
     viewHist = false;
 
-    Circle *circle = new Circle(300., 300., 200., 200., 40., test2, test);
-    objects.push_back(circle);
+     //Poin *point = new Poin(500., 500., 200., 200., 40., test2, test);
+    // Rectangle *rect = new Rectangle(700., 300., 200., 200., 40., test2, test);
+    // Line *ligne = new Line(500., 500., 200., 200., 40., test2, test);
+    // Triangle *triang = new Triangle(800., 800., 200., 200., 40., test2, test);
+    // objects.push_back(circle);
+   // objects.push_back(rect);
+   // objects.push_back(ligne);
+   // objects.push_back(triang);
 
     // redimensionner la fenêtre selon la résolution de l'image
     ofSetWindowShape(screen_width, screen_height);
@@ -68,7 +74,6 @@ void Renderer::draw() {
                     croping_zone[2],
                     croping_zone[3]);
         }
-
     }
 
     if (viewHist) {
@@ -118,4 +123,79 @@ void Renderer::draw_histogram() {
     hist.setup(images.at(0)->image);
     hist.update();
     hist.draw();
+}
+
+void Renderer::add_primitive(SceneObjectType type) {
+    SceneObject *newShape;
+    switch (type) {
+        case SceneObjectType::circle:
+            newShape = new Circle();
+
+            break;
+
+        case SceneObjectType::point:
+            newShape = new Poin();
+            break;
+        
+        case SceneObjectType::line:
+            newShape = new Line();
+            break;
+
+        case SceneObjectType::rectangle:
+            newShape = new Rectangle();
+            break;
+        
+        case SceneObjectType::triangle:
+            newShape = new Triangle();
+            break;
+
+        default:
+            break;
+    }
+
+    int x1 = mouse_press_x <= mouse_current_x ? mouse_press_x : mouse_current_x;
+    int x2 = mouse_press_x >= mouse_current_x ? mouse_press_x : mouse_current_x;
+    int y1 = mouse_press_y <= mouse_current_y ? mouse_press_y : mouse_current_y;
+    int y2 = mouse_press_y >= mouse_current_y ? mouse_press_y : mouse_current_y;
+
+    newShape->width = x2 - x1;
+    newShape->height = y2 - y1;
+
+    newShape->position_x = x1 + newShape->width / 2;
+    newShape->position_y = y1 + newShape->height / 2;
+
+    newShape->thickness = stroke_size;
+    newShape->borderColor = stroke_color;
+    newShape->fillColor = fill_color;
+
+    newShape->update();
+
+    objects.push_back(newShape);
+
+}
+
+void Renderer::update() {
+    ofSetBackgroundColor(background_color);
+    if (sceneObjectSelected != nullptr) {
+        if (sceneObjectSelected->type == SceneObjectType::image)
+            imageSelected = (ImageStruct *) sceneObjectSelected;
+            //else if (sceneObjectSelected->type == SceneObjectType::circle)
+        else {
+            sceneObjectSelected->borderColor = stroke_color;
+            sceneObjectSelected->fillColor = fill_color;
+            sceneObjectSelected->thickness = stroke_size;
+            //cout << (int)sceneObjectSelected->thickness << endl;
+        }
+    }
+
+}
+
+void Renderer::reset() {
+    // int buffer_count = objects.size;
+    // for(auto &obj : objects)
+    // {
+    //     if (obj ->type != SceneObjectType::image)
+
+    // }
+
 }

@@ -7,6 +7,10 @@
 #include <vector>
 #include "image.h"
 #include "primitives/circle.h"
+#include "primitives/line.h"
+#include "primitives/point.h"
+#include "primitives/rectangle.h"
+#include "primitives/triangle.h"
 
 
 class Renderer {
@@ -36,6 +40,8 @@ public:
     bool viewHist;
 
     std::vector<int> croping_zone;
+
+    std::vector<int> draw_space;
 
     void setup();
 

@@ -166,3 +166,48 @@ void Application::mouseExited(int x, int y) {
 void Application::exit() {
     ofLog() << "<app::exit>";
 }
+
+void Application::update() {
+    renderer.background_color = background_color_picker->getColor();
+
+    renderer.stroke_color = stroke_color_picker->getColor();
+    renderer.fill_color = fill_color_picker->getColor();
+    renderer.stroke_size = (int) stroke_slider->getValue();
+
+    renderer.update();
+}
+
+
+void Application::keyReleased(int key)
+{
+  switch (key)
+  {
+    case 49:  // key 1
+      renderer.draw_mode = SceneObjectType::point;
+      ofLog() << "<mode: point>";
+      break;
+
+    case 50:  // key 2
+      renderer.draw_mode = SceneObjectType::circle;
+      ofLog() << "<mode: cercle>";
+      break;
+
+    case 51:  // key 3
+      renderer.draw_mode = SceneObjectType::line;
+      ofLog() << "<mode: line>";
+      break;
+
+    case 52:  // key 4
+      renderer.draw_mode = SceneObjectType::rectangle;
+      ofLog() << "<mode: rectangle>";
+      break;
+
+    case 53:  // key 5
+      renderer.draw_mode = SceneObjectType::triangle;
+      ofLog() << "<mode: triangle>";
+      break;
+
+    default:
+      break;
+  }
+}

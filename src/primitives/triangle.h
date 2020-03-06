@@ -1,19 +1,17 @@
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
 
-#ifndef PRIMITIVE_H
-#define PRIMITIVE_H
+#include "primitive.h"
+#include <cmath>
 
-#include "ofMain.h"
-#include <tuple>
-#include "sceneObject.h"
-
-class Primitive : public SceneObject {
+class Triangle : public Primitive {
 public:
-    Primitive(int _posX, int _posY, int _width, int _height, int _thickness, ofColor &fill_Color,
-              ofColor &border_Color);
+    Triangle(int _posX, int _posY, int _posX2, int _posY2, int _thickness,
+           ofColor &fill_Color, ofColor &border_Color);
 
-    static int prim_size;
+    Triangle();
 
-    virtual void draw() {}
+    void draw();
 
     ofColor getFillColor();
 
@@ -37,16 +35,24 @@ public:
 
     int getThickness();
 
-    void setThickness(int _thickness);
-
-    bool isSelected(int _posX, int _posY);
+    void setThickness(float _thickness);
 
     void setShape(int _posX, int _posY, int _setX, int _setY);
 
+    void update();
 
     Primitive *copy();
 
-    ~Primitive();
+    ~Triangle();
+
+    int x1;
+    int y1;
+
+    int x2;
+    int y2;
+
+    int x3;
+    int y3;
 
 };
 
