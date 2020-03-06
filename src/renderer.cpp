@@ -161,10 +161,23 @@ void Renderer::add_primitive(SceneObjectType type) {
             break;
     }
 
-    int x1 = mouse_press_x <= mouse_current_x ? mouse_press_x : mouse_current_x;
-    int x2 = mouse_press_x >= mouse_current_x ? mouse_press_x : mouse_current_x;
-    int y1 = mouse_press_y <= mouse_current_y ? mouse_press_y : mouse_current_y;
-    int y2 = mouse_press_y >= mouse_current_y ? mouse_press_y : mouse_current_y;
+    int x1,x2,y1,y2;
+
+    if (type != SceneObjectType::line || type != SceneObjectType::triangle)
+    {
+        x1 = mouse_press_x <= mouse_current_x ? mouse_press_x : mouse_current_x;
+        x2 = mouse_press_x >= mouse_current_x ? mouse_press_x : mouse_current_x;
+        y1 = mouse_press_y <= mouse_current_y ? mouse_press_y : mouse_current_y;
+        y2 = mouse_press_y >= mouse_current_y ? mouse_press_y : mouse_current_y;
+    }
+    else
+    {
+        x1 = mouse_press_x;
+        y1 = mouse_press_y;
+        x2 = mouse_current_x;
+        y2 = mouse_current_y;
+    }
+    
 
     newShape->width = x2 - x1;
     newShape->height = y2 - y1;

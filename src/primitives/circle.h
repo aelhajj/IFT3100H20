@@ -41,8 +41,6 @@ public:
 
     void setRadius(int _r);
 
-    void setShape(int _posX, int _posY, int _setX, int _setY);
-
     void update();
 
     Primitive *copy();

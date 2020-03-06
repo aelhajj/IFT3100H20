@@ -19,13 +19,20 @@ void Rectangle::draw() {
     ofFill();
     ofSetColor(fillColor);
     ofSetLineWidth(0);
-    ofDrawRectangle(position_x, position_y, width, height);
+    ofDrawRectangle(position_x - (width/2), position_y - (height/2), width, height);
 
     ofNoFill();
     ofSetColor(borderColor);
     ofSetLineWidth(thickness * 10);
-    ofDrawRectangle(position_x, position_y, width, height);
+    ofDrawRectangle(position_x - (width/2), position_y - (height/2), width, height);
     ofSetColor(255, 255, 255);
+}
+
+void Rectangle::translate(int x, int y) {
+    position_x += x;
+    position_y += y;
+    //width += x;
+   // height += y;
 }
 
 

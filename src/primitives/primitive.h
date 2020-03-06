@@ -17,6 +17,8 @@ public:
 
     virtual void draw() {}
 
+    virtual void translate(int x, int y) {}
+
     ofColor getFillColor();
 
     void setFillColor(ofColor _fillColor);
@@ -40,9 +42,6 @@ public:
     int getThickness();
 
     void setThickness(int _thickness);
-
-    void setShape(int _posX, int _posY, int _setX, int _setY);
-
 
     Primitive *copy();
 

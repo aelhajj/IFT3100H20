@@ -21,9 +21,14 @@ void Poin::draw() {
     ofSetLineWidth(0);
     ofSetCircleResolution(100);
     ofDrawCircle(position_x, position_y, r);
+    ofSetColor(255, 255, 255);
 
 }
 
+void Poin::translate(int x, int y) {
+    position_x += x;
+    position_y += y;
+}
 
 void Poin::update() {
     r = 10;

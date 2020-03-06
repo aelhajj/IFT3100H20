@@ -36,7 +36,7 @@ public:
 
     virtual void draw() = 0;
 
-    void translate(int _x, int _y);
+    virtual void translate(int _x, int _y);
 
     void rotate();
 

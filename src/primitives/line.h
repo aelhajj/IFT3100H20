@@ -38,9 +38,9 @@ public:
 
     void setThickness(float _thickness);
 
-    void setShape(int _posX, int _posY, int _setX, int _setY);
-
     void update();
+
+    void translate(int x, int y);
 
     Primitive *copy();
 

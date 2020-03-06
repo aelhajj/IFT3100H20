@@ -41,6 +41,8 @@ public:
 
     void update();
 
+    void translate(int x, int y);
+
     Primitive *copy();
 
     ~Rectangle();

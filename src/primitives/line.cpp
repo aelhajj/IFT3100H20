@@ -14,17 +14,26 @@ Line::Line() : Primitive() {
 }
 
 void Line::draw() {
-
+    info();
     ofFill();
     ofSetColor(fillColor);
     ofSetLineWidth(0);
-    ofDrawLine(position_x, position_y, width, height);
-
+    int x2 = position_x + (width / 2);
+    int y2 = position_y + (height / 2);
+    ofDrawLine(position_x - (width / 2), position_y - (height / 2), x2, y2);
+    ofSetColor(255, 255, 255);
 }
 
 
 void Line::update() {
 
+}
+
+void Line::translate(int x, int y) {
+    position_x = x;
+    position_y = y;
+    height += y;
+    width += x;
 }
 
 
