@@ -23,59 +23,57 @@ public:
         renderer = r;
     }
 
-    void onMouseMoved(int x, int y)
-   {
-     renderer->mouse_current_x = x;
-     renderer->mouse_current_y = y;
-   }
-   void onMouseDragged(int x, int y)
-   {
-     renderer->mouse_current_x = x;
-     renderer->mouse_current_y = y;
-   }
-   void onMousePressed(int x, int y)
-   {
+    void onMouseMoved(int x, int y) {
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+    }
 
-     renderer->is_mouse_button_pressed = true;
-     renderer->croping_zone.clear();
+    void onMouseDragged(int x, int y) {
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+    }
 
-     renderer->mouse_current_x = x;
-     renderer->mouse_current_y = y;
+    void onMousePressed(int x, int y) {
 
-     renderer->mouse_press_x = x;
-     renderer->mouse_press_y = y;
-   }
-   void onMouseReleased(int x, int y)
-   {
-     renderer->is_mouse_button_pressed = false;
-     if(y > 100)
-     {
-       renderer->croping_zone.push_back(renderer->mouse_press_x);
-       renderer->croping_zone.push_back(renderer->mouse_press_y);
-       renderer->croping_zone.push_back(renderer->mouse_current_x);
-       renderer->croping_zone.push_back(renderer->mouse_current_y);
-       renderer->is_ready_croping = true;
-     }
+        renderer->is_mouse_button_pressed = true;
+        renderer->croping_zone.clear();
 
-     renderer->mouse_current_x = x;
-     renderer->mouse_current_y = y;
-   }
-   void drawCursor()
-   {
-     float x = renderer->mouse_current_x;
-     float y = renderer->mouse_current_y;
-     float length = 10.0f;
-     float offset = 5.0f;
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
 
-     ofSetLineWidth(2);
-     ofDrawLine(x + offset, y, x + offset + length, y);
-     ofDrawLine(x - offset, y, x - offset - length, y);
-     ofDrawLine(x, y + offset, x, y + offset + length);
-     ofDrawLine(x, y - offset, x, y - offset - length);
-   }
+        renderer->mouse_press_x = x;
+        renderer->mouse_press_y = y;
+    }
 
- private:
-   Renderer* renderer;
+    void onMouseReleased(int x, int y) {
+        renderer->is_mouse_button_pressed = false;
+        if (y > 100) {
+            renderer->croping_zone.push_back(renderer->mouse_press_x);
+            renderer->croping_zone.push_back(renderer->mouse_press_y);
+            renderer->croping_zone.push_back(renderer->mouse_current_x);
+            renderer->croping_zone.push_back(renderer->mouse_current_y);
+            renderer->is_ready_croping = true;
+        }
+
+        renderer->mouse_current_x = x;
+        renderer->mouse_current_y = y;
+    }
+
+    void drawCursor() {
+        float x = renderer->mouse_current_x;
+        float y = renderer->mouse_current_y;
+        float length = 10.0f;
+        float offset = 5.0f;
+
+        ofSetLineWidth(2);
+        ofDrawLine(x + offset, y, x + offset + length, y);
+        ofDrawLine(x - offset, y, x - offset - length, y);
+        ofDrawLine(x, y + offset, x, y + offset + length);
+        ofDrawLine(x, y - offset, x, y - offset - length);
+    }
+
+private:
+    Renderer *renderer;
 
 };
 

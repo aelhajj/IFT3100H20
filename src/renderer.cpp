@@ -51,7 +51,7 @@ void Renderer::draw() {
         obj->draw();
         ofPopMatrix();
     }
-   
+
     if (is_mouse_button_pressed) {
         // dessiner la zone de sélection
         draw_zone(
@@ -114,30 +114,27 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
 
 void Renderer::draw_histogram() {
     Histogram hist;
-   
-    if(imageSelected != nullptr)
+
+    if (imageSelected != nullptr)
         hist.setup(imageSelected->image);
     else
-         hist.setup(images.at(0)->image);
+        hist.setup(images.at(0)->image);
     hist.update();
     hist.draw();
 }
 
-void Renderer::update()
-{
+void Renderer::update() {
     ofSetBackgroundColor(background_color);
-    if(sceneObjectSelected!= nullptr) 
-    {   
-        if(sceneObjectSelected->type == SceneObjectType::image)
-            imageSelected = (ImageStruct*)sceneObjectSelected;
-        //else if (sceneObjectSelected->type == SceneObjectType::circle)
-        else
-        {
+    if (sceneObjectSelected != nullptr) {
+        if (sceneObjectSelected->type == SceneObjectType::image)
+            imageSelected = (ImageStruct *) sceneObjectSelected;
+            //else if (sceneObjectSelected->type == SceneObjectType::circle)
+        else {
             sceneObjectSelected->borderColor = stroke_color;
             sceneObjectSelected->fillColor = fill_color;
             sceneObjectSelected->thickness = stroke_size;
-           //cout << (int)sceneObjectSelected->thickness << endl;
+            //cout << (int)sceneObjectSelected->thickness << endl;
         }
     }
-    
+
 }

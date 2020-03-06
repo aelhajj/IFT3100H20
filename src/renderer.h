@@ -39,7 +39,7 @@ public:
     ofColor stroke_color;
     ofColor fill_color;
     int stroke_size;
-    
+
     int radius;
 
     bool viewHist;

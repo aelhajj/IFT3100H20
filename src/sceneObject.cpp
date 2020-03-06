@@ -48,7 +48,7 @@ void SceneObject::zoomIn() {
 }
 
 void SceneObject::zoomOut() {
-    if (scale > 0.25) 
+    if (scale > 0.25)
         scale -= 0.25;
 }
 

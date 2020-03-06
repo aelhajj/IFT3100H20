@@ -9,8 +9,7 @@ class ImageStruct : public SceneObject {
 public:
     ofImage image;
 
-    ImageStruct()
-    {
+    ImageStruct() {
         type = SceneObjectType::image;
     }
 

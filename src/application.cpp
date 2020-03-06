@@ -26,9 +26,9 @@ void Application::setup() {
 
     ofxDatGuiFolder *primitive_folder = gui->addFolder("Primitive", ofColor::red);
 
-    background_color_picker = primitive_folder->addColorPicker("Canevas", ofColor(255,0,0,5));
-    fill_color_picker = primitive_folder->addColorPicker("Remplissage", ofColor(255,0,0,5));
-    stroke_color_picker = primitive_folder->addColorPicker("Stroke", ofColor(255,0,0,5));
+    background_color_picker = primitive_folder->addColorPicker("Canevas", ofColor(255, 0, 0, 5));
+    fill_color_picker = primitive_folder->addColorPicker("Remplissage", ofColor(255, 0, 0, 5));
+    stroke_color_picker = primitive_folder->addColorPicker("Stroke", ofColor(255, 0, 0, 5));
     stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
 
     primitive_folder->expand();
@@ -179,10 +179,10 @@ void Application::exit() {
 
 void Application::update() {
     renderer.background_color = background_color_picker->getColor();
-     
+
     renderer.stroke_color = stroke_color_picker->getColor();
     renderer.fill_color = fill_color_picker->getColor();
-    renderer.stroke_size = (int)stroke_slider->getValue();
+    renderer.stroke_size = (int) stroke_slider->getValue();
 
     renderer.update();
 }

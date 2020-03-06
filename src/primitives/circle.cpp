@@ -11,6 +11,7 @@ Circle::Circle(int _posX, int _posY, int _width, int _height, int _thickness,
 }
 
 void Circle::draw() {
+
     ofFill();
     ofSetColor(fillColor);
     ofSetLineWidth(0);
