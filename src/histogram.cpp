@@ -1,6 +1,7 @@
 #include "histogram.h"
 
 void Histogram::setup(ofImage image) {
+    image.resize(250, 200);
     this->image = image;
     this->height = image.getHeight();
     this->width = image.getWidth();
@@ -48,7 +49,7 @@ void Histogram::drawHistogram(vector<float> &h) {
     for (int i = 0; i < h.size(); i++) {
         float x = ofMap(i, 0, h.size(), 0, this->width);
         float y = ofMap(h[i], 0, 0.3, this->height, 0);
-        ofVertex(x / 3, y / 3);
+        ofVertex(x, y);
     }
     ofEndShape();
 }

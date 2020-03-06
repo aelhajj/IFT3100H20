@@ -38,8 +38,6 @@ public:
 
     void setRadius(int _r);
 
-    bool isSelected(int _posX, int _posY);
-
     void setShape(int _posX, int _posY, int _setX, int _setY);
 
     Primitive *copy();
@@ -47,4 +45,5 @@ public:
     ~Circle();
 
     int r;
+
 };

@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include <vector>
 
-
+enum class SceneObjectType {none, pixel, point, line, rectangle, circle, image};
 class SceneObject {
 public:
 
@@ -11,10 +11,11 @@ public:
 
     void addChild(SceneObject &child);
 
-
     tuple<int, int> getPosition();
 
     void setPosition(int _posX, int _posY);
+
+    //void SceneObject::setType(SceneObjectType _type);
 
     int getWidth();
 
@@ -27,10 +28,6 @@ public:
     int getThickness();
 
     void setThickness(int _thickness);
-
-    bool getSelected(int _posX, int _posY);
-
-    void setSelected(bool _select);
 
     void setScale(float _scale);
 
@@ -55,7 +52,13 @@ public:
     float rotation = 0;
     float scale = 1;
     bool isSelected;
+    SceneObjectType type = SceneObjectType::none;
+    int thickness;
 
-private:
-    std::vector<SceneObject *> children;
+    ofColor fillColor;
+    ofColor borderColor;
+
+//private:
+    //std::vector<SceneObject *> children;
+
 };

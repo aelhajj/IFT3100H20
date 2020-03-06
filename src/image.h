@@ -9,6 +9,11 @@ class ImageStruct : public SceneObject {
 public:
     ofImage image;
 
+    ImageStruct()
+    {
+        type = SceneObjectType::image;
+    }
+
 
     void draw() {
         //ofTranslate(width / 2, height / 2, 0);
@@ -21,5 +26,6 @@ public:
                    height);
 
     }
+
 
 };

@@ -7,6 +7,7 @@ Circle::Circle(int _posX, int _posY, int _width, int _height, int _thickness,
         Primitive(_posX, _posY, _width, _height, _thickness, _fill_Color, _border_Color) {
     r = width / 2;
     prim_size++;
+    type = SceneObjectType::circle;
 }
 
 void Circle::draw() {
@@ -21,7 +22,6 @@ void Circle::draw() {
     ofSetLineWidth(thickness);
     ofSetCircleResolution(100);
     ofDrawCircle(position_x, position_y, r);
-
     ofSetColor(255, 255, 255);
 }
 

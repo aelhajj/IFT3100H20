@@ -15,11 +15,26 @@ public:
     ofxDatGuiButton *boutonRogner;
     ofxDatGuiButton *boutonHistogram;
     ofxDatGuiDropdown *menuCursor;
+
+    //ofParameter<ofColor> param_color_background;
+    //ofParameter<ofColor> param_color_stroke;
+    //ofParameter<ofColor> param_color_fill;
+
+    //ofParameter<int> param_stroke_weight; 
+
+    ofxDatGuiColorPicker *background_color_picker;
+    ofxDatGuiColorPicker *fill_color_picker;
+    ofxDatGuiColorPicker *stroke_color_picker;
+    ofxDatGuiSlider *stroke_slider;
+
+
     Cursor *cursor;
 
     void setup();
 
     void draw();
+
+    void update();
 
     void windowResized(int w, int h);
 

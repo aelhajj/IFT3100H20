@@ -37,20 +37,11 @@ public:
 
     void setThickness(int _thickness);
 
-    bool isSelected(int _posX, int _posY);
-
     void setShape(int _posX, int _posY, int _setX, int _setY);
 
 
     Primitive *copy();
 
     ~Primitive();
-
-
-    //protected:
-    int thickness;
-
-    ofColor fillColor;
-    ofColor borderColor;
 
 };

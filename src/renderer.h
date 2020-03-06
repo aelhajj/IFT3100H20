@@ -17,6 +17,8 @@ public:
 
     //std::vector <Primitive*> shapes;
     std::vector<SceneObject *> objects;
+    SceneObject *sceneObjectSelected = nullptr;
+    ImageStruct *imageSelected = nullptr;
 
     int screen_height = 900;
     int screen_width = 900;
@@ -32,6 +34,11 @@ public:
 
     bool is_mouse_button_pressed;
     bool is_ready_croping = false;
+
+    ofColor background_color;
+    ofColor stroke_color;
+    ofColor fill_color;
+    int stroke_size;
     
     int radius;
 
@@ -44,6 +51,8 @@ public:
     void draw();
 
     void reset();
+
+    void update();
 
     void draw_zone(float x1, float y1, float x2, float y2) const;
 

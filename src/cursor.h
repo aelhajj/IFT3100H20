@@ -115,6 +115,7 @@ public:
                 y <= (obj->height + obj->position_y)) {
                 //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
                 sceneObjectSelected = obj;
+                renderer->sceneObjectSelected = sceneObjectSelected;
                 isSceneObjectSelected = true;
 
             }
