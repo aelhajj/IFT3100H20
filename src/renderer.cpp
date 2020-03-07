@@ -9,21 +9,21 @@ void Renderer::setup() {
     cam.setDistance(1000);
     ofSetBackgroundColor(31);
 
+    isMode2D = false;
+
     // Interface de image
-
     ImageStruct *image = new ImageStruct();
+  //  image->image.load("agaragar.jpg");
 
-    image->image.load("agaragar.jpg");
+  //  image->position_x = 100;
+  //  image->position_y = 0;
+  //  image->width = image->image.getWidth();
+  //  image->height = image->image.getHeight();
 
-    image->position_x = 100;
-    image->position_y = 0;
-    image->width = image->image.getWidth();
-    image->height = image->image.getHeight();
-
-    images.push_back(image);
-    objects.push_back(image);
-    ofColor test(44, 44, 44);
-    ofColor test2(54, 66, 66);
+  //  images.push_back(image);
+  //  objects.push_back(image);
+  //  ofColor test(44, 44, 44);
+  //  ofColor test2(54, 66, 66);
 
 
     offset_vertical = 32;
@@ -31,72 +31,118 @@ void Renderer::setup() {
 
     viewHist = false;
 
-     //Poin *point = new Poin(500., 500., 200., 200., 40., test2, test);
-    // Rectangle *rect = new Rectangle(700., 300., 200., 200., 40., test2, test);
-    // Line *ligne = new Line(500., 500., 200., 200., 40., test2, test);
-    // Triangle *triang = new Triangle(800., 800., 200., 200., 40., test2, test);
-    // objects.push_back(circle);
-   // objects.push_back(rect);
-   // objects.push_back(ligne);
-   // objects.push_back(triang);
-    // Circle *circle = new Circle(300., 300., 200., 200., 40., test2, test);
-    // objects.push_back(circle);
-
-   // Star *star = new Star(300,300,300,300, 2, test, test2);
-   // star->position_x = 300;
-   // star->position_y= 300;
-   // star -> height = 300;
-   // star ->width = 300;
-   // objects.push_back(star);
-
     // redimensionner la fenêtre selon la résolution de l'image
     ofSetWindowShape(screen_width, screen_height);
 
     // mode dessin par defaut
     draw_mode = SceneObjectType::circle;
 
+    if(!isMode2D) {
+        ofSetBackgroundColor(31);
+    // Mode 3D : 
+       // ofEnableDepthTest();
+
+       // locator_count = 100;
+
+        speed = 100.0f;
+
+
+        is_flip_axis_y = false;
+        //is_active_translation = true;
+        //is_active_rotation = false;
+        //is_active_proportion = false;
+
+        // initialisation des variables
+        offset_x = 0.0f;
+        offset_z = 0.0f;
+
+        delta_x = speed;
+        delta_z = speed;
+
+       // locator_buffer_head = 0;
+
+        // allocation d'un espace mémoire suffisamment grand pour contenir les données de l'ensemble des localisateurs
+       // locators = (Locator*) std::malloc(locator_count * sizeof(Locator));
+
+        reset();
+    }
+
 }
 
 void Renderer::draw() {
-
-    //cam.begin();
-    // afficher l'image sur toute la surface de la fenêtre d'affichage
-    for (SceneObject *obj : objects) {
-        ofPushMatrix();
-        //  ofTranslate(image.width / 2, image.heigth / 2, 0);
-        //  image.image.setAnchorPercent(0.5f, 0.5f);
-        obj->draw();
-        ofPopMatrix();
-    }
-
-    if (is_mouse_button_pressed) {
-        // dessiner la zone de sélection
-        draw_zone(
-                mouse_press_x,
-                mouse_press_y,
-                mouse_current_x,
-                mouse_current_y);
-    } else {
-        if (!croping_zone.empty()) {
-            draw_zone(
-                    croping_zone[0],
-                    croping_zone[1],
-                    croping_zone[2],
-                    croping_zone[3]);
+    if(isMode2D) {
+        //cam.begin();
+        // afficher l'image sur toute la surface de la fenêtre d'affichage
+        for (SceneObject *obj : objects) {
+            ofPushMatrix();
+            //  ofTranslate(image.width / 2, image.heigth / 2, 0);
+            //  image.image.setAnchorPercent(0.5f, 0.5f);
+            obj->draw();
+            ofPopMatrix();
         }
+
+        if (is_mouse_button_pressed) {
+            // dessiner la zone de sélection
+            draw_zone(
+                    mouse_press_x,
+                    mouse_press_y,
+                    mouse_current_x,
+                    mouse_current_y);
+        } else {
+            if (!croping_zone.empty()) {
+                draw_zone(
+                        croping_zone[0],
+                        croping_zone[1],
+                        croping_zone[2],
+                        croping_zone[3]);
+            }
+        }
+
+        if (viewHist) {
+            ofPushMatrix();
+            ofTranslate(0, 200);
+            draw_histogram();
+            ofPopMatrix();
+        }
+
+        //cam.end();
+        // dessiner le curseur
+        //draw_cursor(mouse_current_x, mouse_current_y);
+
+    } else {
+    // copier la matrice de transformation courante sur le dessus de la pile
+    ofPushMatrix();
+
+    // inverser l'axe Y pour qu'il pointe vers le haut
+    ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
+
+    // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+    ofTranslate(center_x + offset_x, is_flip_axis_y ? -center_y : center_y, offset_z);
+
+    // dessiner l'origine de la scène
+    draw_locator(10.0f);
+
+    // revenir à la matrice de transformation précédente dans la pile
+    ofPopMatrix();
     }
+}
 
-    if (viewHist) {
-        ofPushMatrix();
-        ofTranslate(0, 200);
-        draw_histogram();
-        ofPopMatrix();
-    }
 
-    //cam.end();
-    // dessiner le curseur
-    //draw_cursor(mouse_current_x, mouse_current_y);
+void Renderer::draw_locator(float scale)
+{
+  ofSetLineWidth(4);
+  ofSetColor(127);
+  ofFill();
+  ofPushMatrix();
+  ofScale(scale, scale);
+  node.setPosition(0.0f, 0.0f, 0.0f);
+  node.draw();
+  ofPopMatrix();
+}
 
+Renderer::~Renderer()
+{
+  //std::free(locators);
 }
 
 void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
@@ -113,20 +159,6 @@ void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
     ofDrawEllipse(x2_clamp, y1, radius, radius);
     ofDrawEllipse(x2_clamp, y2_clamp, radius, radius);
 }
-
-// fonction qui dessine un curseur
-// void Renderer::draw_cursor(float x, float y) const
-// {
-//   float length = 10.0f;
-//   float offset = 5.0f;
-//
-//   ofSetLineWidth(2);
-//   ofDrawLine(x + offset, y, x + offset + length, y);
-//   ofDrawLine(x - offset, y, x - offset - length, y);
-//   ofDrawLine(x, y + offset, x, y + offset + length);
-//   ofDrawLine(x, y - offset, x, y - offset - length);
-// }
-
 
 void Renderer::draw_histogram() {
     Histogram hist;
@@ -210,27 +242,38 @@ void Renderer::add_primitive(SceneObjectType type) {
 }
 
 void Renderer::update() {
-    ofSetBackgroundColor(background_color);
-    if (sceneObjectSelected != nullptr) {
-        if (sceneObjectSelected->type == SceneObjectType::image)
-            imageSelected = (ImageStruct *) sceneObjectSelected;
-            //else if (sceneObjectSelected->type == SceneObjectType::circle)
-        else {
-            sceneObjectSelected->borderColor = stroke_color;
-            sceneObjectSelected->fillColor = fill_color;
-            sceneObjectSelected->thickness = stroke_size;
-            //cout << (int)sceneObjectSelected->thickness << endl;
+    if(isMode2D) {
+        ofPushMatrix();
+        ofSetBackgroundColor(background_color);
+        if (sceneObjectSelected != nullptr) {
+            if (sceneObjectSelected->type == SceneObjectType::image)
+                imageSelected = (ImageStruct *) sceneObjectSelected;
+                //else if (sceneObjectSelected->type == SceneObjectType::circle)
+            else {
+                sceneObjectSelected->borderColor = stroke_color;
+                sceneObjectSelected->fillColor = fill_color;
+                sceneObjectSelected->thickness = stroke_size;
+                //cout << (int)sceneObjectSelected->thickness << endl;
+            }
         }
+        ofPopMatrix();
+    } else {
+        // Mode 3D : 
+        center_x = ofGetWidth() / 2.0f;
+        center_y = ofGetHeight() / 2.0f;
     }
+
 
 }
 
 void Renderer::reset() {
-    // int buffer_count = objects.size;
-    // for(auto &obj : objects)
-    // {
-    //     if (obj ->type != SceneObjectType::image)
+    if(isMode2D) {
+        // todo
+        ofLog() << "<Mode 2D : reset>";
+    } else {
+        offset_x = 0.0f;
+        offset_z = 0.0f;
 
-    // }
-
+     ofLog() << "<Mode 3D : reset>";
+    }
 }

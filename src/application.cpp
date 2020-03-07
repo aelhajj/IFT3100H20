@@ -1,16 +1,16 @@
-// IFT3100H20_ImageImport/application.cpp
-// Classe principale de l'application.
-
 #include "application.h"
 
 
 void Application::setup() {
     ofxDatGuiLog::quiet();
+    
     ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
 
     vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
 
     menuCursor = gui->addDropdown("select cursor", options);
+
+    boutonModeSwitcher = gui->addButton("Mode actuel : 2D");
 
     ofxDatGuiFolder *image_folder = gui->addFolder("Image", ofColor::white);
     boutonImporter = image_folder->addButton("Importer Image");
@@ -33,13 +33,19 @@ void Application::setup() {
 
     primitive_folder->expand();
 
-    ofSetWindowTitle("importation d'une image");
+    ofSetWindowTitle("Equipe ###### : Partie 1");
 
+    is_key_press_up = false;
+    is_key_press_down = false;
+    is_key_press_left = false;
+    is_key_press_right = false;
 
     ofLog() << "<app::setup>";
 
     renderer.setup();
     cursor = new NormalCursor(&renderer);
+
+    
 }
 
 void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
@@ -61,6 +67,16 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
 
 
 void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
+
+    if(event.target == boutonModeSwitcher) {
+        nbClick++;
+        if(nbClick % 2)
+            boutonModeSwitcher->setLabel("Mode actuel : 2D");
+        else 
+            boutonModeSwitcher->setLabel("Mode actuel : 3D");
+        renderer.isMode2D = (!renderer.isMode2D);
+    }
+
     if (event.target == boutonImporter) {
         ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an img");
 
@@ -176,16 +192,30 @@ void Application::mouseExited(int x, int y) {
 
 }
 
-void Application::exit() {
-    ofLog() << "<app::exit>";
-}
-
 void Application::update() {
-    renderer.background_color = background_color_picker->getColor();
+    if(!renderer.isMode2D) {
+        time_current = ofGetElapsedTimef();
+        time_elapsed = time_current - time_last;
+        time_last = time_current;
 
-    renderer.stroke_color = stroke_color_picker->getColor();
-    renderer.fill_color = fill_color_picker->getColor();
-    renderer.stroke_size = (int) stroke_slider->getValue();
+        // déplacement sur le plan XZ en fonction de l'état des flèches du clavier
+        if (is_key_press_up)
+            renderer.offset_z += renderer.delta_z * time_elapsed;
+        if (is_key_press_down)
+            renderer.offset_z -= renderer.delta_z * time_elapsed;
+        if (is_key_press_left)
+            renderer.offset_x += renderer.delta_x * time_elapsed;
+        if (is_key_press_right)
+            renderer.offset_x -= renderer.delta_x * time_elapsed;
+    } else {
+            
+        // Mode 2D: 
+        renderer.background_color = background_color_picker->getColor();
+
+        renderer.stroke_color = stroke_color_picker->getColor();
+        renderer.fill_color = fill_color_picker->getColor();
+        renderer.stroke_size = (int) stroke_slider->getValue();
+    }
 
     renderer.update();
 }
@@ -195,6 +225,8 @@ void Application::keyReleased(int key)
 {
   switch (key)
   {
+    // MODE 2D : 
+
     case 49:  // key 1
       renderer.draw_mode = SceneObjectType::point;
       ofLog() << "<mode: point>";
@@ -223,8 +255,81 @@ void Application::keyReleased(int key)
     case 54:
       renderer.draw_mode = SceneObjectType::quatrefoil;
       ofLog() << "<mode: primitive composee : quatrefoil>";
+    
+    // Mode 3D
+    
+    case OF_KEY_LEFT: // key ←
+      is_key_press_left = false;
+      break;
+
+    case OF_KEY_UP: // key ↑
+      is_key_press_up = false;
+      break;
+
+    case OF_KEY_RIGHT: // key →
+      is_key_press_right = false;
+      break;
+
+    case OF_KEY_DOWN: // key ↓
+      is_key_press_down = false;
+      break;
+
+    case 101: // key e
+     // renderer.is_active_rotation = !renderer.is_active_rotation;
+     // ofLog() << "<rotation is active: " << renderer.is_active_rotation << ">";
+      break;
+
+    case 102: // key f
+     // renderer.is_flip_axis_y = !renderer.is_flip_axis_y;
+     // ofLog() << "<axis Y is flipped: " << renderer.is_flip_axis_y << ">";
+      break;
+
+    case 114: // key r
+     // renderer.is_active_proportion = !renderer.is_active_proportion;
+     // ofLog() << "<proportion is active: " << renderer.is_active_proportion << ">";
+      break;
+
+    case 119: // key w
+     // renderer.is_active_translation = !renderer.is_active_translation;
+     // ofLog() << "<translation is active: " << renderer.is_active_translation << ">";
+      break;
+
+    default:
+      renderer.reset();
+      break;
+
+   // default:
+   //   break;
+  }
+}
+
+void Application::keyPressed(int key) 
+{
+ switch (key)
+  {
+    case OF_KEY_LEFT: // key ←
+      is_key_press_left = true;
+      break;
+
+    case OF_KEY_UP: // key ↑
+      is_key_press_up = true;
+      break;
+
+    case OF_KEY_RIGHT: // key →
+      is_key_press_right = true;
+      break;
+
+    case OF_KEY_DOWN: // key ↓
+      is_key_press_down = true;
+      break;
 
     default:
       break;
   }
+}
+
+
+void Application::exit() 
+{
+    ofLog() << "<app::exit>";
 }

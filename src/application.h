@@ -11,9 +11,25 @@ class Application : public ofBaseApp {
 public:
 
     Renderer renderer;
+
+    // Mode 3D
+    float time_current;
+    float time_last;
+    float time_elapsed;
+
+    bool is_key_press_up;
+    bool is_key_press_down;
+    bool is_key_press_left;
+    bool is_key_press_right;
+
+    int nbClick = 0;
+    
+    ofxDatGuiButton *boutonModeSwitcher;
+
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;
     ofxDatGuiButton *boutonHistogram;
+
     ofxDatGuiDropdown *menuCursor;
 
     //ofParameter<ofColor> param_color_background;
@@ -33,6 +49,8 @@ public:
     void setup();
 
     void draw();
+
+    void drawGui();
 
     void update();
 
@@ -57,6 +75,7 @@ public:
     void mouseExited(int x, int y);
     
     void keyReleased(int key);
+    void keyPressed(int key);
 
     void openFileSelected(ofFileDialogResult openFileResult);
 
