@@ -19,6 +19,7 @@ void Camera::setup()
   offset_camera = 700;
 
   camera_target = {0.0f, 0.0f, 0.0f};
+  camera = &camera_front;
   camera_front.setPosition(0,0,-offset_camera);
   camera_left.setPosition(-offset_camera,0,0);
 
@@ -41,11 +42,15 @@ void Camera::setup()
 void Camera::update()
 {
   if (is_camera_move_forward)
+  {
     camera_front.dolly(-speed_translation);
     camera_left.dolly(-speed_translation);
+  }
   if (is_camera_move_backward)
+  {
     camera_front.dolly(speed_translation);
     camera_left.dolly(speed_translation);
+  }
 }
 
 void Camera::draw()
@@ -53,25 +58,48 @@ void Camera::draw()
   ofEnableDepthTest();
   light.enable();
   ofEnableLighting();
-  camera_front.begin();
-  model.drawFaces();
-  boundBox.draw();
-  model2.drawFaces();
-  camera_front.end();
-  light.disable();
+  if(!is_split_screen)
+  {
+    camera->begin();
+    model.drawFaces();
+    boundBox.draw();
+    model2.drawFaces();
+    camera->end();
+    light.disable();
+  }
+  else
+  {
+    camera_front.begin(viewport1);
+    model.drawFaces();
+    boundBox.draw();
+    model2.drawFaces();
+    camera_front.end();
+    camera_left.begin(viewport2);
+    model.drawFaces();
+    boundBox.draw();
+    model2.drawFaces();
+    camera_left.end();
+  }
+
   ofDisableLighting();
   ofDisableDepthTest();
-  // camera_left.begin(viewport2);
-  // model.drawFaces();
-  // boundBox.draw();
-  // model2.drawFaces();
-  // camera_left.end();;
 }
 
 void Camera::changeObjectYoulookAt()
 {
-  camera_front.lookAt(model2.getPosition());
-  camera_left.lookAt(model2.getPosition());
+  if(is_looking_model1)
+  {
+    camera_front.lookAt(model2.getPosition());
+    camera_left.lookAt(model2.getPosition());
+    is_looking_model1 = false;
+  }
+  else
+  {
+    camera_front.lookAt(model.getPosition());
+    camera_left.lookAt(model.getPosition());
+    is_looking_model1 = true;
+  }
+
 }
 
 void Camera::enableOrtho()
@@ -83,5 +111,12 @@ void Camera::disableOrtho()
 {
   camera_left.disableOrtho();
   camera_front.disableOrtho();
+}
 
+void Camera::changePerspective()
+{
+  if(camera == &camera_front)
+    camera = &camera_left;
+  else
+    camera = &camera_front;
 }

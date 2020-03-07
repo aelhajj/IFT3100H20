@@ -52,6 +52,8 @@ public:
   bool is_camera_move_backward;
 
   bool is_camera_perspective;
+  bool is_split_screen;
+  bool is_looking_model1 = true;
 
   void setup();
   void draw();
@@ -60,6 +62,7 @@ public:
   void changeObjectYoulookAt();
   void enableOrtho();
   void disableOrtho();
+  void changePerspective();
 
 
 };

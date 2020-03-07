@@ -381,7 +381,11 @@ void Application::keyPressed(int key)
       renderer.camera->is_camera_move_backward = true;
       is_key_press_down = true;
       break;
-
+    case 102: // key f
+      renderer.camera->is_split_screen = (!renderer.camera->is_split_screen);
+      break;
+    case ' ':
+      renderer.camera->changePerspective();
     default:
       break;
   }
