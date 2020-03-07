@@ -3,14 +3,12 @@
 #include "ofMain.h"
 #include <vector>
 
-enum class SceneObjectType {
-    none, point, line, rectangle, triangle, circle, image, square, quatrefoil
+enum class SceneObjectType3D {
+    none, sphere, cube, cone, cylinder
 };
 
-class SceneObject {
+class SceneObject3D {
 public:
-
-    void addChild(SceneObject &child);
 
     tuple<int, int> getPosition();
 
@@ -25,14 +23,6 @@ public:
     int getHeight();
 
     void setHeight(int _height);
-
-    int getThickness();
-
-    void setThickness(int _thickness);
-
-    void setScale(float _scale);
-
-    float getScale();
 
     virtual void draw() = 0;
 
@@ -55,13 +45,9 @@ public:
     float rotation = 0;
     float scale = 1;
     bool isSelected;
-    SceneObjectType type = SceneObjectType::none;
+    SceneObjectType3D type = SceneObjectType3D::none;
     int thickness;
 
     ofColor fillColor;
-    ofColor borderColor;
-
-//private:
-    //std::vector<SceneObject *> children;
 
 };

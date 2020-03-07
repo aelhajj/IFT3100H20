@@ -5,47 +5,27 @@
 #include "sceneObject.h"
 
 
-
-class ImageStruct : public SceneObject
-{
+class ImageStruct : public SceneObject {
 public:
-  ofImage image;
-  int image_origin_x = 0;
-  int image_origin_y = 0;
-  int image_width = 900;
-  int image_heigth = 900;
-  int image_rotation = 0;
-  float scale = 1;
+    ofImage image;
 
+    ImageStruct() {
+        type = SceneObjectType::image;
+    }
 
-  void translate(int x, int y)
-  {
-    image_origin_x += x;
-    image_origin_y += y;
-  }
+    void update() {}
 
-  void zoomIn()
-  {
-    scale += 0.25;
-  }
+    void draw() {
+        //ofTranslate(width / 2, height / 2, 0);
+        //setAnchorPercent(0.5f, 0.5f);
+        ofRotate(rotation);
+        ofScale(scale);
+        image.draw(position_x,
+                   position_y,
+                   width,
+                   height);
 
-  void zoomOut()
-  {
-    if (scale > 0.25)
-      scale -= 0.25;
-  }
+    }
 
-  void rotate()
-  {
-    image_rotation += 5;
-  }
-
-  void draw()
-  {
-    image.draw(image_origin_x,
-               image_origin_y,
-               image_width ,
-               image_heigth);
-  }
 
 };

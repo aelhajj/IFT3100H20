@@ -1,1 +1,4 @@
+ofxHistogram
+ofxOpenCv
 ofxDatGui-master
+ofxAssimpModelLoader
