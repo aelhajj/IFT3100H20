@@ -42,6 +42,13 @@ void Renderer::setup() {
     // Circle *circle = new Circle(300., 300., 200., 200., 40., test2, test);
     // objects.push_back(circle);
 
+   // Star *star = new Star(300,300,300,300, 2, test, test2);
+   // star->position_x = 300;
+   // star->position_y= 300;
+   // star -> height = 300;
+   // star ->width = 300;
+   // objects.push_back(star);
+
     // redimensionner la fenêtre selon la résolution de l'image
     ofSetWindowShape(screen_width, screen_height);
 
@@ -134,6 +141,23 @@ void Renderer::draw_histogram() {
 
 void Renderer::add_primitive(SceneObjectType type) {
     SceneObject *newShape;
+    int x1,x2,y1,y2;
+        
+
+    if (type != SceneObjectType::line || type != SceneObjectType::triangle)
+    {
+        x1 = mouse_press_x <= mouse_current_x ? mouse_press_x : mouse_current_x;
+        x2 = mouse_press_x >= mouse_current_x ? mouse_press_x : mouse_current_x;
+        y1 = mouse_press_y <= mouse_current_y ? mouse_press_y : mouse_current_y;
+        y2 = mouse_press_y >= mouse_current_y ? mouse_press_y : mouse_current_y;
+    }
+    else
+    {
+        x1 = mouse_press_x;
+        y1 = mouse_press_y;
+        x2 = mouse_current_x;
+        y2 = mouse_current_y;
+    }
     switch (type) {
         case SceneObjectType::circle:
             newShape = new Circle();
@@ -157,27 +181,17 @@ void Renderer::add_primitive(SceneObjectType type) {
             //newShape = new Point();
             break;
 
+        case SceneObjectType::quatrefoil:
+        {
+             int width = x2 - x1;
+             int height = y2 - y1;
+             newShape = new Star(x1 + width / 2, y1 + height / 2, x2 - x1, y2 - y1, stroke_size, fill_color, stroke_color);
+            break;
+        }
+             
         default:
             break;
     }
-
-    int x1,x2,y1,y2;
-
-    if (type != SceneObjectType::line || type != SceneObjectType::triangle)
-    {
-        x1 = mouse_press_x <= mouse_current_x ? mouse_press_x : mouse_current_x;
-        x2 = mouse_press_x >= mouse_current_x ? mouse_press_x : mouse_current_x;
-        y1 = mouse_press_y <= mouse_current_y ? mouse_press_y : mouse_current_y;
-        y2 = mouse_press_y >= mouse_current_y ? mouse_press_y : mouse_current_y;
-    }
-    else
-    {
-        x1 = mouse_press_x;
-        y1 = mouse_press_y;
-        x2 = mouse_current_x;
-        y2 = mouse_current_y;
-    }
-    
 
     newShape->width = x2 - x1;
     newShape->height = y2 - y1;

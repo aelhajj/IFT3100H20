@@ -220,6 +220,10 @@ void Application::keyReleased(int key)
       ofLog() << "<mode: triangle>";
       break;
 
+    case 54:
+      renderer.draw_mode = SceneObjectType::quatrefoil;
+      ofLog() << "<mode: primitive composee : quatrefoil>";
+
     default:
       break;
   }

@@ -44,5 +44,11 @@ void Circle::update() {
     r = width / 2;
 }
 
+void Circle::translate(int x, int y) {
+    position_x += x;
+    position_y += y;
+}
+
+
 
 Circle::~Circle() {};

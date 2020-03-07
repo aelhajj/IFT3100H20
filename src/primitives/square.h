@@ -1,15 +1,15 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef SQUARE_H
+#define SQUARE_H
 
 #include "primitive.h"
 #include <cmath>
 
-class Circle : public Primitive {
+class Square : public Primitive {
 public:
-    Circle(int _posX, int _posY, int _width, int _height, int _thickness,
+    Square(int _posX, int _posY, int _width, int _height, int _thickness,
            ofColor &fill_Color, ofColor &border_Color);
 
-    Circle();
+    Square();
 
     void draw();
 
@@ -37,9 +37,7 @@ public:
 
     void setThickness(float _thickness);
 
-    int getRadius();
-
-    void setRadius(int _r);
+    void setShape(int _posX, int _posY, int _setX, int _setY);
 
     void update();
 
@@ -47,10 +45,7 @@ public:
 
     Primitive *copy();
 
-    ~Circle();
-
-    int r;
-
+    ~Square();
 };
 
 #endif

@@ -37,7 +37,7 @@ public:
 
     void setThickness(float _thickness);
 
-    void changeShape(int x, int y);
+    void changeShape();
 
     void update();
 

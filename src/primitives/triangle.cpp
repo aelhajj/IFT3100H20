@@ -43,13 +43,8 @@ void Triangle::update() {
 }
 
 
-void Triangle::changeShape(int x, int y) {
-    position_x += x;
-    position_y += y;
-    width += x;
-    height += y;
-    x3 += x;
-    y3 += y;
+void Triangle::changeShape() {
+    int y3 = position_y - 2*(height);
 }
 
 void Triangle::translate(int x, int y) {

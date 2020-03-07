@@ -11,6 +11,7 @@
 #include "primitives/point.h"
 #include "primitives/rectangle.h"
 #include "primitives/triangle.h"
+#include "star.h"
 
 
 class Renderer {

@@ -4,7 +4,7 @@
 #include <vector>
 
 enum class SceneObjectType {
-    none, point, line, rectangle, triangle, circle, image
+    none, point, line, rectangle, triangle, circle, image, square, quatrefoil
 };
 
 class SceneObject {
