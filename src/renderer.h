@@ -15,6 +15,7 @@
 #include "primtives3D/cube.h"
 #include "primtives3D/cone.h"
 #include "primtives3D/cylinder.h"
+#include "model3D.h"
 
 
 class Renderer {
@@ -22,7 +23,7 @@ public:
     int f;
     std::vector<ImageStruct *> images;
     ofImage image;
-
+    //ofLight	light;
     //std::vector <Primitive*> shapes;
 
     bool isMode2D; // si mode est en 2D : true, si 3D : false
@@ -115,6 +116,8 @@ public:
     void add_primitive(SceneObjectType type);
 
     void add_primitive3D(SceneObjectType3D type);
+
+    void add_Model3D();
 
     ~Renderer();
 
