@@ -1,14 +1,14 @@
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef CUBE_H
+#define CUBE_H
 
 #include "primitive3D.h"
 #include <cmath>
 
-class Sphere : public Primitive3D {
+class Cube : public Primitive3D {
 public:
-    Sphere(float _posX, float _posY, float _width, float _height, ofColor &fill_Color);
+    Cube(float _posX, float _posY, float _width, float _height, ofColor &fill_Color);
 
-    Sphere();
+    Cube();
 
     void draw();
 
@@ -28,25 +28,14 @@ public:
 
     void setHeight(float _height);
 
-    float getRadius();
-
-    void setRadius(float _r);
-
     void update();
 
     void translate(float x, float y);
 
-    
+    ~Cube();
 
-    //Primitive *copy();
-
-    ~Sphere();
-
-    ofSpherePrimitive sphere;
-    //ofBoxPrimitive boundBox;
+    ofBoxPrimitive cube;
     ofNode boundBox;
-
-    float r;
 
 };
 

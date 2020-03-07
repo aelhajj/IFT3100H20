@@ -12,15 +12,9 @@
 #include "primitives/triangle.h"
 #include "star.h"
 #include "primtives3D/sphere.h"
-
-
-// structure d'un localisateur de transformation
-struct Locator
-{
-  float position[3];   // 3 * 4 = 12 octets
-  float rotation[3];   // 3 * 4 = 12 octets
-  float proportion[3]; // 3 * 4 = 12 octets
-};                     //       = 36 octets
+#include "primtives3D/cube.h"
+#include "primtives3D/cone.h"
+#include "primtives3D/cylinder.h"
 
 
 class Renderer {
@@ -120,9 +114,7 @@ public:
 
     void add_primitive(SceneObjectType type);
 
- //   void dispatch_locators(int count, float range);
-
-    void draw_locator(float scale);
+    void add_primitive3D(SceneObjectType3D type);
 
     ~Renderer();
 

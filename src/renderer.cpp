@@ -25,9 +25,9 @@ void Renderer::setup() {
   //  ofColor test(44, 44, 44);
   //  ofColor test2(54, 66, 66);
     ofColor colorTest(100, 100, 100);
-    Sphere *sphere = new Sphere(mouse_press_x, mouse_press_y, 100, 100, colorTest);
-
-    objects3D.push_back(sphere);
+    //Sphere *sphere = new Sphere(mouse_press_x, mouse_press_y, 100, 100, colorTest);
+   // Cube *cube = new Cube(mouse_press_x, mouse_press_y, 100, 100, colorTest);
+   // objects3D.push_back(cube);
     offset_vertical = 32;
     offset_horizontal = 32;
 
@@ -136,7 +136,7 @@ void Renderer::draw() {
     }
 }
 
-
+/*
 void Renderer::draw_locator(float scale)
 {
   ofSetLineWidth(4);
@@ -148,7 +148,7 @@ void Renderer::draw_locator(float scale)
   node.draw();
   ofPopMatrix();
 }
-
+*/
 Renderer::~Renderer()
 {
   //std::free(locators);
@@ -247,6 +247,50 @@ void Renderer::add_primitive(SceneObjectType type) {
     newShape->update();
 
     objects.push_back(newShape);
+
+}
+
+
+void Renderer::add_primitive3D(SceneObjectType3D type) {
+
+    SceneObject3D *newShape;
+    ofColor testColor(100, 100, 190);
+
+    switch (type) {
+        case SceneObjectType3D::sphere:
+            newShape = new Sphere(mouse_press_x, mouse_press_y, 100, 100, testColor);
+
+            break;
+
+        case SceneObjectType3D::cube:
+            newShape = new Cube(mouse_press_x, mouse_press_y, 100, 100, testColor);
+            break;
+        
+        case SceneObjectType3D::cone:
+            newShape = new Cone(mouse_press_x, mouse_press_y, 100, 100, testColor);
+            break;
+
+        case SceneObjectType3D::cylinder:
+            newShape = new Cylinder(mouse_press_x, mouse_press_y, 100, 100, testColor);
+            break;
+             
+        default:
+            break;
+    }
+
+    /*newShape->width = x2 - x1;
+    newShape->height = y2 - y1;
+
+    newShape->position_x = x1 + newShape->width / 2;
+    newShape->position_y = y1 + newShape->height / 2;
+
+    newShape->thickness = stroke_size;
+    newShape->borderColor = stroke_color;
+    newShape->fillColor = fill_color;
+
+    newShape->update();
+*/
+    objects3D.push_back(newShape);
 
 }
 

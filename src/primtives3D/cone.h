@@ -1,14 +1,14 @@
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef CONE_H
+#define CONE_H
 
 #include "primitive3D.h"
 #include <cmath>
 
-class Sphere : public Primitive3D {
+class Cone : public Primitive3D {
 public:
-    Sphere(float _posX, float _posY, float _width, float _height, ofColor &fill_Color);
+    Cone(float _posX, float _posY, float _width, float _height, ofColor &fill_Color);
 
-    Sphere();
+    Cone();
 
     void draw();
 
@@ -28,25 +28,14 @@ public:
 
     void setHeight(float _height);
 
-    float getRadius();
-
-    void setRadius(float _r);
-
     void update();
 
     void translate(float x, float y);
 
-    
+    ~Cone();
 
-    //Primitive *copy();
-
-    ~Sphere();
-
-    ofSpherePrimitive sphere;
-    //ofBoxPrimitive boundBox;
+    ofConePrimitive cone;
     ofNode boundBox;
-
-    float r;
 
 };
 

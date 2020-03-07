@@ -31,6 +31,7 @@ public:
     ofxDatGuiButton *boutonHistogram;
 
     ofxDatGuiDropdown *menuCursor;
+    ofxDatGuiDropdown *menu3DShape;
 
     //ofParameter<ofColor> param_color_background;
     //ofParameter<ofColor> param_color_stroke;

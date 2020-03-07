@@ -4,7 +4,7 @@
 #include <vector>
 
 enum class SceneObjectType3D {
-    none, sphere
+    none, sphere, cube, cone, cylinder
 };
 
 class SceneObject3D {

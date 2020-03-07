@@ -8,6 +8,7 @@ void Application::setup() {
     ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
     
     vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
+    vector <string> options_shapes3D = { "Sphere", "Cube", "Cone", "Cylinder" };
 
     menuCursor = gui->addDropdown("select cursor", options);
 
@@ -32,7 +33,11 @@ void Application::setup() {
     stroke_color_picker = primitive_folder->addColorPicker("Stroke", ofColor(255, 0, 0, 5));
     stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
 
+    ofxDatGuiFolder *primitive3D_folder = gui->addFolder("Primitive 3D", ofColor::blue);
+    menu3DShape = gui->addDropdown("Select 3D Shape", options_shapes3D);
+
     primitive_folder->expand();
+    primitive3D_folder->expand();
 
     ofSetWindowTitle("Equipe ###### : Partie 1");
 
@@ -50,7 +55,8 @@ void Application::setup() {
 }
 
 void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
-    if (event.child == 0) {
+  if(event.target == menuCursor) {
+        if (event.child == 0) {
         cursor = new CropCursor(&renderer);
     } else if (event.child == 1) {
         cursor = new NormalCursor(&renderer);
@@ -63,6 +69,19 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
     } else if (event.child == 5) {
         cursor = new DrawCursor(&renderer);
     }
+  } 
+  if(event.target == menu3DShape) {
+    if (event.child == 0) {
+        renderer.add_primitive3D(SceneObjectType3D::sphere);
+    } else if (event.child == 1) {
+        renderer.add_primitive3D(SceneObjectType3D::cube);
+    } else if (event.child == 2) {
+        renderer.add_primitive3D(SceneObjectType3D::cone);
+    } else if (event.child == 3) {
+        renderer.add_primitive3D(SceneObjectType3D::cylinder);
+    }  
+  }
+
 
 }
 
