@@ -3,9 +3,10 @@
 
 void Application::setup() {
     ofxDatGuiLog::quiet();
-    
-    ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
 
+
+    ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    
     vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
 
     menuCursor = gui->addDropdown("select cursor", options);
@@ -26,7 +27,7 @@ void Application::setup() {
 
     ofxDatGuiFolder *primitive_folder = gui->addFolder("Primitive", ofColor::red);
 
-    background_color_picker = primitive_folder->addColorPicker("Canevas", ofColor(255, 0, 0, 5));
+    background_color_picker = primitive_folder->addColorPicker("Canevas", ofColor(20, 20, 20, 5));
     fill_color_picker = primitive_folder->addColorPicker("Remplissage", ofColor(255, 0, 0, 5));
     stroke_color_picker = primitive_folder->addColorPicker("Stroke", ofColor(255, 0, 0, 5));
     stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
@@ -145,7 +146,9 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 void Application::draw() {
     renderer.draw();
     cursor->drawCursor();
+
 }
+
 
 void Application::windowResized(int w, int h) {
     ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";

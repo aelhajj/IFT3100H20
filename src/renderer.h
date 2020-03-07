@@ -1,5 +1,4 @@
-// IFT3100H20_ImageImport/renderer.h
-// Classe responsable du rendu de l'application.
+
 
 #pragma once
 
@@ -12,6 +11,8 @@
 #include "primitives/rectangle.h"
 #include "primitives/triangle.h"
 #include "star.h"
+#include "primtives3D/sphere.h"
+
 
 // structure d'un localisateur de transformation
 struct Locator
@@ -36,6 +37,7 @@ public:
     std::vector<SceneObject *> objects;
     std::vector<Primitive *> shapes;
 
+    std::vector<SceneObject3D *> objects3D;
     SceneObject *sceneObjectSelected = nullptr;
     ImageStruct *imageSelected = nullptr;
     Primitive *shapeSelected = nullptr;

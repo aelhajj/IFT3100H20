@@ -24,8 +24,10 @@ void Renderer::setup() {
   //  objects.push_back(image);
   //  ofColor test(44, 44, 44);
   //  ofColor test2(54, 66, 66);
+    ofColor colorTest(100, 100, 100);
+    Sphere *sphere = new Sphere(mouse_press_x, mouse_press_y, 100, 100, colorTest);
 
-
+    objects3D.push_back(sphere);
     offset_vertical = 32;
     offset_horizontal = 32;
 
@@ -120,7 +122,14 @@ void Renderer::draw() {
     ofTranslate(center_x + offset_x, is_flip_axis_y ? -center_y : center_y, offset_z);
 
     // dessiner l'origine de la scène
-    draw_locator(10.0f);
+    //draw_locator(10.0f);
+    for (SceneObject3D *obj : objects3D) {
+           // ofPushMatrix();
+            //  ofTranslate(image.width / 2, image.heigth / 2, 0);
+            //  image.image.setAnchorPercent(0.5f, 0.5f);
+            obj->draw();
+           // ofPopMatrix();
+        }
 
     // revenir à la matrice de transformation précédente dans la pile
     ofPopMatrix();

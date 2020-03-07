@@ -23,7 +23,7 @@ public:
     bool is_key_press_right;
 
     int nbClick = 0;
-    
+
     ofxDatGuiButton *boutonModeSwitcher;
 
     ofxDatGuiButton *boutonImporter;
@@ -50,7 +50,7 @@ public:
 
     void draw();
 
-    void drawGui();
+    //void drawGui();
 
     void update();
 
