@@ -30,6 +30,7 @@ public:
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;
     ofxDatGuiButton *boutonHistogram;
+    ofxDatGuiButton *boutonModel3D;
 
     ofxDatGuiDropdown *menuCursor;
     ofxDatGuiDropdown *menu3DShape;

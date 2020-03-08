@@ -16,6 +16,7 @@
 #include "primtives3D/cone.h"
 #include "primtives3D/cylinder.h"
 #include "camera.h"
+#include "model3D.h"
 
 
 class Renderer {
@@ -117,6 +118,8 @@ public:
     void add_primitive(SceneObjectType type);
 
     void add_primitive3D(SceneObjectType3D type);
+
+    void add_Model3D();
 
     ~Renderer();
 

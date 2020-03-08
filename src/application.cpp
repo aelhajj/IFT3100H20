@@ -3,6 +3,7 @@
 
 void Application::setup() {
     ofxDatGuiLog::quiet();
+    ofSetVerticalSync(true);
 
     actions = new Actions();
     gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
@@ -36,6 +37,7 @@ void Application::setup() {
 
     ofxDatGuiFolder *primitive3D_folder = gui->addFolder("Primitive 3D", ofColor::blue);
     menu3DShape = gui->addDropdown("Select 3D Shape", options_shapes3D);
+    boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
     primitive_folder->expand();
     primitive3D_folder->expand();
@@ -150,6 +152,9 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
     }
     if (event.target == boutonHistogram) {
         renderer.viewHist = (!renderer.viewHist);
+    }
+    if (event.target == boutonModel3D) {
+      renderer.add_Model3D();
     }
 
 }
