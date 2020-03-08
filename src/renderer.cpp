@@ -29,8 +29,20 @@ void Renderer::setup() {
     //Sphere *sphere = new Sphere(mouse_press_x, mouse_press_y, 100, 100, colorTest);
    // Cube *cube = new Cube(mouse_press_x, mouse_press_y, 100, 100, colorTest);
    // objects3D.push_back(cube);
-    offset_vertical = 32;
+   //ofEnableDepthTest();
+	/*
+    light.enable();
+    cam.begin();
+    ofColor(255, 255);*/
+  // Model3D *model3D = new Model3D("teapot.obj");
+  // objects3D.push_back(model3D);
+  // model3D->getFileExtension();
+   
+  /* cam.setDistance(700);*/
+
+     offset_vertical = 32;
     offset_horizontal = 32;
+    
 
     viewHist = false;
 
@@ -283,6 +295,8 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
             break;
     }
 
+
+
     /*newShape->width = x2 - x1;
     newShape->height = y2 - y1;
 
@@ -297,6 +311,12 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
 */
     objects3D.push_back(newShape);
 
+}
+
+void Renderer::add_Model3D() {
+    Model3D *model3D = new Model3D();
+    objects3D.push_back(model3D);
+    model3D->getFileExtension();
 }
 
 void Renderer::update() {

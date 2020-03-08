@@ -16,6 +16,7 @@
 #include "primtives3D/cone.h"
 #include "primtives3D/cylinder.h"
 #include "camera.h"
+#include "model3D.h"
 
 
 class Renderer {
@@ -25,6 +26,7 @@ public:
     ofImage image;
     Camera* camera = new Camera();
     enum modes {is2D, is3D, isCamera};
+    //ofLight	light;
     //std::vector <Primitive*> shapes;
 
     modes Mode = modes::is2D; // si mode est en 2D : true, si 3D : false
@@ -117,6 +119,8 @@ public:
     void add_primitive(SceneObjectType type);
 
     void add_primitive3D(SceneObjectType3D type);
+
+    void add_Model3D();
 
     ~Renderer();
 
