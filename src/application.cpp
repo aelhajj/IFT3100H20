@@ -221,9 +221,9 @@ void Application::mouseDragged(int x, int y, int button) {
 }
 
 void Application::mousePressed(int x, int y, int button) {
-    std::cout << x << " " << y << std::endl;
      if (!(y < 355 && x < 268))
      {
+       std::cout << x << " " << y << std::endl;
        cursor->onMousePressed(x, y);
      }
 
@@ -279,7 +279,7 @@ void Application::keyReleased(int key)
   switch (key)
   {
     // MODE 2D :
-
+    std::cout << key << std::endl;
     case 49:  // key 1
       renderer.draw_mode = SceneObjectType::point;
       ofLog() << "<mode: point>";
@@ -352,7 +352,9 @@ void Application::keyReleased(int key)
      // ofLog() << "<proportion is active: " << renderer.is_active_proportion << ">";
       break;
 
-    case 119: // key w
+    case 115: // key s
+      renderer.image_export();
+      ofLog() << "screen shoted";
      // renderer.is_active_translation = !renderer.is_active_translation;
      // ofLog() << "<translation is active: " << renderer.is_active_translation << ">";
       break;
@@ -400,6 +402,22 @@ void Application::keyPressed(int key)
       actions->objectActionsWereMadeOn.pop();
       actions->actions.pop();
       break;
+    }
+    case 127:
+    {
+      if (renderer.Mode == Renderer::modes::is2D)
+      {
+        auto it = std::find(renderer.objects.begin(), renderer.objects.end(), renderer.sceneObjectSelected);
+        if (it != renderer.objects.end())
+        {
+          renderer.objects.erase(it);
+        }
+
+      }
+      else
+      {
+
+      }
     }
     case ' ':
       renderer.camera->changePerspective();

@@ -37,12 +37,12 @@ void Renderer::setup() {
   // Model3D *model3D = new Model3D("teapot.obj");
   // objects3D.push_back(model3D);
   // model3D->getFileExtension();
-   
+
   /* cam.setDistance(700);*/
 
      offset_vertical = 32;
     offset_horizontal = 32;
-    
+
 
     viewHist = false;
 
@@ -355,4 +355,19 @@ void Renderer::reset() {
 
      ofLog() << "<Mode 3D : reset>";
     }
+}
+
+void Renderer::image_export() const
+{
+
+  // capturer le contenu du framebuffer actif
+  ImageStruct * image;
+  if (sceneObjectSelected != nullptr)
+  {
+      image = dynamic_cast<ImageStruct*>(sceneObjectSelected);
+  }
+
+  // sauvegarder le fichier image
+  image->image.save("./screenshot.jpg");
+  ofLog() << "screen shoted";
 }

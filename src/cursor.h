@@ -97,8 +97,23 @@ public:
         if (isSceneObjectSelected) {
             float delta_x = x - last_frame_x;
             float delta_y = y - last_frame_y;
+            if (renderer->Mode == Renderer::modes::is2D)
+            {
+              for (auto &obj : sceneObjectsSelected)
+              {
+                obj->translate(delta_x, delta_y);
+              }
+            }
+            if (renderer->Mode == Renderer::modes::is3D)
+            {
+              for (auto &obj : sceneObjects3DSelected)
+              {
+                obj->translate(delta_x, delta_y);
+              }
+            }
 
-            sceneObjectSelected->translate(delta_x, delta_y);
+
+
 
         }
         last_frame_x = x;
@@ -107,6 +122,8 @@ public:
     }
 
     void onMousePressed(int x, int y) {
+      if (renderer->Mode == Renderer::modes::is2D)
+      {
         for (auto &obj: renderer->objects) {
             //obj->info();
             if (x >= obj->position_x &&
@@ -114,16 +131,45 @@ public:
                 y >= obj->position_y &&
                 y <= (obj->height + obj->position_y)) {
                 //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
-                sceneObjectSelected = obj;
                 obj->x_pos_before_translation = obj->position_x;
                 obj->y_pos_before_translation = obj->position_y;
-                renderer->sceneObjectSelected = sceneObjectSelected;
+                renderer->sceneObjectSelected = obj;
                 isSceneObjectSelected = true;
+                if (std::find(sceneObjectsSelected.begin(), sceneObjectsSelected.end(), obj) == sceneObjectsSelected.end())
+                {
+                    sceneObjectsSelected.push_back(obj);
+                }
                 actions->actions.push(SceneObject::Actions::translated);
                 actions->objectActionsWereMadeOn.push(obj);
 
-            }
-        }
+              }
+          }
+          if (!isSceneObjectSelected)
+          {
+            sceneObjectsSelected.clear();
+          }
+      } else {
+        for (auto &obj: renderer->objects3D) {
+            //obj->info();
+            if (x >= obj->position_x &&
+                x <= (obj->width + obj->position_x) &&
+                y >= obj->position_y &&
+                y <= (obj->height + obj->position_y)) {
+                //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
+                isSceneObjectSelected = true;
+                if (std::find(sceneObjects3DSelected.begin(), sceneObjects3DSelected.end(), obj) == sceneObjects3DSelected.end())
+                {
+                    sceneObjects3DSelected.push_back(obj);
+                }
+
+              }
+          }
+          if (!isSceneObjectSelected)
+          {
+            sceneObjects3DSelected.clear();
+          }
+      }
+
     }
 
     void onMouseReleased(int x, int y) {
@@ -139,7 +185,8 @@ private:
     int last_frame_x;
     int last_frame_y;
     bool isSceneObjectSelected = false;
-    SceneObject *sceneObjectSelected;
+    std::vector<SceneObject*> sceneObjectsSelected;
+    std::vector<SceneObject3D*> sceneObjects3DSelected;
     ofImage image;
     Renderer *renderer;
 };

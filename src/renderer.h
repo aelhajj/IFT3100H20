@@ -122,6 +122,8 @@ public:
 
     void add_Model3D();
 
+    void image_export() const;
+
     ~Renderer();
 
     ofEasyCam cam;
