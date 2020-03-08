@@ -5,6 +5,9 @@ void Application::setup() {
     ofxDatGuiLog::quiet();
     ofSetVerticalSync(true);
 
+    actions = new Actions();
+    gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    gui->setAutoDraw(false);
 
     gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
     gui->setAutoDraw(false);
@@ -53,7 +56,7 @@ void Application::setup() {
 
     renderer.setup();
     //renderer.isMode2D = true;
-    cursor = new NormalCursor(&renderer);
+    cursor = new NormalCursor(&renderer, actions);
 
 
 }
@@ -63,13 +66,13 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
         if (event.child == 0) {
         cursor = new CropCursor(&renderer);
     } else if (event.child == 1) {
-        cursor = new NormalCursor(&renderer);
+        cursor = new NormalCursor(&renderer, actions);
     } else if (event.child == 2) {
-        cursor = new ZoomInCursor(&renderer);
+        cursor = new ZoomInCursor(&renderer, actions);
     } else if (event.child == 3) {
-        cursor = new ZoomOutCursor(&renderer);
+        cursor = new ZoomOutCursor(&renderer, actions);
     } else if (event.child == 4) {
-        cursor = new RotationCursor(&renderer);
+        cursor = new RotationCursor(&renderer, actions);
     } else if (event.child == 5) {
         cursor = new DrawCursor(&renderer);
     }
@@ -365,6 +368,7 @@ void Application::keyReleased(int key)
 
 void Application::keyPressed(int key)
 {
+ std::cout << key << std::endl;
  switch (key)
   {
     case OF_KEY_LEFT: // key ←
@@ -389,8 +393,17 @@ void Application::keyPressed(int key)
     case 102: // key f
       renderer.camera->is_split_screen = (!renderer.camera->is_split_screen);
       break;
+    case 122:
+    {
+      SceneObject* obj = actions->objectActionsWereMadeOn.top();
+      obj->undo(actions->actions.top());
+      actions->objectActionsWereMadeOn.pop();
+      actions->actions.pop();
+      break;
+    }
     case ' ':
       renderer.camera->changePerspective();
+      break;
     default:
       break;
   }

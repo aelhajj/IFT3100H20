@@ -6,12 +6,13 @@
 #include "renderer.h"
 #include "cursor.h"
 #include "ofxDatGui.h"
+#include "actions.h"
 
 class Application : public ofBaseApp {
 public:
 
+    Actions *actions;
     Renderer renderer;
-
     // Mode 3D
     float time_current;
     float time_last;
