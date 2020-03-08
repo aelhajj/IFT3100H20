@@ -1,6 +1,6 @@
 
 #include "sceneObject.h"
-
+/*
 tuple<int, int> SceneObject::getPosition() {
     return make_tuple(position_x, position_y);
 }
@@ -8,7 +8,7 @@ tuple<int, int> SceneObject::getPosition() {
 void SceneObject::setPosition(int _posX, int _posY) {
     position_x = _posX;
     position_y = _posY;
-}
+}*/
 
 void SceneObject::info() {
     cout << "Pos x: " << position_x
@@ -16,7 +16,7 @@ void SceneObject::info() {
          << " width: " << width
          << " height: " << height << endl;
 }
-
+/*
 int SceneObject::getHeight() {
     return height;
 }
@@ -31,7 +31,7 @@ int SceneObject::getWidth() {
 
 void SceneObject::setWidth(int _width) {
     width = _width;
-}
+}*/
 
 void SceneObject::translate(int x, int y) {
     position_x += x;

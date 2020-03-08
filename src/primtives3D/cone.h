@@ -30,12 +30,21 @@ public:
 
     void update();
 
-    void translate(float x, float y);
+    void translate(float x, float y, float z);
+
+    void getMeshes();
+
+    void rotate();
 
     ~Cone();
 
     ofConePrimitive cone;
     ofNode boundBox;
+    ofVboMesh bottom_mesh;
+    ofVboMesh body_mesh;
+    ofMaterial material;
+    vector<ofMeshFace> triangles;
+    
 
 };
 

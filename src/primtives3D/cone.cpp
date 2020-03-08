@@ -22,18 +22,51 @@ Cone::Cone() {
 void Cone::draw() {
     ofFill();
     ofSetColor(fillColor);
-    cone.draw();
-    ofNoFill();
-    boundBox.draw();
+    if(is_mesh_mode) {
+        cone.transformGL();
+        getMeshes();
+        
+        if(bottom_mesh.getNumNormals() > 0) // not null 
+        {   
+            ofPushMatrix();
+
+            body_mesh.drawWireframe();
+            bottom_mesh.drawWireframe();
+            ofPopMatrix();
+        } 
+        
+    } else {
+        ofNoFill();
+        cone.setMode(OF_PRIMITIVE_TRIANGLES);
+        cone.draw();
+    }
+       
+    if(show_box) {
+        ofNoFill();
+        boundBox.draw();
+    }
+        
 }
 
 void Cone::update() {
     cone.set(width *0.75, height*1.75);
 }
 
-void Cone::translate(float x, float y) {
+void Cone::getMeshes() {
+    bottom_mesh = cone.getCapMesh();
+    body_mesh = cone.getConeMesh();
+}
+
+void Cone::translate(float x, float y, float z) {
     position_x += x;
     position_y += y;
+    position_z += z;
+    cone.setPosition((-width * .5 + width *  2/4.f) + position_x, (height *  1.1/6.f) + position_y, (2/4.f * 0.5) +position_z); 
+}
+
+void Cone::rotate() {
+    ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 10, 1, 1);
+    ofRotateDeg(cos(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 10, 10);
 }
 
 Cone::~Cone() {};
