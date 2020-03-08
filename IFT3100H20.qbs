@@ -12,8 +12,11 @@ Project{
         name: { return FileInfo.baseName(sourceDirectory) }
 
         files: [
+            'src/actions.h',
             'src/application.cpp',
             'src/application.h',
+            'src/camera.cpp',
+            'src/camera.h',
             'src/composedShape.cpp',
             'src/composedShape.h',
             'src/cursor.h',
@@ -21,6 +24,8 @@ Project{
             'src/histogram.h',
             'src/image.h',
             'src/main.cpp',
+            'src/model3D.cpp',
+            'src/model3D.h',
             'src/ofApp.cpp',
             'src/ofApp.h',
             'src/primitives/circle.cpp',
@@ -58,6 +63,10 @@ Project{
         ]
 
         of.addons: [
+            'ofxAssimpModelLoader',
+            'ofxDatGui-master',
+            'ofxHistogram',
+            'ofxOpenCv',
         ]
 
         // additional flags for the project. the of module sets some

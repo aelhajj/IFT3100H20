@@ -108,13 +108,9 @@ public:
             {
               for (auto &obj : sceneObjects3DSelected)
               {
-                obj->translate(delta_x, delta_y);
+                obj->translate(delta_x, delta_y, 0);
               }
             }
-
-
-
-
         }
         last_frame_x = x;
         last_frame_y = y;
