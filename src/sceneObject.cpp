@@ -52,3 +52,23 @@ void SceneObject::rotate() {
     rotation += 5;
 }
 
+void SceneObject::undo(Actions action)
+{
+  if (action == Actions::rotated)
+  {
+    rotation -= 5;
+  }
+  if (action == Actions::zoomedIn)
+  {
+    zoomOut();
+  }
+  if (action == Actions::zoomedOut)
+  {
+    zoomIn();
+  }
+  if (action == Actions::translated)
+  {
+    position_x = x_pos_before_translation;
+    position_y = y_pos_before_translation;
+  }
+}

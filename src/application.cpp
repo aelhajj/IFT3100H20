@@ -4,9 +4,10 @@
 void Application::setup() {
     ofxDatGuiLog::quiet();
 
+    actions = new Actions();
+    gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    gui->setAutoDraw(false);
 
-    ofxDatGui *gui = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    
     vector <string> options = {"Rognage", "Selection", "ZoomIn", "ZoomOut", "Rotation", "Dessiner"};
     vector <string> options_shapes3D = { "Sphere", "Cube", "Cone", "Cylinder" };
 
@@ -49,9 +50,10 @@ void Application::setup() {
     ofLog() << "<app::setup>";
 
     renderer.setup();
-    cursor = new NormalCursor(&renderer);
+    //renderer.isMode2D = true;
+    cursor = new NormalCursor(&renderer, actions);
 
-    
+
 }
 
 void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
@@ -59,17 +61,17 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
         if (event.child == 0) {
         cursor = new CropCursor(&renderer);
     } else if (event.child == 1) {
-        cursor = new NormalCursor(&renderer);
+        cursor = new NormalCursor(&renderer, actions);
     } else if (event.child == 2) {
-        cursor = new ZoomInCursor(&renderer);
+        cursor = new ZoomInCursor(&renderer, actions);
     } else if (event.child == 3) {
-        cursor = new ZoomOutCursor(&renderer);
+        cursor = new ZoomOutCursor(&renderer, actions);
     } else if (event.child == 4) {
-        cursor = new RotationCursor(&renderer);
+        cursor = new RotationCursor(&renderer, actions);
     } else if (event.child == 5) {
         cursor = new DrawCursor(&renderer);
     }
-  } 
+  }
   if(event.target == menu3DShape) {
     if (event.child == 0) {
         renderer.add_primitive3D(SceneObjectType3D::sphere);
@@ -79,7 +81,7 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
         renderer.add_primitive3D(SceneObjectType3D::cone);
     } else if (event.child == 3) {
         renderer.add_primitive3D(SceneObjectType3D::cylinder);
-    }  
+    }
   }
 
 
@@ -90,11 +92,22 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if(event.target == boutonModeSwitcher) {
         nbClick++;
-        if(nbClick % 2)
-            boutonModeSwitcher->setLabel("Mode actuel : 2D");
-        else 
-            boutonModeSwitcher->setLabel("Mode actuel : 3D");
-        renderer.isMode2D = (!renderer.isMode2D);
+        if(nbClick % 3 == 1)
+        {
+          boutonModeSwitcher->setLabel("Mode actuel : 2D");
+          renderer.Mode = Renderer::modes::is2D;
+        }
+        else if(nbClick % 3 == 2)
+        {
+          boutonModeSwitcher->setLabel("Mode actuel : 3D");
+          renderer.Mode = Renderer::modes::is3D;
+        }
+        else
+          {
+            boutonModeSwitcher->setLabel("Mode actuel : Camera");
+            renderer.Mode = Renderer::modes::isCamera;
+          }
+
     }
 
     if (event.target == boutonImporter) {
@@ -111,26 +124,29 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         }
     }
     if (event.target == boutonRogner) {
-
-        float width = renderer.croping_zone[2] - renderer.croping_zone[0];
-        float height = renderer.croping_zone[3] - renderer.croping_zone[1];
-        ImageStruct *image = renderer.images[renderer.images.size() - 1];
-        int image_width = (int) (width / image->width * image->image.getWidth());
-        int image_heigth = (int) (height / image->height * image->image.getHeight());
-        int pixel_origin_x = (int) ((float) renderer.croping_zone[0] / image->width * image->image.getWidth()) -
-                             (int) ((float) image->position_x / image->width * image->image.getWidth());
-        int pixel_origin_y = (int) ((float) renderer.croping_zone[1] / image->height * image->image.getHeight()) -
-                             (int) ((float) image->position_y / image->height * image->image.getHeight());
-        image->image.cropFrom(image->image,
-                              pixel_origin_x,
-                              pixel_origin_y,
-                              image_width,
-                              image_heigth);
-        image->position_x = renderer.croping_zone[0];
-        image->position_y = renderer.croping_zone[1];
-        image->width = width;
-        image->height = height;
-
+      if(renderer.is_ready_croping)
+      {
+              float width = renderer.croping_zone[2] - renderer.croping_zone[0];
+              float height = renderer.croping_zone[3] - renderer.croping_zone[1];
+              ImageStruct *image = renderer.images[renderer.images.size() - 1];
+              int image_width = (int) (width / image->width * image->image.getWidth());
+              int image_heigth = (int) (height / image->height * image->image.getHeight());
+              int pixel_origin_x = (int) ((float) renderer.croping_zone[0] / image->width * image->image.getWidth()) -
+                                   (int) ((float) image->position_x / image->width * image->image.getWidth());
+              int pixel_origin_y = (int) ((float) renderer.croping_zone[1] / image->height * image->image.getHeight()) -
+                                   (int) ((float) image->position_y / image->height * image->image.getHeight());
+              image->image.cropFrom(image->image,
+                                    pixel_origin_x,
+                                    pixel_origin_y,
+                                    image_width,
+                                    image_heigth);
+              image->position_x = renderer.croping_zone[0];
+              image->position_y = renderer.croping_zone[1];
+              image->width = width;
+              image->height = height;
+              renderer.croping_zone.clear();
+              renderer.is_ready_croping = false;
+      }
     }
     if (event.target == boutonHistogram) {
         renderer.viewHist = (!renderer.viewHist);
@@ -165,6 +181,8 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 void Application::draw() {
     renderer.draw();
     cursor->drawCursor();
+    gui->update();
+    gui->draw();
 
 }
 
@@ -195,7 +213,12 @@ void Application::mouseDragged(int x, int y, int button) {
 }
 
 void Application::mousePressed(int x, int y, int button) {
-    cursor->onMousePressed(x, y);
+    std::cout << x << " " << y << std::endl;
+     if (!(y < 355 && x < 268))
+     {
+       cursor->onMousePressed(x, y);
+     }
+
 }
 
 void Application::mouseReleased(int x, int y, int button) {
@@ -215,7 +238,7 @@ void Application::mouseExited(int x, int y) {
 }
 
 void Application::update() {
-    if(!renderer.isMode2D) {
+    if(renderer.Mode != Renderer::modes::is2D) {
         time_current = ofGetElapsedTimef();
         time_elapsed = time_current - time_last;
         time_last = time_current;
@@ -230,8 +253,8 @@ void Application::update() {
         if (is_key_press_right)
             renderer.offset_x -= renderer.delta_x * time_elapsed;
     } else {
-            
-        // Mode 2D: 
+
+        // Mode 2D:
         renderer.background_color = background_color_picker->getColor();
 
         renderer.stroke_color = stroke_color_picker->getColor();
@@ -247,7 +270,7 @@ void Application::keyReleased(int key)
 {
   switch (key)
   {
-    // MODE 2D : 
+    // MODE 2D :
 
     case 49:  // key 1
       renderer.draw_mode = SceneObjectType::point;
@@ -277,15 +300,16 @@ void Application::keyReleased(int key)
     case 54:
       renderer.draw_mode = SceneObjectType::quatrefoil;
       ofLog() << "<mode: primitive composee : quatrefoil>";
-    
+
     // Mode 3D
-    
+
     case OF_KEY_LEFT: // key ←
       is_key_press_left = false;
       break;
 
     case OF_KEY_UP: // key ↑
       is_key_press_up = false;
+      renderer.camera->is_camera_move_forward = false;
       break;
 
     case OF_KEY_RIGHT: // key →
@@ -294,6 +318,7 @@ void Application::keyReleased(int key)
 
     case OF_KEY_DOWN: // key ↓
       is_key_press_down = false;
+      renderer.camera->is_camera_move_backward = false;
       break;
 
     case 101: // key e
@@ -304,7 +329,15 @@ void Application::keyReleased(int key)
     case 102: // key f
      // renderer.is_flip_axis_y = !renderer.is_flip_axis_y;
      // ofLog() << "<axis Y is flipped: " << renderer.is_flip_axis_y << ">";
-      break;
+    break;
+
+    case 111: // touche o
+    renderer.camera->enableOrtho();
+    break;
+
+    case 112: // touche p
+    renderer.camera->disableOrtho();
+    break;
 
     case 114: // key r
      // renderer.is_active_proportion = !renderer.is_active_proportion;
@@ -325,33 +358,51 @@ void Application::keyReleased(int key)
   }
 }
 
-void Application::keyPressed(int key) 
+void Application::keyPressed(int key)
 {
+ std::cout << key << std::endl;
  switch (key)
   {
     case OF_KEY_LEFT: // key ←
       is_key_press_left = true;
+      renderer.camera->changeObjectYoulookAt();
       break;
 
     case OF_KEY_UP: // key ↑
       is_key_press_up = true;
+      renderer.camera->is_camera_move_forward = true;
       break;
 
     case OF_KEY_RIGHT: // key →
+      renderer.camera->changeObjectYoulookAt();
       is_key_press_right = true;
       break;
 
     case OF_KEY_DOWN: // key ↓
+      renderer.camera->is_camera_move_backward = true;
       is_key_press_down = true;
       break;
-
+    case 102: // key f
+      renderer.camera->is_split_screen = (!renderer.camera->is_split_screen);
+      break;
+    case 122:
+    {
+      SceneObject* obj = actions->objectActionsWereMadeOn.top();
+      obj->undo(actions->actions.top());
+      actions->objectActionsWereMadeOn.pop();
+      actions->actions.pop();
+      break;
+    }
+    case ' ':
+      renderer.camera->changePerspective();
+      break;
     default:
       break;
   }
 }
 
 
-void Application::exit() 
+void Application::exit()
 {
     ofLog() << "<app::exit>";
 }

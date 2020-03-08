@@ -6,12 +6,13 @@
 #include "renderer.h"
 #include "cursor.h"
 #include "ofxDatGui.h"
+#include "actions.h"
 
 class Application : public ofBaseApp {
 public:
 
+    Actions *actions;
     Renderer renderer;
-
     // Mode 3D
     float time_current;
     float time_last;
@@ -32,12 +33,13 @@ public:
 
     ofxDatGuiDropdown *menuCursor;
     ofxDatGuiDropdown *menu3DShape;
+    ofxDatGui *gui;
 
     //ofParameter<ofColor> param_color_background;
     //ofParameter<ofColor> param_color_stroke;
     //ofParameter<ofColor> param_color_fill;
 
-    //ofParameter<int> param_stroke_weight; 
+    //ofParameter<int> param_stroke_weight;
 
     ofxDatGuiColorPicker *background_color_picker;
     ofxDatGuiColorPicker *fill_color_picker;
@@ -74,7 +76,7 @@ public:
     void mouseEntered(int x, int y);
 
     void mouseExited(int x, int y);
-    
+
     void keyReleased(int key);
     void keyPressed(int key);
 

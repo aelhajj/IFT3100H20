@@ -5,11 +5,12 @@
 
 void Renderer::setup() {
 
-    cam.setPosition(1000, 1000, 0);
-    cam.setDistance(1000);
+    //cam.setPosition(1000, 1000, 0);
+    //cam.setDistance(1000);
+    camera->setup();
     ofSetBackgroundColor(31);
 
-    isMode2D = false;
+    //isMode2D = false;
 
     // Interface de image
     ImageStruct *image = new ImageStruct();
@@ -39,9 +40,9 @@ void Renderer::setup() {
     // mode dessin par defaut
     draw_mode = SceneObjectType::circle;
 
-    if(!isMode2D) {
+    if(Mode != modes::is2D) {
         ofSetBackgroundColor(31);
-    // Mode 3D : 
+    // Mode 3D :
        // ofEnableDepthTest();
 
        // locator_count = 100;
@@ -72,7 +73,7 @@ void Renderer::setup() {
 }
 
 void Renderer::draw() {
-    if(isMode2D) {
+    if(Mode == modes::is2D) {
         //cam.begin();
         // afficher l'image sur toute la surface de la fenêtre d'affichage
         for (SceneObject *obj : objects) {
@@ -111,10 +112,10 @@ void Renderer::draw() {
         // dessiner le curseur
         //draw_cursor(mouse_current_x, mouse_current_y);
 
-    } else {
+    } else if (Mode == modes::is3D) {
     // copier la matrice de transformation courante sur le dessus de la pile
-    ofPushMatrix();
 
+    ofPushMatrix();
     // inverser l'axe Y pour qu'il pointe vers le haut
     ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
 
@@ -133,7 +134,11 @@ void Renderer::draw() {
 
     // revenir à la matrice de transformation précédente dans la pile
     ofPopMatrix();
-    }
+  } else{
+    ofPushMatrix();
+    camera->draw();
+    ofPopMatrix();
+  }
 }
 
 /*
@@ -183,7 +188,7 @@ void Renderer::draw_histogram() {
 void Renderer::add_primitive(SceneObjectType type) {
     SceneObject *newShape;
     int x1,x2,y1,y2;
-        
+
 
     if (type != SceneObjectType::line || type != SceneObjectType::triangle)
     {
@@ -208,7 +213,7 @@ void Renderer::add_primitive(SceneObjectType type) {
         case SceneObjectType::point:
             newShape = new Poin();
             break;
-        
+
         case SceneObjectType::line:
             newShape = new Line();
             break;
@@ -216,7 +221,7 @@ void Renderer::add_primitive(SceneObjectType type) {
         case SceneObjectType::rectangle:
             newShape = new Rectangle();
             break;
-        
+
         case SceneObjectType::triangle:
             newShape = new Triangle();
             //newShape = new Point();
@@ -229,7 +234,7 @@ void Renderer::add_primitive(SceneObjectType type) {
              newShape = new Star(x1 + width / 2, y1 + height / 2, x2 - x1, y2 - y1, stroke_size, fill_color, stroke_color);
             break;
         }
-             
+
         default:
             break;
     }
@@ -265,7 +270,7 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
         case SceneObjectType3D::cube:
             newShape = new Cube(mouse_press_x, mouse_press_y, 100, 100, testColor);
             break;
-        
+
         case SceneObjectType3D::cone:
             newShape = new Cone(mouse_press_x, mouse_press_y, 100, 100, testColor);
             break;
@@ -273,7 +278,7 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
         case SceneObjectType3D::cylinder:
             newShape = new Cylinder(mouse_press_x, mouse_press_y, 100, 100, testColor);
             break;
-             
+
         default:
             break;
     }
@@ -295,7 +300,7 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
 }
 
 void Renderer::update() {
-    if(isMode2D) {
+    if(Mode == modes::is2D) {
         ofPushMatrix();
         ofSetBackgroundColor(background_color);
         if (sceneObjectSelected != nullptr) {
@@ -311,7 +316,8 @@ void Renderer::update() {
         }
         ofPopMatrix();
     } else {
-        // Mode 3D : 
+        // Mode 3D :
+        camera->update();
         center_x = ofGetWidth() / 2.0f;
         center_y = ofGetHeight() / 2.0f;
     }
@@ -320,7 +326,7 @@ void Renderer::update() {
 }
 
 void Renderer::reset() {
-    if(isMode2D) {
+    if(Mode == modes::is2D) {
         // todo
         ofLog() << "<Mode 2D : reset>";
     } else {

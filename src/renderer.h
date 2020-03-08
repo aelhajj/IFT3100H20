@@ -15,6 +15,7 @@
 #include "primtives3D/cube.h"
 #include "primtives3D/cone.h"
 #include "primtives3D/cylinder.h"
+#include "camera.h"
 
 
 class Renderer {
@@ -22,11 +23,12 @@ public:
     int f;
     std::vector<ImageStruct *> images;
     ofImage image;
-
+    Camera* camera = new Camera();
+    enum modes {is2D, is3D, isCamera};
     //std::vector <Primitive*> shapes;
 
-    bool isMode2D; // si mode est en 2D : true, si 3D : false
-    
+    modes Mode = modes::is2D; // si mode est en 2D : true, si 3D : false
+    bool isMode2D = false;
     int index = 0;
     std::vector<SceneObject *> objects;
     std::vector<Primitive *> shapes;
@@ -67,7 +69,7 @@ public:
 
     std::vector<int> draw_space;
 
-    // Mode 3D : 
+    // Mode 3D :
 
    // Locator* locators;
 

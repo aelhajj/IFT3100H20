@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include "renderer.h"
+#include "application.h"
+#include "actions.h"
 
 class Cursor {
 public:
@@ -79,8 +80,9 @@ private:
 
 class NormalCursor : public Cursor {
 public:
-    NormalCursor(Renderer *r) {
+    NormalCursor(Renderer *r, Actions *a) {
         renderer = r;
+        actions = a;
         image.load("handCursor.png");
     }
 
@@ -113,8 +115,12 @@ public:
                 y <= (obj->height + obj->position_y)) {
                 //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
                 sceneObjectSelected = obj;
+                obj->x_pos_before_translation = obj->position_x;
+                obj->y_pos_before_translation = obj->position_y;
                 renderer->sceneObjectSelected = sceneObjectSelected;
                 isSceneObjectSelected = true;
+                actions->actions.push(SceneObject::Actions::translated);
+                actions->objectActionsWereMadeOn.push(obj);
 
             }
         }
@@ -129,6 +135,7 @@ public:
     }
 
 private:
+    Actions *actions;
     int last_frame_x;
     int last_frame_y;
     bool isSceneObjectSelected = false;
@@ -139,8 +146,9 @@ private:
 
 class ZoomInCursor : public Cursor {
 public:
-    ZoomInCursor(Renderer *r) {
+    ZoomInCursor(Renderer *r, Actions *a) {
         renderer = r;
+        actions = a;
         image.load("ZoomIn.png");
     }
 
@@ -163,6 +171,8 @@ public:
                 y < (obj->height + obj->position_y)) {
                 sceneObjectSelected = obj;
                 sceneObjectSelected->zoomIn();
+                actions->actions.push(SceneObject::Actions::zoomedIn);
+                actions->objectActionsWereMadeOn.push(obj);
             }
         }
     }
@@ -178,15 +188,16 @@ public:
 private:
     Renderer *renderer;
     SceneObject *sceneObjectSelected;
-
+    Actions *actions;
     ofImage image;
 };
 
 
 class ZoomOutCursor : public Cursor {
 public:
-    ZoomOutCursor(Renderer *r) {
+    ZoomOutCursor(Renderer *r, Actions *a) {
         renderer = r;
+        actions = a;
         image.load("ZoomOut.png");
     }
 
@@ -208,6 +219,8 @@ public:
                 y < (obj->height + obj->position_y)) {
                 sceneObjectSelected = obj;
                 sceneObjectSelected->zoomOut();
+                actions->actions.push(SceneObject::Actions::zoomedOut);
+                actions->objectActionsWereMadeOn.push(obj);
             }
         }
     }
@@ -222,6 +235,7 @@ public:
 
 private:
     Renderer *renderer;
+    Actions *actions;
     SceneObject *sceneObjectSelected;
     ofImage image;
 };
@@ -229,8 +243,9 @@ private:
 
 class RotationCursor : public Cursor {
 public:
-    RotationCursor(Renderer *r) {
+    RotationCursor(Renderer *r, Actions *a) {
         renderer = r;
+        actions = a;
         image.load("rotate.png");
     }
 
@@ -251,6 +266,8 @@ public:
                 y < (obj->height + obj->position_y)) {
                 sceneObjectSelected = obj;
                 sceneObjectSelected->rotate();
+                actions->actions.push(SceneObject::Actions::rotated);
+                actions->objectActionsWereMadeOn.push(obj);
             }
         }
     }
@@ -265,6 +282,7 @@ public:
 
 private:
     Renderer *renderer;
+    Actions *actions;
     SceneObject *sceneObjectSelected;
     ofImage image;
 };

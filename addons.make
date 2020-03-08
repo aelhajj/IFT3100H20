@@ -1,4 +1,4 @@
-ofxAssimpModelLoader
-ofxDatGui-master
 ofxHistogram
 ofxOpenCv
+ofxDatGui-master
+ofxAssimpModelLoader

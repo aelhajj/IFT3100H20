@@ -9,6 +9,8 @@ enum class SceneObjectType {
 
 class SceneObject {
 public:
+    enum Actions {croped, translated, rotated, zoomedIn, zoomedOut};
+
 
     void addChild(SceneObject &child);
 
@@ -46,10 +48,14 @@ public:
 
     void info();
 
+    void undo(Actions action);
+
     virtual void update() = 0;
 
     int position_x;
     int position_y;
+    int x_pos_before_translation;
+    int y_pos_before_translation;
     int width;
     int height;
     float rotation = 0;
