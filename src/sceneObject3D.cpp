@@ -1,6 +1,6 @@
 
 #include "sceneObject3D.h"
-
+/*
 tuple<int, int> SceneObject3D::getPosition() {
     return make_tuple(position_x, position_y);
 }
@@ -8,7 +8,7 @@ tuple<int, int> SceneObject3D::getPosition() {
 void SceneObject3D::setPosition(int _posX, int _posY) {
     position_x = _posX;
     position_y = _posY;
-}
+}*/
 
 void SceneObject3D::info() {
     cout << "Pos x: " << position_x
@@ -17,25 +17,11 @@ void SceneObject3D::info() {
          << " height: " << height << endl;
 }
 
-int SceneObject3D::getHeight() {
-    return height;
-}
 
-void SceneObject3D::setHeight(int _height) {
-    height = _height;
-}
-
-int SceneObject3D::getWidth() {
-    return width;
-}
-
-void SceneObject3D::setWidth(int _width) {
-    width = _width;
-}
-
-void SceneObject3D::translate(int x, int y) {
+void SceneObject3D::translate(float x, float y, float z) {
     position_x += x;
     position_y += y;
+    position_z += z;
 }
 
 void SceneObject3D::zoomIn() {
@@ -50,5 +36,6 @@ void SceneObject3D::zoomOut() {
 
 void SceneObject3D::rotate() {
     rotation += 5;
+
 }
 

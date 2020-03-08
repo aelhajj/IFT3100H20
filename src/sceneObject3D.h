@@ -10,25 +10,11 @@ enum class SceneObjectType3D {
 class SceneObject3D {
 public:
 
-    tuple<int, int> getPosition();
-
-    void setPosition(int _posX, int _posY);
-
-    //void SceneObject::setType(SceneObjectType _type);
-
-    int getWidth();
-
-    void setWidth(int _width);
-
-    int getHeight();
-
-    void setHeight(int _height);
-
     virtual void draw() = 0;
 
-    virtual void translate(int _x, int _y);
+    virtual void translate(float _x, float _y, float _z);
 
-    void rotate();
+    virtual void rotate();
 
     void zoomIn();
 
@@ -38,8 +24,9 @@ public:
 
     virtual void update() = 0;
 
-    int position_x;
-    int position_y;
+    float position_x;
+    float position_y;
+    float position_z;
     int width;
     int height;
     float rotation = 0;
@@ -48,6 +35,13 @@ public:
     SceneObjectType3D type = SceneObjectType3D::none;
     int thickness;
 
+    // float spinX = sin(ofGetElapsedTimef()*3.3f);
+    // float spinY = sin(ofGetElapsedTimef()*3.3f);
+
     ofColor fillColor;
+
+    bool is_mesh_mode = false;
+    bool show_box = false;
+    bool is_rotating = false;
 
 };

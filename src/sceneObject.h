@@ -12,7 +12,7 @@ public:
     enum Actions {croped, translated, rotated, zoomedIn, zoomedOut};
 
 
-    void addChild(SceneObject &child);
+ /*   void addChild(SceneObject &child);
 
     tuple<int, int> getPosition();
 
@@ -34,7 +34,7 @@ public:
 
     void setScale(float _scale);
 
-    float getScale();
+    float getScale();*/
 
     virtual void draw() = 0;
 

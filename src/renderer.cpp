@@ -153,22 +153,10 @@ void Renderer::draw() {
   }
 }
 
-/*
-void Renderer::draw_locator(float scale)
-{
-  ofSetLineWidth(4);
-  ofSetColor(127);
-  ofFill();
-  ofPushMatrix();
-  ofScale(scale, scale);
-  node.setPosition(0.0f, 0.0f, 0.0f);
-  node.draw();
-  ofPopMatrix();
-}
-*/
+
 Renderer::~Renderer()
 {
-  //std::free(locators);
+  
 }
 
 void Renderer::draw_zone(float x1, float y1, float x2, float y2) const {
@@ -294,23 +282,7 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
         default:
             break;
     }
-
-
-
-    /*newShape->width = x2 - x1;
-    newShape->height = y2 - y1;
-
-    newShape->position_x = x1 + newShape->width / 2;
-    newShape->position_y = y1 + newShape->height / 2;
-
-    newShape->thickness = stroke_size;
-    newShape->borderColor = stroke_color;
-    newShape->fillColor = fill_color;
-
-    newShape->update();
-*/
     objects3D.push_back(newShape);
-
 }
 
 void Renderer::add_Model3D() {
@@ -341,8 +313,24 @@ void Renderer::update() {
         center_x = ofGetWidth() / 2.0f;
         center_y = ofGetHeight() / 2.0f;
     }
+}
 
+void Renderer::showBox3D() {
+    for (SceneObject3D *obj : objects3D) {
+        obj->show_box = !(obj->show_box);
+    }
+}
+    
+void Renderer::rotate3D() {
+    for (SceneObject3D *obj : objects3D) {
+        obj->is_rotating = !(obj->is_rotating);
+    }
+}
 
+void Renderer::showMesh3D() {
+     for (SceneObject3D *obj : objects3D) {
+        obj->is_mesh_mode = !(obj->is_mesh_mode);
+    }
 }
 
 void Renderer::reset() {
