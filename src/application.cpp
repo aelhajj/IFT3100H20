@@ -35,11 +35,17 @@ void Application::setup() {
     stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
 
     ofxDatGuiFolder *primitive3D_folder = gui->addFolder("Primitive 3D", ofColor::blue);
+    
     menu3DShape = gui->addDropdown("Select 3D Shape", options_shapes3D);
+    boutonBox3D = gui->addButton("Montrer Boite de délimitation");
+    boutonMesh3D = primitive3D_folder->addButton("Afficher mailles");
+    boutonRotate3D = gui->addButton("Animer modele 3D");
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
+    
 
     primitive_folder->expand();
     primitive3D_folder->expand();
+    menu3DShape->expand();
 
     ofSetWindowTitle("Equipe ###### : Partie 1");
 
@@ -140,6 +146,17 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
     if (event.target == boutonModel3D) {
       renderer.add_Model3D();
     }
+    if(event.target == boutonRotate3D) {
+      renderer.rotate3D();
+    }
+    if(event.target == boutonBox3D) {
+      renderer.showBox3D();
+    }
+
+    if(event.target == boutonMesh3D) {
+      renderer.showMesh3D();
+    }
+    
 
 }
 

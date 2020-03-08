@@ -30,6 +30,9 @@ public:
     ofxDatGuiButton *boutonRogner;
     ofxDatGuiButton *boutonHistogram;
     ofxDatGuiButton *boutonModel3D;
+    ofxDatGuiButton *boutonRotate3D;
+    ofxDatGuiButton *boutonBox3D;
+    ofxDatGuiButton *boutonMesh3D;
 
     ofxDatGuiDropdown *menuCursor;
     ofxDatGuiDropdown *menu3DShape;
@@ -44,6 +47,7 @@ public:
     ofxDatGuiColorPicker *fill_color_picker;
     ofxDatGuiColorPicker *stroke_color_picker;
     ofxDatGuiSlider *stroke_slider;
+
 
 
     Cursor *cursor;

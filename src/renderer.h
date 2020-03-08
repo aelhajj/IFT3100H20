@@ -70,13 +70,7 @@ public:
 
     // Mode 3D : 
 
-   // Locator* locators;
-
     ofNode node;
-
-   // ofVec3f vector_position;
-   // ofVec3f vector_rotation;
-   // ofVec3f vector_proportion;
 
     float center_x;
     float center_y;
@@ -89,15 +83,8 @@ public:
 
     float speed;
 
-   // int locator_count;
-
-  //  int locator_buffer_head;
 
     bool is_flip_axis_y;
-
-  //  bool is_active_translation;
-   // bool is_active_rotation;
-   // bool is_active_proportion;
 
     void setup();
 
@@ -118,6 +105,12 @@ public:
     void add_primitive3D(SceneObjectType3D type);
 
     void add_Model3D();
+
+    void showBox3D();
+
+    void rotate3D();
+
+    void showMesh3D();
 
     ~Renderer();
 

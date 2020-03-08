@@ -22,23 +22,28 @@ Cone::Cone() {
 void Cone::draw() {
     ofFill();
     ofSetColor(fillColor);
+    
     if(is_mesh_mode) {
+        cone.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         cone.transformGL();
         getMeshes();
         
         if(bottom_mesh.getNumNormals() > 0) // not null 
         {   
             ofPushMatrix();
-
+            rotate();
             body_mesh.drawWireframe();
             bottom_mesh.drawWireframe();
             ofPopMatrix();
         } 
         
     } else {
+        ofPushMatrix();
         ofNoFill();
+        rotate();
         cone.setMode(OF_PRIMITIVE_TRIANGLES);
         cone.draw();
+        ofPopMatrix();
     }
        
     if(show_box) {
@@ -65,8 +70,10 @@ void Cone::translate(float x, float y, float z) {
 }
 
 void Cone::rotate() {
-    ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 10, 1, 1);
-    ofRotateDeg(cos(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 10, 10);
+    if(is_rotating) {
+        ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 10, 1, 1);
+        ofRotateDeg(cos(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 10, 10);
+    }
 }
 
 Cone::~Cone() {};
