@@ -12,30 +12,25 @@ public:
 
     void draw();
 
-    ofColor getFillColor();
-
-    void setFillColor(ofColor _fillColor);
-
-    tuple<float, float> getPosition();
-
     void setPosition(float _posX, float _posY);
-
-    float getWidth();
-
-    void setWidth(float _width);
-
-    float getHeight();
-
-    void setHeight(float _height);
 
     void update();
 
-    void translate(float x, float y);
+    void translate(float x, float y, float z);
+
+    void getMeshes();
+
+    void rotate();
+
 
     ~Cube();
 
     ofBoxPrimitive cube;
     ofNode boundBox;
+
+    ofVboMesh cube_sides[ofBoxPrimitive::SIDES_TOTAL];
+    
+    
 
 };
 

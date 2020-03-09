@@ -43,5 +43,6 @@ public:
     bool is_mesh_mode = false;
     bool show_box = false;
     bool is_rotating = false;
+    bool is_animate = false;
 
 };

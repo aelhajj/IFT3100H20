@@ -12,21 +12,7 @@ public:
 
     void draw();
 
-    ofColor getFillColor();
-
-    void setFillColor(ofColor _fillColor);
-
-    tuple<float, float> getPosition();
-
     void setPosition(float _posX, float _posY);
-
-    float getWidth();
-
-    void setWidth(float _width);
-
-    float getHeight();
-
-    void setHeight(float _height);
 
     void update();
 

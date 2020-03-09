@@ -23,18 +23,77 @@ Cylinder::Cylinder() {
 void Cylinder::draw() {
     ofFill();
     ofSetColor(fillColor);
-    cylinder.draw();
-    ofNoFill();
-    boundBox.draw();
+
+    if(is_mesh_mode) {
+        cylinder.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+        cylinder.transformGL();
+        getMeshes();
+
+    cylinder.restoreTransformGL();
+     
+    if(bottom_mesh.getNumNormals() > 0) // not null 
+        {   
+            ofPushMatrix();
+            rotate();
+            if (is_animate) {
+                ofPushMatrix();
+                ofTranslate(bottom_mesh.getNormal(0) * cylinder.getHeight()* .8);
+                ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 0, 0);
+                bottom_mesh.drawWireframe();
+                top_mesh.drawWireframe();
+                ofPopMatrix();
+                ofPushMatrix();
+                ofTranslate(body_mesh.getNormal(0) * cos(ofGetElapsedTimef()) * 50);
+                ofRotateDeg((cos(ofGetElapsedTimef() * 6) + 1)*.5 * 360, 1, 0, 0);
+                body_mesh.drawWireframe();
+                ofPopMatrix();
+            }
+            else {
+                body_mesh.drawWireframe();
+                bottom_mesh.drawWireframe();
+                top_mesh.drawWireframe();
+            }
+            
+            ofPopMatrix();
+        }
+    }
+         else {
+        ofPushMatrix();
+        ofNoFill();
+        rotate();
+        cylinder.setMode(OF_PRIMITIVE_TRIANGLES);
+        cylinder.draw();
+        ofPopMatrix();
+    }
+    if(show_box) {
+        ofNoFill();
+        boundBox.draw();
+    }
+
 }
 
 void Cylinder::update() {
     cylinder.set(width *5.75, height*5.75);
 }
 
-void Cylinder::translate(float x, float y) {
-    position_x += x;
-    position_y += y;
+
+void Cylinder::getMeshes() {
+    bottom_mesh = cylinder.getBottomCapMesh();
+    body_mesh = cylinder.getCylinderMesh();
+    top_mesh = cylinder.getTopCapMesh();
 }
 
+void Cylinder::translate(float x, float y, float z) {
+    position_x += x;
+    position_y += y;
+    position_z += z;
+    cylinder.setPosition((-width * .5 + width *  2/4.f) + position_x, (height *  1.1/6.f) + position_y, (2/4.f * 0.5) +position_z); 
+}
+
+void Cylinder::rotate() {
+    if(is_rotating) {
+        ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 10, 1, 1);
+        ofRotateDeg(cos(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 10, 10);
+    }
+}
 Cylinder::~Cylinder() {};

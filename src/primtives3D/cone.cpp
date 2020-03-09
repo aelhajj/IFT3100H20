@@ -15,7 +15,6 @@ Cone::Cone(float _posX, float _posY, float _width, float _height, ofColor &_fill
 }
 
 Cone::Cone() {
-    //r = 100;
     type = SceneObjectType3D::cone;
 }
 
@@ -27,13 +26,30 @@ void Cone::draw() {
         cone.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         cone.transformGL();
         getMeshes();
+
+        cone.restoreTransformGL();
         
         if(bottom_mesh.getNumNormals() > 0) // not null 
         {   
             ofPushMatrix();
             rotate();
-            body_mesh.drawWireframe();
-            bottom_mesh.drawWireframe();
+            if (is_animate) {
+                ofPushMatrix();
+                ofTranslate(bottom_mesh.getNormal(0) * cone.getHeight()* .8);
+                ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 0, 0);
+                bottom_mesh.drawWireframe();
+                ofPopMatrix();
+                ofPushMatrix();
+                ofTranslate(body_mesh.getNormal(0) * cos(ofGetElapsedTimef()) * 50);
+                ofRotateDeg((cos(ofGetElapsedTimef() * 6) + 1)*.5 * 360, 1, 0, 0);
+                body_mesh.drawWireframe();
+                ofPopMatrix();
+            }
+            else {
+                body_mesh.drawWireframe();
+                bottom_mesh.drawWireframe();
+            }
+            
             ofPopMatrix();
         } 
         
