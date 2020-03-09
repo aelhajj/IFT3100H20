@@ -115,7 +115,7 @@ void Renderer::draw() {
 
         if (viewHist) {
             ofPushMatrix();
-            ofTranslate(0, 200);
+            ofTranslate(0, 800);
             draw_histogram();
             ofPopMatrix();
         }
