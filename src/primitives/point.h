@@ -8,7 +8,7 @@
 class Poin : public Primitive {
 public:
     Poin(int _posX, int _posY, int _width, int _height, int _thickness,
-           ofColor &fill_Color, ofColor &border_Color);
+         ofColor &fill_Color, ofColor &border_Color);
 
     Poin();
 

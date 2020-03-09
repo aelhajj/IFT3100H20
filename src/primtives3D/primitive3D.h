@@ -8,7 +8,7 @@
 
 class Primitive3D : public SceneObject3D {
 public:
-    Primitive3D(int _posX, int _posY, int _width, int _height, ofColor &_fillColor) ;
+    Primitive3D(int _posX, int _posY, int _width, int _height, ofColor &_fillColor);
 
     Primitive3D();
 
@@ -17,7 +17,6 @@ public:
     virtual void translate(int x, int y) {}
 
     ~Primitive3D();
-
 
 
 };

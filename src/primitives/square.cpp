@@ -20,12 +20,12 @@ void Square::draw() {
     ofFill();
     ofSetColor(fillColor);
     ofSetLineWidth(0);
-    ofDrawRectangle(position_x - (width/2), position_y - (width/2), width, width);
+    ofDrawRectangle(position_x - (width / 2), position_y - (width / 2), width, width);
 
     ofNoFill();
     ofSetColor(borderColor);
     ofSetLineWidth(thickness * 10);
-    ofDrawRectangle(position_x - (width/2), position_y - (width/2), width, width);
+    ofDrawRectangle(position_x - (width / 2), position_y - (width / 2), width, width);
     ofSetColor(255, 255, 255);
 }
 
@@ -33,7 +33,7 @@ void Square::translate(int x, int y) {
     position_x += x;
     position_y += y;
     //width += x;
-   // height += y;
+    // height += y;
 }
 
 

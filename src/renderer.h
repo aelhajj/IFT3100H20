@@ -24,10 +24,10 @@ public:
     int f;
     std::vector<ImageStruct *> images;
     ofImage image;
-    Camera* camera = new Camera();
-    enum modes {is2D, is3D, isCamera};
-    //ofLight	light;
-    //std::vector <Primitive*> shapes;
+    Camera *camera = new Camera();
+    enum modes {
+        is2D, is3D, isCamera
+    };
 
     modes Mode = modes::is2D; // si mode est en 2D : true, si 3D : false
     bool isMode2D = false;
@@ -110,7 +110,7 @@ public:
     void add_Model3D();
 
     void image_export() const;
-    
+
     void showBox3D();
 
     void rotate3D();

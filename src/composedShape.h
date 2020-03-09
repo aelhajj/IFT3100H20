@@ -5,16 +5,16 @@
 #include "composedShape.h"
 #include "primitives/square.h"
 
-class ComposedShape : public SceneObject
-{
+// Classe pour les objets composées en 2D, section 3.4 
+class ComposedShape : public SceneObject {
 
 public:
     void draw();
+
     virtual void translate(int x, int y);
+
     std::vector<Primitive *> primitives;
 };
-
-
 
 
 #endif

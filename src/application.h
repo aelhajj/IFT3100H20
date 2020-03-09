@@ -13,7 +13,7 @@ public:
 
     Actions *actions;
     Renderer renderer;
-    // Mode 3D
+
     float time_current;
     float time_last;
     float time_elapsed;
@@ -40,17 +40,10 @@ public:
     ofxDatGuiDropdown *menu3DShape;
     ofxDatGui *gui;
 
-    //ofParameter<ofColor> param_color_background;
-    //ofParameter<ofColor> param_color_stroke;
-    //ofParameter<ofColor> param_color_fill;
-
-    //ofParameter<int> param_stroke_weight;
-
     ofxDatGuiColorPicker *background_color_picker;
     ofxDatGuiColorPicker *fill_color_picker;
     ofxDatGuiColorPicker *stroke_color_picker;
     ofxDatGuiSlider *stroke_slider;
-
 
 
     Cursor *cursor;
@@ -58,8 +51,6 @@ public:
     void setup();
 
     void draw();
-
-    //void drawGui();
 
     void update();
 
@@ -84,6 +75,7 @@ public:
     void mouseExited(int x, int y);
 
     void keyReleased(int key);
+
     void keyPressed(int key);
 
     void openFileSelected(ofFileDialogResult openFileResult);

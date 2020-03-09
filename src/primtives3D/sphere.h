@@ -36,7 +36,7 @@ public:
 
     void translate(float x, float y);
 
-    
+
 
     //Primitive *copy();
 

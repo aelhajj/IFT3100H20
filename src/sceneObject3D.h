@@ -35,9 +35,6 @@ public:
     SceneObjectType3D type = SceneObjectType3D::none;
     int thickness;
 
-    // float spinX = sin(ofGetElapsedTimef()*3.3f);
-    // float spinY = sin(ofGetElapsedTimef()*3.3f);
-
     ofColor fillColor;
 
     bool is_mesh_mode = false;

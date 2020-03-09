@@ -1,14 +1,6 @@
 
 #include "sceneObject.h"
-/*
-tuple<int, int> SceneObject::getPosition() {
-    return make_tuple(position_x, position_y);
-}
 
-void SceneObject::setPosition(int _posX, int _posY) {
-    position_x = _posX;
-    position_y = _posY;
-}*/
 
 void SceneObject::info() {
     cout << "Pos x: " << position_x
@@ -16,22 +8,7 @@ void SceneObject::info() {
          << " width: " << width
          << " height: " << height << endl;
 }
-/*
-int SceneObject::getHeight() {
-    return height;
-}
 
-void SceneObject::setHeight(int _height) {
-    height = _height;
-}
-
-int SceneObject::getWidth() {
-    return width;
-}
-
-void SceneObject::setWidth(int _width) {
-    width = _width;
-}*/
 
 void SceneObject::translate(int x, int y) {
     position_x += x;
@@ -52,23 +29,18 @@ void SceneObject::rotate() {
     rotation += 5;
 }
 
-void SceneObject::undo(Actions action)
-{
-  if (action == Actions::rotated)
-  {
-    rotation -= 5;
-  }
-  if (action == Actions::zoomedIn)
-  {
-    zoomOut();
-  }
-  if (action == Actions::zoomedOut)
-  {
-    zoomIn();
-  }
-  if (action == Actions::translated)
-  {
-    position_x = x_pos_before_translation;
-    position_y = y_pos_before_translation;
-  }
+void SceneObject::undo(Actions action) {
+    if (action == Actions::rotated) {
+        rotation -= 5;
+    }
+    if (action == Actions::zoomedIn) {
+        zoomOut();
+    }
+    if (action == Actions::zoomedOut) {
+        zoomIn();
+    }
+    if (action == Actions::translated) {
+        position_x = x_pos_before_translation;
+        position_y = y_pos_before_translation;
+    }
 }

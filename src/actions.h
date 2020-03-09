@@ -3,10 +3,10 @@
 #include <vector>
 #include "sceneObject.h"
 
-class Actions{
+class Actions {
 
 public:
-  stack<SceneObject::Actions> actions;
-  stack<SceneObject*> objectActionsWereMadeOn;
+    stack <SceneObject::Actions> actions;
+    stack<SceneObject *> objectActionsWereMadeOn;
 
 };

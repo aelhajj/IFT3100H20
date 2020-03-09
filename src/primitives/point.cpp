@@ -2,7 +2,7 @@
 #include "point.h"
 
 Poin::Poin(int _posX, int _posY, int _width, int _height, int _thickness,
-               ofColor &_fill_Color, ofColor &_border_Color) :
+           ofColor &_fill_Color, ofColor &_border_Color) :
         Primitive(_posX, _posY, _width, _height, _thickness, _fill_Color, _border_Color) {
     prim_size++;
     r = 10;

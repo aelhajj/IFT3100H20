@@ -8,10 +8,11 @@
 #include <string>
 #include "ofxAssimpModelLoader.h"
 
+// Classe de gestion des modèles importer en 3D. Section 4.3
 class Model3D : public SceneObject3D {
 public:
 
-    Model3D(std::string _file_name) ;
+    Model3D(std::string _file_name);
 
     Model3D();
 

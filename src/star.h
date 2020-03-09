@@ -8,8 +8,10 @@
 
 class Star : public ComposedShape {
 public:
-    Star(int x, int y, int width, int height,int _stroke, ofColor _fill, ofColor _contour);
+    Star(int x, int y, int width, int height, int _stroke, ofColor _fill, ofColor _contour);
+
     Star();
+
     void update() {}
 
 };

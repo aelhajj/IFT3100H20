@@ -3,7 +3,7 @@
 #include "triangle.h"
 
 Triangle::Triangle(int _posX, int _posY, int _posX2, int _posY2, int _thickness,
-               ofColor &_fill_Color, ofColor &_border_Color) :
+                   ofColor &_fill_Color, ofColor &_border_Color) :
         Primitive(_posX, _posY, _posX2, _posY2, _thickness, _fill_Color, _border_Color) {
     x3 = (position_x + width) / 2;
     y3 = (position_y + height) / 2;
@@ -17,12 +17,12 @@ Triangle::Triangle() : Primitive() {
 }
 
 void Triangle::draw() {
-    int x1 = position_x - (width/2);
-    int y1 = position_y - (height/2);
-    int x2 = position_x + (width/2);
-    int y2 = position_y - (height/2);
+    int x1 = position_x - (width / 2);
+    int y1 = position_y - (height / 2);
+    int x2 = position_x + (width / 2);
+    int y2 = position_y - (height / 2);
     int x3 = position_x;
-    int y3 = position_y + (height/2);
+    int y3 = position_y + (height / 2);
 
     ofFill();
     ofSetColor(fillColor);
@@ -44,7 +44,7 @@ void Triangle::update() {
 
 
 void Triangle::changeShape() {
-    int y3 = position_y - 2*(height);
+    int y3 = position_y - 2 * (height);
 }
 
 void Triangle::translate(int x, int y) {

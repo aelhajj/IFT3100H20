@@ -4,7 +4,7 @@
 #include <vector>
 #include "sceneObject.h"
 
-
+// Classe pour la gestion des images, hérite de SceneObject. Section 1 
 class ImageStruct : public SceneObject {
 public:
     ofImage image;
@@ -16,15 +16,12 @@ public:
     void update() {}
 
     void draw() {
-        //ofTranslate(width / 2, height / 2, 0);
-        //setAnchorPercent(0.5f, 0.5f);
         ofRotate(rotation);
         ofScale(scale);
         image.draw(position_x,
                    position_y,
                    width,
                    height);
-
     }
 
 

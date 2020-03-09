@@ -4,6 +4,7 @@
 #include "application.h"
 #include "actions.h"
 
+// Classe pour la gestion des curseurs, section 2.1
 class Cursor {
 public:
     virtual void onMouseMoved(int x, int y) = 0;
@@ -97,19 +98,15 @@ public:
         if (isSceneObjectSelected) {
             float delta_x = x - last_frame_x;
             float delta_y = y - last_frame_y;
-            if (renderer->Mode == Renderer::modes::is2D)
-            {
-              for (auto &obj : sceneObjectsSelected)
-              {
-                obj->translate(delta_x, delta_y);
-              }
+            if (renderer->Mode == Renderer::modes::is2D) {
+                for (auto &obj : sceneObjectsSelected) {
+                    obj->translate(delta_x, delta_y);
+                }
             }
-            if (renderer->Mode == Renderer::modes::is3D)
-            {
-              for (auto &obj : sceneObjects3DSelected)
-              {
-                obj->translate(delta_x, delta_y, 0);
-              }
+            if (renderer->Mode == Renderer::modes::is3D) {
+                for (auto &obj : sceneObjects3DSelected) {
+                    obj->translate(delta_x, delta_y, 0);
+                }
             }
         }
         last_frame_x = x;
@@ -118,53 +115,50 @@ public:
     }
 
     void onMousePressed(int x, int y) {
-      if (renderer->Mode == Renderer::modes::is2D)
-      {
-        for (auto &obj: renderer->objects) {
-            //obj->info();
-            if (x >= obj->position_x &&
-                x <= (obj->width + obj->position_x) &&
-                y >= obj->position_y &&
-                y <= (obj->height + obj->position_y)) {
-                //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
-                obj->x_pos_before_translation = obj->position_x;
-                obj->y_pos_before_translation = obj->position_y;
-                renderer->sceneObjectSelected = obj;
-                isSceneObjectSelected = true;
-                if (std::find(sceneObjectsSelected.begin(), sceneObjectsSelected.end(), obj) == sceneObjectsSelected.end())
-                {
-                    sceneObjectsSelected.push_back(obj);
-                }
-                actions->actions.push(SceneObject::Actions::translated);
-                actions->objectActionsWereMadeOn.push(obj);
+        if (renderer->Mode == Renderer::modes::is2D) {
+            for (auto &obj: renderer->objects) {
+                //obj->info();
+                if (x >= obj->position_x &&
+                    x <= (obj->width + obj->position_x) &&
+                    y >= obj->position_y &&
+                    y <= (obj->height + obj->position_y)) {
+                    //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
+                    obj->x_pos_before_translation = obj->position_x;
+                    obj->y_pos_before_translation = obj->position_y;
+                    renderer->sceneObjectSelected = obj;
+                    isSceneObjectSelected = true;
+                    if (std::find(sceneObjectsSelected.begin(), sceneObjectsSelected.end(), obj) ==
+                        sceneObjectsSelected.end()) {
+                        sceneObjectsSelected.push_back(obj);
+                    }
+                    actions->actions.push(SceneObject::Actions::translated);
+                    actions->objectActionsWereMadeOn.push(obj);
 
-              }
-          }
-          if (!isSceneObjectSelected)
-          {
-            sceneObjectsSelected.clear();
-          }
-      } else {
-        for (auto &obj: renderer->objects3D) {
-            //obj->info();
-            if (x >= obj->position_x &&
-                x <= (obj->width + obj->position_x) &&
-                y >= obj->position_y &&
-                y <= (obj->height + obj->position_y)) {
-                //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
-                isSceneObjectSelected = true;
-                if (std::find(sceneObjects3DSelected.begin(), sceneObjects3DSelected.end(), obj) == sceneObjects3DSelected.end())
-                {
-                    sceneObjects3DSelected.push_back(obj);
                 }
+            }
+            if (!isSceneObjectSelected) {
+                sceneObjectsSelected.clear();
+            }
+        } else {
+            for (auto &obj: renderer->objects3D) {
+                //obj->info();
+                if (x >= obj->position_x &&
+                    x <= (obj->width + obj->position_x) &&
+                    y >= obj->position_y &&
+                    y <= (obj->height + obj->position_y)) {
+                    //  cout<< "obj selected because "<< x << " is bigger than " << obj->position_x << " but smaller than " << obj->position_x + obj->width << endl;
+                    isSceneObjectSelected = true;
+                    if (std::find(sceneObjects3DSelected.begin(), sceneObjects3DSelected.end(), obj) ==
+                        sceneObjects3DSelected.end()) {
+                        sceneObjects3DSelected.push_back(obj);
+                    }
 
-              }
-          }
-          if (!isSceneObjectSelected)
-          {
-            sceneObjects3DSelected.clear();
-          }
-      }
+                }
+            }
+            if (!isSceneObjectSelected) {
+                sceneObjects3DSelected.clear();
+            }
+        }
 
     }
 
@@ -181,8 +175,8 @@ private:
     int last_frame_x;
     int last_frame_y;
     bool isSceneObjectSelected = false;
-    std::vector<SceneObject*> sceneObjectsSelected;
-    std::vector<SceneObject3D*> sceneObjects3DSelected;
+    std::vector<SceneObject *> sceneObjectsSelected;
+    std::vector<SceneObject3D *> sceneObjects3DSelected;
     ofImage image;
     Renderer *renderer;
 };
@@ -367,20 +361,21 @@ public:
         renderer->add_primitive(renderer->draw_mode);
 
     }
-  /*  void onMouseReleased(int x, int y) {
-        renderer->is_mouse_button_pressed = false;
-        if (y > 100) {
-            renderer->croping_zone.push_back(renderer->mouse_press_x);
-            renderer->croping_zone.push_back(renderer->mouse_press_y);
-            renderer->croping_zone.push_back(renderer->mouse_current_x);
-            renderer->croping_zone.push_back(renderer->mouse_current_y);
-            renderer->is_ready_croping = true;
-        }
 
-        renderer->mouse_current_x = x;
-        renderer->mouse_current_y = y;
-        renderer->add_primitive(renderer->draw_mode);
-    }*/
+    /*  void onMouseReleased(int x, int y) {
+          renderer->is_mouse_button_pressed = false;
+          if (y > 100) {
+              renderer->croping_zone.push_back(renderer->mouse_press_x);
+              renderer->croping_zone.push_back(renderer->mouse_press_y);
+              renderer->croping_zone.push_back(renderer->mouse_current_x);
+              renderer->croping_zone.push_back(renderer->mouse_current_y);
+              renderer->is_ready_croping = true;
+          }
+
+          renderer->mouse_current_x = x;
+          renderer->mouse_current_y = y;
+          renderer->add_primitive(renderer->draw_mode);
+      }*/
 
     void drawCursor() {
         image.draw(ofGetMouseX() - 10, ofGetMouseY() - 10, 50, 45);

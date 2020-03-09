@@ -9,32 +9,9 @@ enum class SceneObjectType {
 
 class SceneObject {
 public:
-    enum Actions {croped, translated, rotated, zoomedIn, zoomedOut};
-
-
- /*   void addChild(SceneObject &child);
-
-    tuple<int, int> getPosition();
-
-    void setPosition(int _posX, int _posY);
-
-    //void SceneObject::setType(SceneObjectType _type);
-
-    int getWidth();
-
-    void setWidth(int _width);
-
-    int getHeight();
-
-    void setHeight(int _height);
-
-    int getThickness();
-
-    void setThickness(int _thickness);
-
-    void setScale(float _scale);
-
-    float getScale();*/
+    enum Actions {
+        croped, translated, rotated, zoomedIn, zoomedOut
+    };
 
     virtual void draw() = 0;
 
@@ -67,7 +44,5 @@ public:
     ofColor fillColor;
     ofColor borderColor;
 
-//private:
-    //std::vector<SceneObject *> children;
 
 };

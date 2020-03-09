@@ -29,8 +29,8 @@ public:
     ofVboMesh bottom_mesh;
     ofVboMesh body_mesh;
     ofMaterial material;
-    vector<ofMeshFace> triangles;
-    
+    vector <ofMeshFace> triangles;
+
 
 };
 

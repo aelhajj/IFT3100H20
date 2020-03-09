@@ -29,8 +29,7 @@ public:
     ofNode boundBox;
 
     ofVboMesh cube_sides[ofBoxPrimitive::SIDES_TOTAL];
-    
-    
+
 
 };
 

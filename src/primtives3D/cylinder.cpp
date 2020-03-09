@@ -6,12 +6,12 @@ Cylinder::Cylinder(float _posX, float _posY, float _width, float _height, ofColo
     position_y = _posY;
     width = _width;
     height = _height;
-    
-    cylinder.set(width*.7, height*2.2);
-    cylinder.setPosition( -_width * .5 + _width *  2/4.f, _height *  1.1/6.f, 0);
 
-    boundBox.setScale(width/4);
-    boundBox.setPosition(-_width * .5 + _width *  2/4.f, _height *  1.1/6.f, 0);
+    cylinder.set(width * .7, height * 2.2);
+    cylinder.setPosition(-_width * .5 + _width * 2 / 4.f, _height * 1.1 / 6.f, 0);
+
+    boundBox.setScale(width / 4);
+    boundBox.setPosition(-_width * .5 + _width * 2 / 4.f, _height * 1.1 / 6.f, 0);
     type = SceneObjectType3D::cylinder;
 }
 
@@ -24,40 +24,38 @@ void Cylinder::draw() {
     ofFill();
     ofSetColor(fillColor);
 
-    if(is_mesh_mode) {
+    if (is_mesh_mode) {
         cylinder.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         cylinder.transformGL();
         getMeshes();
 
-    cylinder.restoreTransformGL();
-     
-    if(bottom_mesh.getNumNormals() > 0) // not null 
-        {   
+        cylinder.restoreTransformGL();
+
+        if (bottom_mesh.getNumNormals() > 0) // not null
+        {
             ofPushMatrix();
             rotate();
             if (is_animate) {
                 ofPushMatrix();
-                ofTranslate(bottom_mesh.getNormal(0) * cylinder.getHeight()* .8);
+                ofTranslate(bottom_mesh.getNormal(0) * cylinder.getHeight() * .8);
                 ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 0, 0);
                 bottom_mesh.drawWireframe();
                 top_mesh.drawWireframe();
                 ofPopMatrix();
                 ofPushMatrix();
                 ofTranslate(body_mesh.getNormal(0) * cos(ofGetElapsedTimef()) * 50);
-                ofRotateDeg((cos(ofGetElapsedTimef() * 6) + 1)*.5 * 360, 1, 0, 0);
+                ofRotateDeg((cos(ofGetElapsedTimef() * 6) + 1) * .5 * 360, 1, 0, 0);
                 body_mesh.drawWireframe();
                 ofPopMatrix();
-            }
-            else {
+            } else {
                 body_mesh.drawWireframe();
                 bottom_mesh.drawWireframe();
                 top_mesh.drawWireframe();
             }
-            
+
             ofPopMatrix();
         }
-    }
-         else {
+    } else {
         ofPushMatrix();
         ofNoFill();
         rotate();
@@ -65,7 +63,7 @@ void Cylinder::draw() {
         cylinder.draw();
         ofPopMatrix();
     }
-    if(show_box) {
+    if (show_box) {
         ofNoFill();
         boundBox.draw();
     }
@@ -73,7 +71,7 @@ void Cylinder::draw() {
 }
 
 void Cylinder::update() {
-    cylinder.set(width *5.75, height*5.75);
+    cylinder.set(width * 5.75, height * 5.75);
 }
 
 
@@ -87,13 +85,15 @@ void Cylinder::translate(float x, float y, float z) {
     position_x += x;
     position_y += y;
     position_z += z;
-    cylinder.setPosition((-width * .5 + width *  2/4.f) + position_x, (height *  1.1/6.f) + position_y, (2/4.f * 0.5) +position_z); 
+    cylinder.setPosition((-width * .5 + width * 2 / 4.f) + position_x, (height * 1.1 / 6.f) + position_y,
+                         (2 / 4.f * 0.5) + position_z);
 }
 
 void Cylinder::rotate() {
-    if(is_rotating) {
+    if (is_rotating) {
         ofRotateDeg(sin(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 10, 1, 1);
         ofRotateDeg(cos(ofGetElapsedTimef() * 5) * RAD_TO_DEG, 1, 10, 10);
     }
 }
+
 Cylinder::~Cylinder() {};

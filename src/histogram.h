@@ -3,6 +3,7 @@
 #include "ofxHistogram.h"
 #include "ofMain.h"
 
+// Classe pour l'histogramme, utilise ofxHistogram, section 1.4
 class Histogram {
 public:
     void setup(ofImage image);

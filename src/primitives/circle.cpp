@@ -50,5 +50,4 @@ void Circle::translate(int x, int y) {
 }
 
 
-
 Circle::~Circle() {};

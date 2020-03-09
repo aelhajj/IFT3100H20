@@ -5,8 +5,6 @@ void Histogram::setup(ofImage image) {
     this->image = image;
     this->height = image.getHeight();
     this->width = image.getWidth();
-    //cout << "Histogram width: " << this->width << endl
-    //     << "Histogram height: " << this->height << endl;
 
     rgb.allocate(width, height);
     hsv.allocate(width, height);

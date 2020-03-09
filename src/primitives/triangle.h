@@ -7,7 +7,7 @@
 class Triangle : public Primitive {
 public:
     Triangle(int _posX, int _posY, int _posX2, int _posY2, int _thickness,
-           ofColor &fill_Color, ofColor &border_Color);
+             ofColor &fill_Color, ofColor &border_Color);
 
     Triangle();
 
