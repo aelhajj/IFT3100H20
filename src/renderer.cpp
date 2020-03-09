@@ -257,7 +257,9 @@ void Renderer::add_primitive(SceneObjectType type) {
 
 
 void Renderer::add_primitive3D(SceneObjectType3D type) {
-
+    // Test, pour pas que les objets se stack dans la zone d'affichage l'un par dessus l'autre.
+    if(!objects3D.empty()) 
+        objects3D.pop_back();
     SceneObject3D *newShape;
     ofColor testColor(100, 100, 190);
 
@@ -286,6 +288,9 @@ void Renderer::add_primitive3D(SceneObjectType3D type) {
 }
 
 void Renderer::add_Model3D() {
+    // Test, pour pas que les objets se stack dans la zone d'affichage l'un par dessus l'autre.
+    if(!objects3D.empty()) 
+        objects3D.pop_back();
     Model3D *model3D = new Model3D();
     objects3D.push_back(model3D);
     model3D->getFileExtension();
@@ -330,6 +335,12 @@ void Renderer::rotate3D() {
 void Renderer::showMesh3D() {
      for (SceneObject3D *obj : objects3D) {
         obj->is_mesh_mode = !(obj->is_mesh_mode);
+    }
+}
+
+void Renderer::showAnim3D() {
+    for (SceneObject3D *obj : objects3D) {
+        obj->is_animate = !(obj->is_animate);
     }
 }
 

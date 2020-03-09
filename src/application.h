@@ -34,6 +34,7 @@ public:
     ofxDatGuiButton *boutonRotate3D;
     ofxDatGuiButton *boutonBox3D;
     ofxDatGuiButton *boutonMesh3D;
+    ofxDatGuiButton *boutonAnim3D;
 
     ofxDatGuiDropdown *menuCursor;
     ofxDatGuiDropdown *menu3DShape;

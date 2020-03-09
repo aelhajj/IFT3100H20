@@ -117,6 +117,8 @@ public:
 
     void showMesh3D();
 
+    void showAnim3D();
+
     ~Renderer();
 
     ofEasyCam cam;

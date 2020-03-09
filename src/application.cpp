@@ -43,7 +43,8 @@ void Application::setup() {
     menu3DShape = gui->addDropdown("Select 3D Shape", options_shapes3D);
     boutonBox3D = gui->addButton("Montrer Boite de délimitation");
     boutonMesh3D = primitive3D_folder->addButton("Afficher mailles");
-    boutonRotate3D = gui->addButton("Animer modele 3D");
+    boutonAnim3D = gui->addButton("Animation sur mailles");
+    boutonRotate3D = gui->addButton("Animation 2");
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
     
 
@@ -174,6 +175,9 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if(event.target == boutonMesh3D) {
       renderer.showMesh3D();
+    }
+    if(event.target == boutonAnim3D) {
+      renderer.showAnim3D();
     }
     
 
