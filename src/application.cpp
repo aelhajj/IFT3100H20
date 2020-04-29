@@ -1,4 +1,6 @@
 #include "application.h"
+#include "raytracer.h"
+#include <thread>
 
 
 void Application::setup() {
@@ -51,7 +53,7 @@ void Application::setup() {
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
 
-    
+
     primitive3D_folder->expand();
     menu3DShape->expand();
 
@@ -102,20 +104,36 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
 
 }
 
+void callRaytracer()
+{
+  string command;
+  for (int i = 2; i < 256; i*=2)
+  {
+    command = "../raytracer/raytracer 512 512 " + to_string(i);
+    std::system(command.c_str());
+  }
+}
 
 void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if (event.target == boutonModeSwitcher) {
         nbClick++;
-        if (nbClick % 3 == 1) {
+        if (nbClick % 4 == 1) {
             boutonModeSwitcher->setLabel("Mode actuel : 2D");
             renderer.Mode = Renderer::modes::is2D;
-        } else if (nbClick % 3 == 2) {
+        } else if (nbClick % 4 == 2) {
             boutonModeSwitcher->setLabel("Mode actuel : 3D");
             renderer.Mode = Renderer::modes::is3D;
-        } else {
+        } else if (nbClick % 4 == 3){
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
+        } else {
+            boutonModeSwitcher->setLabel("Mode actuel : Raytracer");
+            renderer.raytracer->setup();
+            renderer.Mode = Renderer::modes::isRaytracer;
+            std::thread t1(callRaytracer);
+            t1.detach();
+
         }
 
     }
@@ -134,7 +152,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         }
     }
     if (event.target == boutonRogner) {
-        // On regarde si la zone est prete, c'est a dire que le bouton a ete released, et on enregistre 
+        // On regarde si la zone est prete, c'est a dire que le bouton a ete released, et on enregistre
         // les données dans une nouvelle image
         if (renderer.is_ready_croping) {
             float width = renderer.croping_zone[2] - renderer.croping_zone[0];

@@ -2,7 +2,6 @@
 #include "renderer.h"
 #include "histogram.h"
 
-
 void Renderer::setup() {
 
     camera->setup();
@@ -94,10 +93,27 @@ void Renderer::draw() {
 
         // revenir à la matrice de transformation précédente dans la pile
         ofPopMatrix();
-    } else {
+    } else if (Mode == modes::isCamera) {
         ofPushMatrix();
         camera->draw();
         ofPopMatrix();
+    }
+
+    else
+    {
+      if (count % 1000 == 0)
+      {
+        raytracer->setup();
+      }
+      else
+      {
+         count++;
+      }
+      if (count == 1000)
+      {
+          count = 1;
+      }
+      raytracer->draw();
     }
 }
 

@@ -17,6 +17,7 @@
 #include "primtives3D/cylinder.h"
 #include "camera.h"
 #include "model3D.h"
+#include "raytracer.h"
 
 
 class Renderer {
@@ -25,8 +26,9 @@ public:
     std::vector<ImageStruct *> images;
     ofImage image;
     Camera *camera = new Camera();
+    Raytracer *raytracer = new Raytracer();
     enum modes {
-        is2D, is3D, isCamera
+        is2D, is3D, isCamera, isRaytracer
     };
 
     modes Mode = modes::is2D; // si mode est en 2D : true, si 3D : false
@@ -88,6 +90,9 @@ public:
 
 
     bool is_flip_axis_y;
+
+    //For raycast
+    int count = 0;
 
     void setup();
 

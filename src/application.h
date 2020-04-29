@@ -52,6 +52,7 @@ public:
 
     void draw();
 
+
     void update();
 
     void windowResized(int w, int h);

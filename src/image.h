@@ -4,7 +4,7 @@
 #include <vector>
 #include "sceneObject.h"
 
-// Classe pour la gestion des images, hérite de SceneObject. Section 1 
+// Classe pour la gestion des images, hérite de SceneObject. Section 1
 class ImageStruct : public SceneObject {
 public:
     ofImage image;
