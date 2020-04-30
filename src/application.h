@@ -27,6 +27,8 @@ public:
 
     ofxDatGuiButton *boutonModeSwitcher;
 
+    ofxDatGuiButton *boutonFilterSwitch;
+
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;
     ofxDatGuiButton *boutonHistogram;
@@ -44,6 +46,9 @@ public:
     ofxDatGuiColorPicker *fill_color_picker;
     ofxDatGuiColorPicker *stroke_color_picker;
     ofxDatGuiSlider *stroke_slider;
+
+    ofxDatGuiColorPicker *filter_tint_color_picker;
+    ofxDatGuiSlider *filter_mix_slider;
 
 
     Cursor *cursor;

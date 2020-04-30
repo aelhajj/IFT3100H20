@@ -16,6 +16,8 @@ public:
 
     virtual void rotate();
 
+    virtual void setTexture(ofImage imageTexture) {};
+
     void zoomIn();
 
     void zoomOut();
@@ -41,5 +43,8 @@ public:
     bool show_box = false;
     bool is_rotating = false;
     bool is_animate = false;
+
+    ofImage texture;
+    bool textureMode = false;
 
 };

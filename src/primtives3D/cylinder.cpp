@@ -13,6 +13,9 @@ Cylinder::Cylinder(float _posX, float _posY, float _width, float _height, ofColo
     boundBox.setScale(width / 4);
     boundBox.setPosition(-_width * .5 + _width * 2 / 4.f, _height * 1.1 / 6.f, 0);
     type = SceneObjectType3D::cylinder;
+
+    //texture.load(texture_img);
+    //texture.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 }
 
 Cylinder::Cylinder() {
@@ -20,9 +23,21 @@ Cylinder::Cylinder() {
     type = SceneObjectType3D::cylinder;
 }
 
+void Cylinder::setTexture(ofImage imageTexture)
+{
+    texture = imageTexture;
+
+    texture.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+
+    textureMode = true;
+}
+
 void Cylinder::draw() {
     ofFill();
     ofSetColor(fillColor);
+
+    if (textureMode)
+        texture.getTexture().bind();
 
     if (is_mesh_mode) {
         cylinder.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
@@ -55,6 +70,7 @@ void Cylinder::draw() {
 
             ofPopMatrix();
         }
+
     } else {
         ofPushMatrix();
         ofNoFill();
@@ -68,6 +84,11 @@ void Cylinder::draw() {
         boundBox.draw();
     }
 
+    if(textureMode)
+    {
+        texture.getTexture().unbind();
+        cylinder.mapTexCoordsFromTexture(texture.getTexture());
+    }
 }
 
 void Cylinder::update() {

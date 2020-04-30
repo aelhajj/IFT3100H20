@@ -25,11 +25,16 @@ public:
     int f;
     std::vector<ImageStruct *> images;
     ofImage image;
+    ofImage image_source;
+    ofImage image_destination; // pour les modifications sur la texture courante
+    ofImage texture;
     Camera *camera = new Camera();
     Raytracer *raytracer = new Raytracer();
     enum modes {
         is2D, is3D, isCamera, isRaytracer
     };
+
+    ConvolutionKernel kernel_type;
 
     modes Mode = modes::is2D; // si mode est en 2D : true, si 3D : false
     bool isMode2D = false;
@@ -88,6 +93,11 @@ public:
 
     float speed;
 
+    string kernel_name;
+
+    int image_width;
+    int image_height;
+
 
     bool is_flip_axis_y;
 
@@ -123,6 +133,8 @@ public:
     void showMesh3D();
 
     void showAnim3D();
+
+    void filter();
 
     ~Renderer();
 

@@ -10,6 +10,8 @@ public:
 
     Cylinder();
 
+    void setTexture(ofImage imageTexture);
+
     void draw();
 
     void update();

@@ -26,7 +26,13 @@ void Application::setup() {
     boutonRogner = image_folder->addButton("Rogner Image");
     boutonHistogram = image_folder->addButton("Afficher Histogramme");
 
-    image_folder->expand();
+    ofxDatGuiFolder *filter_folder = gui->addFolder("Filtres ", ofColor::orange);
+
+    boutonFilterSwitch = gui->addButton("Changer de filtres");
+    filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
+    filter_mix_slider = filter_folder->addSlider("Mixage", 0, 10);
+
+    //image_folder->expand();
 
     gui->addBreak();
 
@@ -41,7 +47,7 @@ void Application::setup() {
     stroke_slider = primitive_folder->addSlider("Stroke contour", 0, 10);
 
     gui->addBreak();
-    primitive_folder->expand();
+    //primitive_folder->expand();
 
     ofxDatGuiFolder *primitive3D_folder = gui->addFolder("Primitive 3D", ofColor::blue);
 
@@ -317,26 +323,36 @@ void Application::keyReleased(int key) {
         std::cout << key << std::endl;
         case 49:  // key 1
             renderer.draw_mode = SceneObjectType::point;
+            renderer.kernel_type = ConvolutionKernel::identity;
+            renderer.kernel_name = "identité";
             ofLog() << "<mode: point>";
             break;
 
         case 50:  // key 2
             renderer.draw_mode = SceneObjectType::circle;
+            renderer.kernel_type = ConvolutionKernel::emboss;
+            renderer.kernel_name = "bosseler";
             ofLog() << "<mode: cercle>";
             break;
 
         case 51:  // key 3
             renderer.draw_mode = SceneObjectType::line;
+            renderer.kernel_type = ConvolutionKernel::sharpen;
+            renderer.kernel_name = "aiguiser";
             ofLog() << "<mode: line>";
             break;
 
         case 52:  // key 4
             renderer.draw_mode = SceneObjectType::rectangle;
+            renderer.kernel_type = ConvolutionKernel::edge_detect;
+            renderer.kernel_name = "détection de bordure";
             ofLog() << "<mode: rectangle>";
             break;
 
         case 53:  // key 5
             renderer.draw_mode = SceneObjectType::triangle;
+            renderer.kernel_type = ConvolutionKernel::blur;
+            renderer.kernel_name = "flou";
             ofLog() << "<mode: triangle>";
             break;
 
@@ -385,6 +401,7 @@ void Application::keyReleased(int key) {
             // default:
             //   break;
     }
+    renderer.filter();
 }
 
 void Application::keyPressed(int key) {
