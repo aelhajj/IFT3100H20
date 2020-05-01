@@ -28,6 +28,7 @@ public:
     ofImage image_source;
     ofImage image_destination; // pour les modifications sur la texture courante
     ofImage texture;
+    
     Camera *camera = new Camera();
     Raytracer *raytracer = new Raytracer();
     enum modes {
@@ -82,6 +83,8 @@ public:
 
     ofNode node;
 
+    ofShader shader;
+
     float center_x;
     float center_y;
 
@@ -92,6 +95,12 @@ public:
     float delta_z;
 
     float speed;
+
+    float tone_mapping_exposure;
+    float tone_mapping_gamma;
+
+    bool tone_mapping_toggle;
+    bool tone_mapping_aces;
 
     string kernel_name;
 

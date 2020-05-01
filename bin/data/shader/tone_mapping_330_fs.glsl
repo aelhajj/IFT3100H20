@@ -15,7 +15,7 @@ uniform sampler2D image;
 uniform float tone_mapping_exposure;
 
 // mode de mappage tonal (reinhard ou aces filmic)
-uniform bool tone_mapping_toggle;
+uniform bool tone_mapping_aces;
 
 // facteur gamma
 uniform float tone_mapping_gamma;
@@ -55,7 +55,7 @@ void main()
   color = vec3(1.0) - exp(-color * tone_mapping_exposure);
 
   // mappage tonal de la couleur hdr vers ldr
-  if (tone_mapping_toggle)
+  if (tone_mapping_aces)
     color = tone_mapping_aces_filmic(color);
   else
     color = tone_mapping_reinhard(color);

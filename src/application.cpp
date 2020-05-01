@@ -32,6 +32,9 @@ void Application::setup() {
     filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
     filter_mix_slider = filter_folder->addSlider("Mixage", 0, 10);
 
+    gamma_slider = filter_folder->addSlider("Gamma", 0.0f, 5.0f);
+    exposure_slider = filter_folder->addSlider("Exposure", 0.0f, 5.0f);
+    boutonFilterSwitch = filter_folder->addButton("ACES filmic");
     //image_folder->expand();
 
     gui->addBreak();
@@ -76,6 +79,10 @@ void Application::setup() {
 
     cursor = new NormalCursor(&renderer, actions);
 
+   // if(tone_mapping_type)
+     //   tone_mapping_type.set("aces filmic", true);
+    //else 
+      //  tone_mapping_type.set("reinhard", false);
 
 }
 
@@ -202,6 +209,15 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
     if (event.target == boutonAnim3D) {
         renderer.showAnim3D();
     }
+    if(event.target == boutonFilterSwitch) {
+        //nbClick_2 +=1;
+        tone_mapping_type = (!tone_mapping_type);
+        renderer.tone_mapping_aces = (!renderer.tone_mapping_aces);
+        if(tone_mapping_type)
+            boutonModeSwitcher->setLabel("ACES filmic");
+        else 
+            boutonFilterSwitch->setLabel("Reinhard");
+    }
 
 
 }
@@ -312,6 +328,14 @@ void Application::update() {
         renderer.fill_color = fill_color_picker->getColor();
         renderer.stroke_size = (int) stroke_slider->getValue();
     }
+
+    renderer.tone_mapping_exposure = exposure_slider->getValue();
+    renderer.tone_mapping_gamma = gamma_slider->getValue();
+
+   // if(tone_mapping_type)
+     //   tone_mapping_type.set("aces filmic", true);
+    //else
+      //  tone_mapping_type.set("reinhard", false);
 
     renderer.update();
 }

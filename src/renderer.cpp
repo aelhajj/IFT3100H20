@@ -6,6 +6,7 @@ void Renderer::setup() {
 
     camera->setup();
     ofSetBackgroundColor(31);
+    ofDisableArbTex();
 
     // Interface de image
     ImageStruct *image = new ImageStruct();
@@ -28,6 +29,12 @@ void Renderer::setup() {
     kernel_type = ConvolutionKernel::sharpen;
     kernel_name = "sharpen";
 
+    // mappage tonal par defaut
+    tone_mapping_exposure = 1.0f;
+    tone_mapping_gamma = 2.2f;
+   // tone_mapping_toggle = false;
+    tone_mapping_aces = true;
+
     image_source.load("teapot.jpg");
     
     // dimensions de l'image source
@@ -36,7 +43,7 @@ void Renderer::setup() {
 
     // initialiser l'image de destination
     image_destination.allocate(image_width, image_height, OF_IMAGE_COLOR);
-
+   // image_source.allocate(image_width, image_height, OF_IMAGE_COLOR);
     //objects.push_back(image_destination);
     
     if (Mode != modes::is2D) {
@@ -53,10 +60,35 @@ void Renderer::setup() {
         reset();
     }
 
+    //TEST A ENLEVER !!
+    tone_mapping_toggle = true;
+
+   // if (tone_mapping_toggle) 
+        shader.load("shader/tone_mapping_330_vs.glsl", "shader/tone_mapping_330_fs.glsl");
+
 }
 
-void Renderer::draw() {
-    if (Mode == modes::is2D) {
+void Renderer::draw()
+{
+    if (Mode == modes::is2D)
+    {
+        if(tone_mapping_toggle)// && image_source.isAllocated()) 
+        {
+            //ofPushMatrix();
+            shader.begin();
+            // passer les attributs uniformes au shader
+            shader.setUniformTexture("image", image_source.getTexture(), 1);
+
+            shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+            shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+            shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+           // ofLog() << tone_mapping_exposure << "aa" << tone_mapping_gamma;
+            image_source.draw(offset_horizontal, offset_vertical, image_source.getWidth(), image_source.getHeight());
+
+            shader.end();
+            //ofPopMatrix();
+
+        }
         //cam.begin();
         // afficher l'image sur toute la surface de la fenêtre d'affichage
         for (SceneObject *obj : objects) {
@@ -137,6 +169,8 @@ void Renderer::draw() {
       }
       raytracer->draw();
     }
+   // if(tone_mapping_toggle)
+   //     shader.end();
 }
 
 
@@ -357,8 +391,8 @@ void Renderer::image_export() const {
 }
 
 void Renderer::filter() {
-
-
+     // activer le filtre
+  
   // résolution du kernel de convolution
   const int kernel_size = 3;
 
@@ -484,5 +518,6 @@ void Renderer::filter() {
   // écrire les pixels dans l'image de destination
   image_destination.setFromPixels(pixel_array_dst);
 
-  ofLog() << "<convolution filter done>";
+
+//  ofLog() << "<convolution filter done>";
 }

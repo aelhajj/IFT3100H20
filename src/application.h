@@ -23,11 +23,16 @@ public:
     bool is_key_press_left;
     bool is_key_press_right;
 
+    bool tone_mapping_type;
+
     int nbClick = 0;
+    //int nbClick_2 = 0;
 
     ofxDatGuiButton *boutonModeSwitcher;
 
     ofxDatGuiButton *boutonFilterSwitch;
+
+    ofxDatGuiButton *boutonMappingSwitch;
 
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;
@@ -49,6 +54,8 @@ public:
 
     ofxDatGuiColorPicker *filter_tint_color_picker;
     ofxDatGuiSlider *filter_mix_slider;
+    ofxDatGuiSlider *gamma_slider;
+    ofxDatGuiSlider *exposure_slider;
 
 
     Cursor *cursor;
