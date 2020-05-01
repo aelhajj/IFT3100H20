@@ -3,6 +3,7 @@
 #include "histogram.h"
 
 void Renderer::setup() {
+    ofSetSphereResolution(32);
 
     camera->setup();
     ofSetBackgroundColor(31);
@@ -36,7 +37,7 @@ void Renderer::setup() {
     tone_mapping_aces = true;
 
     filter_mix = 0.5f;
-    filter_tint.set(255,255,255);
+    filter_tint.set(255, 255, 255);
 
     image_source.load("teapot.jpg");
 
@@ -63,13 +64,58 @@ void Renderer::setup() {
         reset();
     }
 
-    //TEST A ENLEVER !!
     tone_mapping_toggle = false;
     texture_procedurale_toggle = true;
 
-    // if (tone_mapping_toggle)
     shader.load("shader/tone_mapping_330_vs.glsl", "shader/tone_mapping_330_fs.glsl");
     shader_texture_procedurale.load("shader/texture_procedurale_vs.glsl", "shader/texture_procedurale_fs.glsl");
+
+    // charger, compiler et linker les sources des shaders
+    // paramètres
+    oscillation_amplitude = 32.0f;
+    oscillation_frequency = 7500.0f;
+    speed_motion = 150.0f;
+    initial_x = 0.0f;
+    initial_z = -100.0f;
+    scale_cube = 100.0f;
+    scale_sphere = 80.0f;
+    scale_teapot = 0.618f;
+
+    // initialisation des variables
+    offset_x = initial_x;
+    offset_z = initial_z;
+
+    delta_x = speed_motion;
+    delta_z = speed_motion;
+    teapot.loadModel("geometry/teapot.obj");
+    teapot.disableMaterials();
+
+    shader_color_fill.load(
+            "shader/color_fill_330_vs.glsl",
+            "shader/color_fill_330_fs.glsl");
+
+    shader_lambert.load(
+            "shader/lambert_330_vs.glsl",
+            "shader/lambert_330_fs.glsl");
+
+    shader_gouraud.load(
+            "shader/gouraud_330_vs.glsl",
+            "shader/gouraud_330_fs.glsl");
+
+    shader_phong.load(
+            "shader/phong_330_vs.glsl",
+            "shader/phong_330_fs.glsl");
+
+    shader_blinn_phong.load(
+            "shader/blinn_phong_330_vs.glsl",
+            "shader/blinn_phong_330_fs.glsl");
+
+    // shader actif au lancement de la scène
+    shader_active = ShaderType::blinn_phong;
+
+
+    illuminate_toggle = true;
+    reset();
 }
 
 void Renderer::draw() {
@@ -77,7 +123,7 @@ void Renderer::draw() {
     {
         //ofPushMatrix();
         shader.begin();
-        
+
         // passer les attributs uniformes au shader
         shader.setUniformTexture("image", image_destination.getTexture(), 1);
 
@@ -85,14 +131,12 @@ void Renderer::draw() {
         shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
         shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
 
-        // ofLog() << tone_mapping_exposure << "aa" << tone_mapping_gamma;
-        //  image_source.draw(offset_horizontal, offset_vertical, image_source.getWidth(), image_source.getHeight());
     }
 
-    if (texture_procedurale_toggle) 
-    {
+    if (texture_procedurale_toggle) {
         shader_texture_procedurale.begin();
-        shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f, filter_tint.b / 255.0f);
+        shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
+                                                filter_tint.b / 255.0f);
         shader_texture_procedurale.setUniform1f("factor", filter_mix);
         shader_texture_procedurale.setUniform1f("width", screen_width);
         shader_texture_procedurale.setUniform1f("height", screen_height);
@@ -140,22 +184,86 @@ void Renderer::draw() {
 
     } else if (Mode == modes::is3D) {
         // copier la matrice de transformation courante sur le dessus de la pile
+        if (illuminate_toggle) {
+            ofEnableDepthTest();
+            ofEnableLighting();
 
-        ofPushMatrix();
-        // inverser l'axe Y pour qu'il pointe vers le haut
-        ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
+            // activer la lumière dynamique
+            light.enable();
+            shader_illuminate->begin();
+            if (texture_procedurale_toggle) {
 
-        // transformer l'origine de la scène au milieu de la fenêtre d'affichage
-        ofTranslate(center_x + offset_x, is_flip_axis_y ? -center_y : center_y, offset_z);
+                shader_texture_procedurale.begin();
+                shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
+                                                        filter_tint.b / 255.0f);
+                shader_texture_procedurale.setUniform1f("factor", filter_mix);
+                shader_texture_procedurale.setUniform1f("width", screen_width);
+                shader_texture_procedurale.setUniform1f("height", screen_height);
+            }
+            ofPushMatrix();
 
-        // dessiner l'origine de la scène
-        //draw_locator(10.0f);
-        for (SceneObject3D *obj : objects3D) {
-            obj->draw();
+            // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+
+            ofPushMatrix();
+            // positionner la sphère
+            ofTranslate(
+                    position_sphere.x,
+                    position_sphere.y,
+                    position_sphere.z);
+
+            // dessiner une sphère
+            ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
+
+            ofPopMatrix();
+
+            ofPushMatrix();
+
+            // positionner le teapot
+            teapot.setPosition(
+                    position_teapot.x,
+                    position_teapot.y + 15.0f,
+                    position_teapot.z);
+
+            // dimension du teapot
+            teapot.setScale(
+                    scale_teapot,
+                    scale_teapot,
+                    scale_teapot);
+
+            // dessiner un teapot
+            teapot.draw(OF_MESH_FILL);
+
+            for (SceneObject3D *obj : objects3D) {
+                obj->draw();
+            }
+
+            ofPopMatrix();
+
+            ofPopMatrix();
+            shader_illuminate->end();
+            light.disable();
+
+            // désactiver l'éclairage dynamique
+            ofDisableLighting();
+            ofDisableDepthTest();
         }
 
-        // revenir à la matrice de transformation précédente dans la pile
-        ofPopMatrix();
+        /* ofPushMatrix();
+          // inverser l'axe Y pour qu'il pointe vers le haut
+          ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
+
+          // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+          ofTranslate(center_x + offset_x, is_flip_axis_y ? -center_y : center_y, offset_z);
+
+          // dessiner l'origine de la scène
+          //draw_locator(10.0f);
+          for (SceneObject3D *obj : objects3D) {
+              obj->draw();
+          }
+
+          // revenir à la matrice de transformation précédente dans la pile
+          ofPopMatrix();*/
     } else if (Mode == modes::isCamera) {
         ofPushMatrix();
         camera->draw();
@@ -175,8 +283,10 @@ void Renderer::draw() {
     if (tone_mapping_toggle)
         shader.end();
 
-    if(texture_procedurale_toggle)
+    if (texture_procedurale_toggle)
         shader_texture_procedurale.end();
+
+
 }
 
 
@@ -343,6 +453,7 @@ void Renderer::update() {
     for (SceneObject3D *obj : objects3D) {
         obj->setTexture(image_destination);
     }
+    illuminate();
     filter();
 }
 
@@ -375,9 +486,12 @@ void Renderer::reset() {
         // todo
         ofLog() << "<Mode 2D : reset>";
     } else {
+        center_x = ofGetWidth() / 2.0f;
+        center_y = ofGetHeight() / 2.0f;
         offset_x = 0.0f;
         offset_z = 0.0f;
-
+        position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
+        position_sphere.set(0.0f, 0.0f, 0.0f);
         ofLog() << "<Mode 3D : reset>";
     }
 }
@@ -518,4 +632,85 @@ void Renderer::filter() {
 
 
 //  ofLog() << "<convolution filter done>";
+}
+
+void Renderer::illuminate() {
+    // transformer la lumière
+    light.setGlobalPosition(
+            ofMap(ofGetMouseX() / (float) ofGetWidth(), 0.0f, 1.0f, -ofGetWidth() / 2.0f, ofGetWidth() / 2.0f),
+            ofMap(ofGetMouseY() / (float) ofGetHeight(), 0.0f, 1.0f, -ofGetHeight() / 2.0f, ofGetHeight() / 2.0f),
+            -offset_z * 1.5f);
+
+    // mise à jour d'une valeur numérique animée par un oscillateur
+    float oscillation =
+            oscillate(ofGetElapsedTimeMillis(), oscillation_frequency, oscillation_amplitude) + oscillation_amplitude;
+
+    // passer les attributs uniformes au shader de sommets
+    switch (shader_active) {
+        case ShaderType::color_fill:
+            shader_name = "Color Fill";
+            shader_illuminate = &shader_color_fill;
+            shader_illuminate->begin();
+            shader_illuminate->setUniform3f("color", 1.0f, 1.0f, 0.0f);
+            shader_illuminate->end();
+            break;
+
+        case ShaderType::lambert:
+            shader_name = "Lambert";
+            shader_illuminate = &shader_lambert;
+            shader_illuminate->begin();
+            shader_illuminate->setUniform3f("color_ambient", 0.1f, 0.1f, 0.1f);
+            shader_illuminate->setUniform3f("color_diffuse", 0.6f, 0.6f, 0.6f);
+            shader_illuminate->setUniform3f("light_position", glm::vec4(light.getGlobalPosition(), 0.0f) *
+                                                              ofGetCurrentMatrix(OF_MATRIX_MODELVIEW));
+            shader_illuminate->end();
+            break;
+
+        case ShaderType::gouraud:
+            shader_name = "Gouraud";
+            shader_illuminate = &shader_gouraud;
+            shader_illuminate->begin();
+            shader_illuminate->setUniform3f("color_ambient", 0.1f, 0.1f, 0.1f);
+            shader_illuminate->setUniform3f("color_diffuse", 0.6f, 0.6f, 0.0f);
+            shader_illuminate->setUniform3f("color_specular", 1.0f, 1.0f, 0.0f);
+            shader_illuminate->setUniform1f("brightness", oscillation);
+            shader_illuminate->setUniform3f("light_position", glm::vec4(light.getGlobalPosition(), 0.0f) *
+                                                              ofGetCurrentMatrix(OF_MATRIX_MODELVIEW));
+            shader_illuminate->end();
+            break;
+
+        case ShaderType::phong:
+            shader_name = "Phong";
+            shader_illuminate = &shader_phong;
+            shader_illuminate->begin();
+            shader_illuminate->setUniform3f("color_ambient", 0.1f, 0.1f, 0.1f);
+            shader_illuminate->setUniform3f("color_diffuse", 0.6f, 0.0f, 0.6f);
+            shader_illuminate->setUniform3f("color_specular", 1.0f, 1.0f, 0.0f);
+            shader_illuminate->setUniform1f("brightness", oscillation);
+            shader_illuminate->setUniform3f("light_position", glm::vec4(light.getGlobalPosition(), 0.0f) *
+                                                              ofGetCurrentMatrix(OF_MATRIX_MODELVIEW));
+            shader_illuminate->end();
+            break;
+
+        case ShaderType::blinn_phong:
+            shader_name = "Blinn-Phong";
+            shader_illuminate = &shader_blinn_phong;
+            shader_illuminate->begin();
+            shader_illuminate->setUniform3f("color_ambient", 0.1f, 0.1f, 0.1f);
+            shader_illuminate->setUniform3f("color_diffuse", 0.0f, 0.6f, 0.6f);
+            shader_illuminate->setUniform3f("color_specular", 1.0f, 1.0f, 0.0f);
+            shader_illuminate->setUniform1f("brightness", oscillation);
+            shader_illuminate->setUniform3f("light_position", glm::vec4(light.getGlobalPosition(), 0.0f) *
+                                                              ofGetCurrentMatrix(OF_MATRIX_MODELVIEW));
+            shader_illuminate->end();
+            break;
+
+        default:
+            break;
+    }
+
+}
+
+float Renderer::oscillate(float time, float frequency, float amplitude) {
+    return sinf(time * 2.0f * PI / frequency) * amplitude;
 }

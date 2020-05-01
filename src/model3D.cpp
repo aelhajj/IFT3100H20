@@ -8,8 +8,8 @@ Model3D::Model3D(std::string _file_name) {
 }
 
 Model3D::Model3D() {
-    model3D.loadModel("teapot.obj");
-    file_name = "teapot.obj";
+    model3D.loadModel("geometry/teapot.obj");
+    file_name = "geometry/teapot.obj";
 }
 
 void Model3D::draw() {
@@ -36,7 +36,4 @@ void Model3D::getFileExtension() {
     if (file_extension == "obj")
         ofLog() << "Current file : obj" << endl;
 }
-
-// ofxAssimpModelLoader model3D;
-// ofNode boundBox;
 

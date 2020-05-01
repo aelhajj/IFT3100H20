@@ -214,10 +214,10 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         else
             boutonFilterSwitch->setLabel("Reinhard");
     }
-    if(event.target == boutonTextureProceduraleSwitch) {
+    if (event.target == boutonTextureProceduraleSwitch) {
         renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
     }
-    if(event.target == boutonMappingSwitch) {
+    if (event.target == boutonMappingSwitch) {
         renderer.tone_mapping_toggle = (!renderer.tone_mapping_toggle);
     }
 
@@ -355,6 +355,9 @@ void Application::keyReleased(int key) {
             renderer.kernel_type = ConvolutionKernel::identity;
             renderer.kernel_name = "identité";
             ofLog() << "<mode: point>";
+
+            renderer.shader_active = ShaderType::color_fill;
+            ofLog() << "<shader: color fill>";
             break;
 
         case 50:  // key 2
@@ -362,6 +365,9 @@ void Application::keyReleased(int key) {
             renderer.kernel_type = ConvolutionKernel::emboss;
             renderer.kernel_name = "bosseler";
             ofLog() << "<mode: cercle>";
+
+            renderer.shader_active = ShaderType::lambert;
+            ofLog() << "<shader: lambert>";
             break;
 
         case 51:  // key 3
@@ -369,6 +375,9 @@ void Application::keyReleased(int key) {
             renderer.kernel_type = ConvolutionKernel::sharpen;
             renderer.kernel_name = "aiguiser";
             ofLog() << "<mode: line>";
+
+            renderer.shader_active = ShaderType::gouraud;
+            ofLog() << "<shader: gouraud>";
             break;
 
         case 52:  // key 4
@@ -376,12 +385,18 @@ void Application::keyReleased(int key) {
             renderer.kernel_type = ConvolutionKernel::edge_detect;
             renderer.kernel_name = "détection de bordure";
             ofLog() << "<mode: rectangle>";
+
+            renderer.shader_active = ShaderType::phong;
+            ofLog() << "<shader: phong>";
             break;
 
         case 53:  // key 5
             renderer.draw_mode = SceneObjectType::triangle;
             renderer.kernel_type = ConvolutionKernel::blur;
             renderer.kernel_name = "flou";
+
+            renderer.shader_active = ShaderType::blinn_phong;
+            ofLog() << "<shader: blinn-phong>";
             ofLog() << "<mode: triangle>";
             break;
 
