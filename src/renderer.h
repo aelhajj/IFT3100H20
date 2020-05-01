@@ -85,6 +85,11 @@ public:
 
     ofShader shader;
 
+    ofShader shader_texture_procedurale;
+
+    ofColor filter_tint;
+    float filter_mix;
+
     float center_x;
     float center_y;
 
@@ -101,6 +106,8 @@ public:
 
     bool tone_mapping_toggle;
     bool tone_mapping_aces;
+
+    bool texture_procedurale_toggle;
 
     string kernel_name;
 

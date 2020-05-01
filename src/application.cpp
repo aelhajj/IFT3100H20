@@ -26,16 +26,20 @@ void Application::setup() {
     boutonRogner = image_folder->addButton("Rogner Image");
     boutonHistogram = image_folder->addButton("Afficher Histogramme");
 
-    ofxDatGuiFolder *filter_folder = gui->addFolder("Filtres ", ofColor::orange);
+    gui->addBreak();
 
-    boutonFilterSwitch = gui->addButton("Changer de filtres");
-    filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
-    filter_mix_slider = filter_folder->addSlider("Mixage", 0, 10);
+    ofxDatGuiFolder *filter_folder = gui->addFolder("Filtres 1-5 KEYS", ofColor::orange);
 
+    boutonMappingSwitch = filter_folder->addButton("Active Mapping Tonal");
+    boutonFilterSwitch = filter_folder->addButton("ACES filmic");
     gamma_slider = filter_folder->addSlider("Gamma", 0.0f, 5.0f);
     exposure_slider = filter_folder->addSlider("Exposure", 0.0f, 5.0f);
-    boutonFilterSwitch = filter_folder->addButton("ACES filmic");
-    //image_folder->expand();
+
+    boutonTextureProceduraleSwitch = filter_folder->addButton("Active Texture Procedurale");
+    filter_mix_slider = filter_folder->addSlider("Mixage", 0, 1);
+    filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
+
+    filter_folder->expand();
 
     gui->addBreak();
 
@@ -65,7 +69,7 @@ void Application::setup() {
     primitive3D_folder->expand();
     menu3DShape->expand();
 
-    ofSetWindowTitle("Equipe ###### : Partie 1");
+    ofSetWindowTitle("Equipe ###### : Partie 2");
 
     is_key_press_up = false;
     is_key_press_down = false;
@@ -78,10 +82,6 @@ void Application::setup() {
 
     cursor = new NormalCursor(&renderer, actions);
 
-    // if(tone_mapping_type)
-    //   tone_mapping_type.set("aces filmic", true);
-    //else 
-    //  tone_mapping_type.set("reinhard", false);
 
 }
 
@@ -207,13 +207,18 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         renderer.showAnim3D();
     }
     if (event.target == boutonFilterSwitch) {
-        //nbClick_2 +=1;
         tone_mapping_type = (!tone_mapping_type);
         renderer.tone_mapping_aces = (!renderer.tone_mapping_aces);
         if (tone_mapping_type)
-            boutonModeSwitcher->setLabel("ACES filmic");
+            boutonFilterSwitch->setLabel("ACES filmic");
         else
             boutonFilterSwitch->setLabel("Reinhard");
+    }
+    if(event.target == boutonTextureProceduraleSwitch) {
+        renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
+    }
+    if(event.target == boutonMappingSwitch) {
+        renderer.tone_mapping_toggle = (!renderer.tone_mapping_toggle);
     }
 
 
@@ -328,6 +333,9 @@ void Application::update() {
 
     renderer.tone_mapping_exposure = exposure_slider->getValue();
     renderer.tone_mapping_gamma = gamma_slider->getValue();
+
+    renderer.filter_mix = filter_mix_slider->getValue();
+    renderer.filter_tint = filter_tint_color_picker->getColor();
 
     // if(tone_mapping_type)
     //   tone_mapping_type.set("aces filmic", true);

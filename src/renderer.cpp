@@ -35,6 +35,9 @@ void Renderer::setup() {
     // tone_mapping_toggle = false;
     tone_mapping_aces = true;
 
+    filter_mix = 0.5f;
+    filter_tint.set(255,255,255);
+
     image_source.load("teapot.jpg");
 
     // dimensions de l'image source
@@ -61,11 +64,12 @@ void Renderer::setup() {
     }
 
     //TEST A ENLEVER !!
-    tone_mapping_toggle = true;
+    tone_mapping_toggle = false;
+    texture_procedurale_toggle = true;
 
     // if (tone_mapping_toggle)
     shader.load("shader/tone_mapping_330_vs.glsl", "shader/tone_mapping_330_fs.glsl");
-
+    shader_texture_procedurale.load("shader/texture_procedurale_vs.glsl", "shader/texture_procedurale_fs.glsl");
 }
 
 void Renderer::draw() {
@@ -73,15 +77,27 @@ void Renderer::draw() {
     {
         //ofPushMatrix();
         shader.begin();
+        
         // passer les attributs uniformes au shader
         shader.setUniformTexture("image", image_destination.getTexture(), 1);
 
         shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
         shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
         shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+
         // ofLog() << tone_mapping_exposure << "aa" << tone_mapping_gamma;
         //  image_source.draw(offset_horizontal, offset_vertical, image_source.getWidth(), image_source.getHeight());
     }
+
+    if (texture_procedurale_toggle) 
+    {
+        shader_texture_procedurale.begin();
+        shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f, filter_tint.b / 255.0f);
+        shader_texture_procedurale.setUniform1f("factor", filter_mix);
+        shader_texture_procedurale.setUniform1f("width", screen_width);
+        shader_texture_procedurale.setUniform1f("height", screen_height);
+    }
+
     if (Mode == modes::is2D) {
         //cam.begin();
         // afficher l'image sur toute la surface de la fenêtre d'affichage
@@ -158,6 +174,9 @@ void Renderer::draw() {
 
     if (tone_mapping_toggle)
         shader.end();
+
+    if(texture_procedurale_toggle)
+        shader_texture_procedurale.end();
 }
 
 
