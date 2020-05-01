@@ -62,7 +62,6 @@ void Application::setup() {
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
 
-
     primitive3D_folder->expand();
     menu3DShape->expand();
 
@@ -79,10 +78,10 @@ void Application::setup() {
 
     cursor = new NormalCursor(&renderer, actions);
 
-   // if(tone_mapping_type)
-     //   tone_mapping_type.set("aces filmic", true);
+    // if(tone_mapping_type)
+    //   tone_mapping_type.set("aces filmic", true);
     //else 
-      //  tone_mapping_type.set("reinhard", false);
+    //  tone_mapping_type.set("reinhard", false);
 
 }
 
@@ -117,14 +116,12 @@ void Application::onDropdownEvent(ofxDatGuiDropdownEvent event) {
 
 }
 
-void callRaytracer()
-{
-  string command;
-  for (int i = 2; i < 256; i*=2)
-  {
-    command = "../raytracer/raytracer 512 512 " + to_string(i);
-    std::system(command.c_str());
-  }
+void callRaytracer() {
+    string command;
+    for (int i = 2; i < 256; i *= 2) {
+        command = "../raytracer/raytracer 512 512 " + to_string(i);
+        std::system(command.c_str());
+    }
 }
 
 void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
@@ -137,7 +134,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         } else if (nbClick % 4 == 2) {
             boutonModeSwitcher->setLabel("Mode actuel : 3D");
             renderer.Mode = Renderer::modes::is3D;
-        } else if (nbClick % 4 == 3){
+        } else if (nbClick % 4 == 3) {
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
         } else {
@@ -209,13 +206,13 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
     if (event.target == boutonAnim3D) {
         renderer.showAnim3D();
     }
-    if(event.target == boutonFilterSwitch) {
+    if (event.target == boutonFilterSwitch) {
         //nbClick_2 +=1;
         tone_mapping_type = (!tone_mapping_type);
         renderer.tone_mapping_aces = (!renderer.tone_mapping_aces);
-        if(tone_mapping_type)
+        if (tone_mapping_type)
             boutonModeSwitcher->setLabel("ACES filmic");
-        else 
+        else
             boutonFilterSwitch->setLabel("Reinhard");
     }
 
@@ -332,10 +329,10 @@ void Application::update() {
     renderer.tone_mapping_exposure = exposure_slider->getValue();
     renderer.tone_mapping_gamma = gamma_slider->getValue();
 
-   // if(tone_mapping_type)
-     //   tone_mapping_type.set("aces filmic", true);
+    // if(tone_mapping_type)
+    //   tone_mapping_type.set("aces filmic", true);
     //else
-      //  tone_mapping_type.set("reinhard", false);
+    //  tone_mapping_type.set("reinhard", false);
 
     renderer.update();
 }

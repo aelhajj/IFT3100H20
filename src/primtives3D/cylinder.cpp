@@ -23,8 +23,7 @@ Cylinder::Cylinder() {
     type = SceneObjectType3D::cylinder;
 }
 
-void Cylinder::setTexture(ofImage imageTexture)
-{
+void Cylinder::setTexture(ofImage imageTexture) {
     texture = imageTexture;
 
     texture.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
@@ -84,8 +83,7 @@ void Cylinder::draw() {
         boundBox.draw();
     }
 
-    if(textureMode)
-    {
+    if (textureMode) {
         texture.getTexture().unbind();
         cylinder.mapTexCoordsFromTexture(texture.getTexture());
     }

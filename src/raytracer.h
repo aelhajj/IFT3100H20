@@ -7,9 +7,12 @@
 class Raytracer {
 public:
 
-    ImageStruct* image = new ImageStruct();
+    ImageStruct *image = new ImageStruct();
+
     void setup();
+
     void draw();
+
     void static callRaytracer();
 
 

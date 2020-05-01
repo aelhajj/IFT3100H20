@@ -28,7 +28,7 @@ public:
     ofImage image_source;
     ofImage image_destination; // pour les modifications sur la texture courante
     ofImage texture;
-    
+
     Camera *camera = new Camera();
     Raytracer *raytracer = new Raytracer();
     enum modes {
