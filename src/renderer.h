@@ -18,6 +18,7 @@
 #include "camera.h"
 #include "model3D.h"
 #include "raytracer.h"
+#include "parametric.h"
 #include "ofxShaderSelect.h"
 
 enum class ShaderType {
@@ -37,9 +38,10 @@ public:
     Camera *camera = new Camera();
     Raytracer *raytracer = new Raytracer();
     enum modes {
-        is2D, is3D, isCamera, isRaytracer
+        is2D, is3D, isCamera, isRaytracer, isParametric
     };
 
+    Parametric *parametric_renderer = new Parametric();
 
     ConvolutionKernel kernel_type;
 
@@ -277,5 +279,7 @@ public:
     ~Renderer();
 
     ofEasyCam cam;
+
+
 
 };

@@ -158,23 +158,27 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if (event.target == boutonModeSwitcher) {
         nbClick++;
-        if (nbClick % 4 == 1) {
+        if (nbClick % 5 == 1) {
             boutonModeSwitcher->setLabel("Mode actuel : 2D");
             renderer.Mode = Renderer::modes::is2D;
-        } else if (nbClick % 4 == 2) {
+        } else if (nbClick % 5 == 2) {
             boutonModeSwitcher->setLabel("Mode actuel : 3D");
             renderer.Mode = Renderer::modes::is3D;
-        } else if (nbClick % 4 == 3) {
+        } else if (nbClick % 5 == 3) {
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
-        } else {
+        } else if (nbClick % 5 == 4){
             boutonModeSwitcher->setLabel("Mode actuel : Raytracer");
             renderer.raytracer->setup();
             renderer.Mode = Renderer::modes::isRaytracer;
-            std::thread t1(callRaytracer);
-            t1.detach();
-
+            //std::thread t1(callRaytracer);
+            //t1.detach();
+          } else {
+            boutonModeSwitcher->setLabel("Mode actuel : Parametric");
+            renderer.Mode = Renderer::modes::isParametric;
+            renderer.parametric_renderer->setup();
         }
+
 
     }
 
@@ -357,12 +361,16 @@ void Application::update() {
         // déplacement sur le plan XZ en fonction de l'état des flèches du clavier
         if (is_key_press_up)
             renderer.offset_z += renderer.delta_z * time_elapsed;
+            //*renderer.parametric_renderer->selected_ctrl_pointy -= renderer.delta_z * time_elapsed;
         if (is_key_press_down)
             renderer.offset_z -= renderer.delta_z * time_elapsed;
+            //*renderer.parametric_renderer->selected_ctrl_pointy += renderer.delta_z * time_elapsed;
         if (is_key_press_left)
             renderer.offset_x += renderer.delta_x * time_elapsed;
+            //*renderer.parametric_renderer->selected_ctrl_pointx -= renderer.delta_x * time_elapsed;
         if (is_key_press_right)
             renderer.offset_x -= renderer.delta_x * time_elapsed;
+            //*renderer.parametric_renderer->selected_ctrl_pointx += renderer.delta_x * time_elapsed;
     } else {
 
         // Mode 2D:

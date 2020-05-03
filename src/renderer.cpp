@@ -6,6 +6,8 @@ void Renderer::setup() {
     ofSetSphereResolution(32);
 
     camera->setup();
+    // parametric_renderer->setup();
+    // parametric_renderer->reset();
     ofSetBackgroundColor(31);
     ofDisableArbTex();
 
@@ -377,7 +379,7 @@ void Renderer::draw() {
         ofPushMatrix();
         camera->draw();
         ofPopMatrix();
-    } else {
+    } else  if (Mode == modes::isRaytracer){
         if (count % 1000 == 0) {
             raytracer->setup();
         } else {
@@ -387,6 +389,8 @@ void Renderer::draw() {
             count = 1;
         }
         raytracer->draw();
+    } else {
+      parametric_renderer->draw();
     }
 
     if (tone_mapping_toggle)
