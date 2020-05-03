@@ -30,14 +30,22 @@ void Application::setup() {
 
     ofxDatGuiFolder *filter_folder = gui->addFolder("Filtres 1-5 KEYS", ofColor::orange);
 
-    boutonMappingSwitch = filter_folder->addButton("Active Mapping Tonal");
+  //  boutonMappingSwitch = filter_folder->addButton("Active Mapping Tonal");
+    toggle_mapping_tonal = filter_folder-> addToggle("Active Mapping Tonal", true);
+    toggle_mapping_tonal->onToggleEvent(this, &Application::onToggleEvent);
     boutonFilterSwitch = filter_folder->addButton("ACES filmic");
     gamma_slider = filter_folder->addSlider("Gamma", 0.0f, 5.0f);
     exposure_slider = filter_folder->addSlider("Exposure", 0.0f, 5.0f);
 
-    boutonTextureProceduraleSwitch = filter_folder->addButton("Active Texture Procedurale");
+    //boutonTextureProceduraleSwitch = filter_folder->addButton("Active Texture Procedurale");
+    toggle_textural_procedure = filter_folder-> addToggle("Active Texture Procedurale", true);
+    toggle_textural_procedure->onToggleEvent(this, &Application::onToggleEvent);
     filter_mix_slider = filter_folder->addSlider("Mixage", 0, 1);
     filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
+
+   // toggle_test = filter_folder-> addToggle("toggle", true);
+   // toggle_test->onToggleEvent(this, &Application::onToggleEvent);
+   // ofLog() << toggle_test;
 
     filter_folder->expand();
 
@@ -65,9 +73,31 @@ void Application::setup() {
     boutonRotate3D = gui->addButton("Animation 2");
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
-
-    primitive3D_folder->expand();
-    menu3DShape->expand();
+    ofxDatGuiFolder *illumination_folder = gui->addFolder("Illumination Moderne", ofColor::pink);
+    toggle_PBR_shader = illumination_folder-> addToggle("Activate illumination", false);
+    toggle_PBR_shader->onToggleEvent(this, &Application::onToggleEvent);
+    metallic_slider = illumination_folder->addSlider("Metallicite", 0, 10);
+    roughness_slider = illumination_folder->addSlider("Rugorisite", 0, 10);
+    occlusion_slider = illumination_folder->addSlider("Occlusion", 0, 10);
+    brightness_slider = illumination_folder->addSlider("Luminosite", 0, 10);
+    ambiant_color_picker = illumination_folder->addColorPicker("Couleur de lumiere ambiante", ofColor(255, 0, 0, 5));
+    diffuse_color_picker = illumination_folder->addColorPicker("Couleur de lumiere diffuse", ofColor(255, 0, 0, 5));
+    specular_color_picker = illumination_folder->addColorPicker("Couleur de lumiere speculaire", ofColor(255, 0, 0, 5));
+    
+    ofxDatGuiFolder *classic_folder = gui->addFolder("Illumination Classique 1-5 KEYS", ofColor::yellow);
+    boutonMateriel = classic_folder->addButton("Changer de materiau");
+    toggle_illuminate_shader =  classic_folder-> addToggle("Activate classical shaders", false);
+    toggle_illuminate_shader->onToggleEvent(this, &Application::onToggleEvent);
+    toggle_light_ambiant = classic_folder-> addToggle("Lumiere ambiante", false);
+    toggle_light_ambiant->onToggleEvent(this, &Application::onToggleEvent);
+    toggle_light_direct = classic_folder-> addToggle("Lumiere directionnelle", false);
+    toggle_light_direct->onToggleEvent(this, &Application::onToggleEvent);
+    toggle_light_point = classic_folder-> addToggle("Lumiere ponctuelle", false);
+    toggle_light_point->onToggleEvent(this, &Application::onToggleEvent);
+    toggle_light_spot = classic_folder-> addToggle("Lumiere projecteur", false);
+    toggle_light_spot->onToggleEvent(this, &Application::onToggleEvent);
+  //  primitive3D_folder->expand();
+  //  menu3DShape->expand();
 
     ofSetWindowTitle("Equipe ###### : Partie 2");
 
@@ -214,14 +244,23 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         else
             boutonFilterSwitch->setLabel("Reinhard");
     }
-    if (event.target == boutonTextureProceduraleSwitch) {
-        renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
-    }
-    if (event.target == boutonMappingSwitch) {
-        renderer.tone_mapping_toggle = (!renderer.tone_mapping_toggle);
-    }
+   // if (event.target == boutonTextureProceduraleSwitch) {
+   //     renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
+   // }
+   // if (event.target == boutonMappingSwitch) {
+    //    renderer.tone_mapping_toggle = (!renderer.tone_mapping_toggle);
+   // }
 
 
+}
+
+void Application::onToggleEvent(ofxDatGuiToggleEvent event) {
+     if (event.target == toggle_test) {
+         if(event.target->getChecked())
+            cout << "onToggleEvent: " << event.target->getLabel() << "::" <<  event.target->getChecked() << endl;
+     }
+     
+         
 }
 
 void Application::openFileSelected(ofFileDialogResult openFileResult) {
@@ -249,6 +288,9 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 }
 
 void Application::draw() {
+      ofSetColor(255, 255, 255);
+	ofDrawBitmapString("Point Light On (1) : ",
+					   20, 20);
     renderer.draw();
     cursor->drawCursor();
     gui->update();

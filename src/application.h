@@ -32,8 +32,8 @@ public:
 
     ofxDatGuiButton *boutonFilterSwitch;
 
-    ofxDatGuiButton *boutonMappingSwitch;
-    ofxDatGuiButton *boutonTextureProceduraleSwitch;
+ //   ofxDatGuiButton *boutonMappingSwitch;
+ //   ofxDatGuiButton *boutonTextureProceduraleSwitch;
 
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;
@@ -43,6 +43,7 @@ public:
     ofxDatGuiButton *boutonBox3D;
     ofxDatGuiButton *boutonMesh3D;
     ofxDatGuiButton *boutonAnim3D;
+    ofxDatGuiButton *boutonMateriel;
 
     ofxDatGuiDropdown *menuCursor;
     ofxDatGuiDropdown *menu3DShape;
@@ -51,13 +52,36 @@ public:
     ofxDatGuiColorPicker *background_color_picker;
     ofxDatGuiColorPicker *fill_color_picker;
     ofxDatGuiColorPicker *stroke_color_picker;
-    ofxDatGuiSlider *stroke_slider;
 
     ofxDatGuiColorPicker *filter_tint_color_picker;
+
+    ofxDatGuiColorPicker *ambiant_color_picker;
+    ofxDatGuiColorPicker *diffuse_color_picker;
+    ofxDatGuiColorPicker *specular_color_picker;
+
     ofxDatGuiSlider *filter_mix_slider;
     ofxDatGuiSlider *gamma_slider;
     ofxDatGuiSlider *exposure_slider;
 
+    ofxDatGuiSlider *stroke_slider;
+    ofxDatGuiSlider *metallic_slider;
+    ofxDatGuiSlider *roughness_slider;
+    ofxDatGuiSlider *occlusion_slider;
+    ofxDatGuiSlider *brightness_slider;
+    ofxDatGuiSlider *tesselation_in_slider;
+    ofxDatGuiSlider *tesselation_out_slider;
+
+    ofxDatGuiToggle *toggle_test;
+    ofxDatGuiToggle *toggle_mapping_tonal;
+    ofxDatGuiToggle *toggle_textural_procedure;
+
+    ofxDatGuiToggle *toggle_PBR_shader;
+    ofxDatGuiToggle *toggle_illuminate_shader;
+
+    ofxDatGuiToggle *toggle_light_ambiant;
+    ofxDatGuiToggle *toggle_light_direct;
+    ofxDatGuiToggle *toggle_light_point;
+    ofxDatGuiToggle *toggle_light_spot;
 
     Cursor *cursor;
 
@@ -75,6 +99,8 @@ public:
     void onButtonEvent(ofxDatGuiButtonEvent event);
 
     void onDropdownEvent(ofxDatGuiDropdownEvent event);
+
+    void onToggleEvent(ofxDatGuiToggleEvent event);
 
     void mouseMoved(int x, int y);
 

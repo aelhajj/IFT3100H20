@@ -168,6 +168,7 @@ void Renderer::draw() {
 
 
     if (Mode == modes::is2D) {
+      
         if (tone_mapping_toggle)// && image_source.isAllocated())
         {
             
