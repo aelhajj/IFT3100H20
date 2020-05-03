@@ -118,8 +118,9 @@ void Renderer::setup() {
     shader_active = ShaderType::blinn_phong;
 
 
-    illuminate_toggle = true;
+    illuminate_toggle = false;
     lights_toggle = true;
+    tesselation_toggle = true;
     if (lights_toggle) {
         // charger les textures du matériau
         texture_diffuse.load("materiau/metal_plate_diffuse_1k.jpg");
@@ -134,6 +135,30 @@ void Renderer::setup() {
         texture_occlusion.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
     }
+
+    if(tesselation_toggle) {
+        teapot.loadModel("teapot.obj",true);
+
+        ofSetVerticalSync(false);
+        vector<string> shaders = shader_tesselation.load("shader/tesselation_quads_440.glsl");
+        shader_tesselation_pass = shader_tesselation.active(shaders,440);
+
+        inner_level = 1;
+        outer_level = 1;
+        light_vector = ofVec3f(30.,24.,0.);
+        diffuse_vector = ofVec3f(0.04f, 0.04f, 0.04f);
+        ambiant_vector = ofVec3f(0, 0.75, 0.75);
+        specular_vector = ofVec3f(0, 0.5, 1.0);
+        translation_vector = ofVec3f(-0.5f, 0.0f, -500.0f);
+        rotation_vector = ofVec4f(0.9,0.,0.,0.);
+
+  // assimp.loadModel("teapot.obj",true);
+
+            //assimp.loadModel("monster-animated-character-X.X",true);
+            vbo.setMesh(teapot.getMesh(0),GL_DYNAMIC_DRAW);
+
+            shader_tesselation.setUniform();//Test
+    }
     reset();
 }
 
@@ -143,7 +168,7 @@ void Renderer::draw() {
     if (Mode == modes::is2D) {
         if (tone_mapping_toggle)// && image_source.isAllocated())
         {
-            //ofPushMatrix();
+            
             shader.begin();
 
             // passer les attributs uniformes au shader
@@ -206,7 +231,7 @@ void Renderer::draw() {
         shader.end();
 
     } else if (Mode == modes::is3D) {
-        
+            //  /*
         // copier la matrice de transformation courante sur le dessus de la pile
         if (tone_mapping_toggle)// && image_source.isAllocated())
         {
@@ -281,17 +306,39 @@ void Renderer::draw() {
             for (SceneObject3D *obj : objects3D) {
                 obj->draw();
             }
+             
             ofPopMatrix();
+            
             shader_illuminate->end();
             shader_lights.end();
+            ofPushMatrix();
+            
+            ofPopMatrix();
             light.disable();
+
+            // désactiver l'éclairage dynamique
+            ofDisableLighting();
+            ofDisableDepthTest();
+        } else {
+            ofEnableDepthTest();
+            ofEnableLighting();
+            ofPushMatrix();
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+            ofPopMatrix();
+            // activer la lumière dynamique
+            light.enable();
+            ofPushMatrix();
+            draw_tesselation(); 
+            ofPopMatrix();
+
+             light.disable();
 
             // désactiver l'éclairage dynamique
             ofDisableLighting();
             ofDisableDepthTest();
         }
 
-
+//*/
         /* ofPushMatrix();
           // inverser l'axe Y pour qu'il pointe vers le haut
           ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
@@ -492,6 +539,7 @@ void Renderer::update() {
         ofPopMatrix();
     } else {
         // Mode 3D :
+        teapot.update();
         camera->update();
         center_x = ofGetWidth() / 2.0f;
         center_y = ofGetHeight() / 2.0f;
@@ -537,6 +585,7 @@ void Renderer::update() {
     for (SceneObject3D *obj : objects3D) {
         obj->setTexture(image_destination);
     }
+    translation_vector = ofVec3f(center_x + offset_x - ofGetWidth()/2, center_y- ofGetHeight()/2, offset_z-800);
     illuminate();
     filter();
 }
@@ -576,6 +625,7 @@ void Renderer::reset() {
         offset_z = 0.0f;
         position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
         position_sphere.set(0.0f, 0.0f, 0.0f);
+        
         ofLog() << "<Mode 3D : reset>";
 
         // paramètres du matériau
@@ -820,3 +870,33 @@ float Renderer::oscillate(float time, float frequency, float amplitude) {
     return sinf(time * 2.0f * PI / frequency) * amplitude;
 }
 
+void Renderer::draw_tesselation() {
+            ofEnableDepthTest();
+            shader_tesselation_pass.begin();
+            ofMatrix4x4 camdist;
+            ofPushMatrix();
+            
+            camdist.preMultTranslate(translation_vector);
+            camdist.preMultRotate(ofQuaternion(rotation_vector));
+            ofPopMatrix();
+
+            shader_tesselation_pass.setUniform3f("vLightPosition",light_vector.x,light_vector.y,light_vector.z);
+            shader_tesselation_pass.setUniform4f("diffuseColor",diffuse_vector.x,diffuse_vector.y,diffuse_vector.z,1.);
+            shader_tesselation_pass.setUniform4f("ambientColor",ambiant_vector.x,ambiant_vector.y,ambiant_vector.z,1.);
+            shader_tesselation_pass.setUniform4f("specularColor",specular_vector.x,specular_vector.y,specular_vector.z,1.);
+            shader_tesselation_pass.setUniformMatrix4f("mvMatrix",teapot.getModelMatrix()*camdist);
+            shader_tesselation_pass.setUniformMatrix3f("normalMatrix",shader_tesselation.mat4ToMat3(ofGetCurrentNormalMatrix()));
+            shader_tesselation_pass.setUniformMatrix4f("pMatrix",cam.getProjectionMatrix());
+
+            shader_tesselation_pass.setUniform1f("TessLevelInner",inner_level);
+            shader_tesselation_pass.setUniform1f("TessLevelOuter",outer_level);
+
+                    // vbo patches
+                    glPatchParameteri(GL_PATCH_VERTICES, 3);
+                    vbo.drawElements(GL_PATCHES, vbo.getNumVertices()*vbo.getNumVertices());
+
+            shader_tesselation_pass.end();
+        //    ofDisableDepthTest();
+            //cam.end();
+            
+}

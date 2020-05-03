@@ -18,6 +18,7 @@
 #include "camera.h"
 #include "model3D.h"
 #include "raytracer.h"
+#include "ofxShaderSelect.h"
 
 enum class ShaderType {
     color_fill, lambert, gouraud, phong, blinn_phong
@@ -97,6 +98,12 @@ public:
 
     ofShader shader_texture_procedurale;
 
+    ofxShaderSelect shader_tesselation;
+
+    ofShader shader_tesselation_pass;
+
+    ofVbo vbo;
+
     // shader d'illumination
     ShaderType shader_active;
 
@@ -120,6 +127,18 @@ public:
     ofVec3f position_sphere;
     ofVec3f position_teapot;
 
+    ofVec3f light_vector;
+    ofVec3f diffuse_vector;
+    ofVec3f ambiant_vector;
+    ofVec3f specular_vector;
+    ofVec3f translation_vector;
+    ofVec4f rotation_vector;
+
+    int inner_level;
+    int outer_level;
+    
+
+
     string shader_name;
 
     float oscillation;
@@ -135,6 +154,7 @@ public:
 
     bool illuminate_toggle;
     bool lights_toggle;
+    bool tesselation_toggle;
 
     ofColor material_color_ambient;
     ofColor material_color_diffuse;
@@ -228,6 +248,8 @@ public:
     void illuminate();
 
     float oscillate(float time, float frequency, float amplitude);
+
+    void draw_tesselation();
 
     ~Renderer();
 

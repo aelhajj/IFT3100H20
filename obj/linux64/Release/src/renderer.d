@@ -583,6 +583,7 @@ obj/linux64/Release/src/renderer.o: \
  /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxAssimpModelLoader/src/ofxAssimpAnimation.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/model3D.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/raytracer.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxShaderSelect/src/ofxShaderSelect.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/histogram.h \
  /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxHistogram/src/ofxHistogram.h \
  /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxOpenCv/src/ofxOpenCv.h \
@@ -1930,6 +1931,8 @@ obj/linux64/Release/src/renderer.o: \
 /home/amanie/Documents/Infographie/IFT3100H20/src/model3D.h:
 
 /home/amanie/Documents/Infographie/IFT3100H20/src/raytracer.h:
+
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxShaderSelect/src/ofxShaderSelect.h:
 
 /home/amanie/Documents/Infographie/IFT3100H20/src/histogram.h:
 
