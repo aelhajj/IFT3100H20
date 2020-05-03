@@ -19,6 +19,7 @@
 #include "model3D.h"
 #include "raytracer.h"
 #include "parametric.h"
+#include "catmull_rom.h"
 #include "ofxShaderSelect.h"
 
 enum class ShaderType {
@@ -37,8 +38,9 @@ public:
 
     Camera *camera = new Camera();
     Raytracer *raytracer = new Raytracer();
+    Catmull_Rom *catmull_rom = new Catmull_Rom();
     enum modes {
-        is2D, is3D, isCamera, isRaytracer, isParametric
+        is2D, is3D, isCamera, isRaytracer, isParametric, isCatmull
     };
 
     Parametric *parametric_renderer = new Parametric();
@@ -147,7 +149,7 @@ public:
 
     int inner_level;
     int outer_level;
-    
+
      ofQuaternion orientation_directional;
   ofQuaternion orientation_spot;
 
@@ -273,7 +275,7 @@ public:
     void draw_tesselation();
 
      void lighting_on();
-  
+
     void lighting_off();
 
     ~Renderer();

@@ -83,7 +83,7 @@ void Application::setup() {
     ambiant_color_picker = illumination_folder->addColorPicker("Couleur de lumiere ambiante", ofColor(255, 0, 0, 5));
     diffuse_color_picker = illumination_folder->addColorPicker("Couleur de lumiere diffuse", ofColor(255, 0, 0, 5));
     specular_color_picker = illumination_folder->addColorPicker("Couleur de lumiere speculaire", ofColor(255, 0, 0, 5));
-    
+
     ofxDatGuiFolder *classic_folder = gui->addFolder("Illumination Classique 1-5 KEYS", ofColor::yellow);
     boutonMateriel = classic_folder->addButton("Changer de materiau");
     toggle_illuminate_shader =  classic_folder-> addToggle("Activate classical shaders", false);
@@ -158,25 +158,29 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if (event.target == boutonModeSwitcher) {
         nbClick++;
-        if (nbClick % 5 == 1) {
+        if (nbClick % 6 == 1) {
             boutonModeSwitcher->setLabel("Mode actuel : 2D");
             renderer.Mode = Renderer::modes::is2D;
-        } else if (nbClick % 5 == 2) {
+        } else if (nbClick % 6 == 2) {
             boutonModeSwitcher->setLabel("Mode actuel : 3D");
             renderer.Mode = Renderer::modes::is3D;
-        } else if (nbClick % 5 == 3) {
+        } else if (nbClick % 6 == 3) {
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
-        } else if (nbClick % 5 == 4){
+        } else if (nbClick % 6 == 4){
             boutonModeSwitcher->setLabel("Mode actuel : Raytracer");
             renderer.raytracer->setup();
             renderer.Mode = Renderer::modes::isRaytracer;
             //std::thread t1(callRaytracer);
             //t1.detach();
-          } else {
+        } else if (nbClick % 6 == 5){
             boutonModeSwitcher->setLabel("Mode actuel : Parametric");
             renderer.Mode = Renderer::modes::isParametric;
             renderer.parametric_renderer->setup();
+        } else {
+          boutonModeSwitcher->setLabel("Mode actuel : Catmull_Rom");
+          renderer.Mode = Renderer::modes::isCatmull;
+          renderer.catmull_rom->setup();
         }
 
 
@@ -263,8 +267,8 @@ void Application::onToggleEvent(ofxDatGuiToggleEvent event) {
          if(event.target->getChecked())
             cout << "onToggleEvent: " << event.target->getLabel() << "::" <<  event.target->getChecked() << endl;
      }
-     
-         
+
+
 }
 
 void Application::openFileSelected(ofFileDialogResult openFileResult) {

@@ -170,10 +170,10 @@ void Renderer::draw() {
 
 
     if (Mode == modes::is2D) {
-      
+
         if (tone_mapping_toggle)// && image_source.isAllocated())
         {
-            
+
             shader.begin();
 
             // passer les attributs uniformes au shader
@@ -287,7 +287,7 @@ void Renderer::draw() {
 
             material_sphere.begin();
 
-            
+
 
             // dessiner une sphère
             ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
@@ -322,18 +322,18 @@ void Renderer::draw() {
              material_teapot.end();
 
             ofPopMatrix();
-            
+
 
             for (SceneObject3D *obj : objects3D) {
                 obj->draw();
             }
-             
+
             ofPopMatrix();
             if (illuminate_toggle)
                 shader_illuminate->end();
             shader_lights.end();
             ofPushMatrix();
-            
+
             ofPopMatrix();
             light.disable();
 
@@ -349,7 +349,7 @@ void Renderer::draw() {
             // activer la lumière dynamique
             light.enable();
             ofPushMatrix();
-            draw_tesselation(); 
+            draw_tesselation();
             ofPopMatrix();
 
              light.disable();
@@ -389,9 +389,12 @@ void Renderer::draw() {
             count = 1;
         }
         raytracer->draw();
-    } else {
+    } else if (Mode == modes::isParametric){
       parametric_renderer->draw();
+    } else {
+      catmull_rom->draw();
     }
+
 
     if (tone_mapping_toggle)
         shader.end();
@@ -680,7 +683,7 @@ void Renderer::reset() {
         offset_z = 0.0f;
         position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
         position_sphere.set(0.0f, 0.0f, 0.0f);
-        
+
         ofLog() << "<Mode 3D : reset>";
 
         // paramètres du matériau
@@ -991,7 +994,7 @@ void Renderer::draw_tesselation() {
             shader_tesselation_pass.begin();
             ofMatrix4x4 camdist;
             ofPushMatrix();
-            
+
             camdist.preMultTranslate(translation_vector);
             camdist.preMultRotate(ofQuaternion(rotation_vector));
             ofPopMatrix();
@@ -1014,7 +1017,7 @@ void Renderer::draw_tesselation() {
             shader_tesselation_pass.end();
         //    ofDisableDepthTest();
             //cam.end();
-            
+
 }
 
 void Renderer::lighting_on() {
