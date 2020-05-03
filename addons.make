@@ -1,5 +1,5 @@
 ofxAssimpModelLoader
-ofxDatGui-master
+ofxDatGui
 ofxHistogram
 ofxOpenCv
 ofxShaderSelect

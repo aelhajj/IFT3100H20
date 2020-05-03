@@ -17,6 +17,8 @@ Project{
             'src/application.h',
             'src/camera.cpp',
             'src/camera.h',
+            'src/catmull_rom.cpp',
+            'src/catmull_rom.h',
             'src/composedShape.cpp',
             'src/composedShape.h',
             'src/cursor.h',
@@ -28,6 +30,8 @@ Project{
             'src/model3D.h',
             'src/ofApp.cpp',
             'src/ofApp.h',
+            'src/parametric.cpp',
+            'src/parametric.h',
             'src/primitives/circle.cpp',
             'src/primitives/circle.h',
             'src/primitives/line.cpp',
@@ -66,7 +70,7 @@ Project{
 
         of.addons: [
             'ofxAssimpModelLoader',
-            'ofxDatGui-master',
+            'ofxDatGui',
             'ofxHistogram',
             'ofxOpenCv',
             'ofxShaderSelect',

@@ -30,22 +30,22 @@ void Application::setup() {
 
     ofxDatGuiFolder *filter_folder = gui->addFolder("Filtres 1-5 KEYS", ofColor::orange);
 
-  //  boutonMappingSwitch = filter_folder->addButton("Active Mapping Tonal");
-    toggle_mapping_tonal = filter_folder-> addToggle("Active Mapping Tonal", true);
+    //  boutonMappingSwitch = filter_folder->addButton("Active Mapping Tonal");
+    toggle_mapping_tonal = filter_folder->addToggle("Active Mapping Tonal", true);
     toggle_mapping_tonal->onToggleEvent(this, &Application::onToggleEvent);
     boutonFilterSwitch = filter_folder->addButton("ACES filmic");
     gamma_slider = filter_folder->addSlider("Gamma", 0.0f, 5.0f);
     exposure_slider = filter_folder->addSlider("Exposure", 0.0f, 5.0f);
 
     //boutonTextureProceduraleSwitch = filter_folder->addButton("Active Texture Procedurale");
-    toggle_textural_procedure = filter_folder-> addToggle("Active Texture Procedurale", true);
+    toggle_textural_procedure = filter_folder->addToggle("Active Texture Procedurale", true);
     toggle_textural_procedure->onToggleEvent(this, &Application::onToggleEvent);
     filter_mix_slider = filter_folder->addSlider("Mixage", 0, 1);
     filter_tint_color_picker = filter_folder->addColorPicker("Teinture", ofColor(255, 0, 0, 5));
 
-   // toggle_test = filter_folder-> addToggle("toggle", true);
-   // toggle_test->onToggleEvent(this, &Application::onToggleEvent);
-   // ofLog() << toggle_test;
+    // toggle_test = filter_folder-> addToggle("toggle", true);
+    // toggle_test->onToggleEvent(this, &Application::onToggleEvent);
+    // ofLog() << toggle_test;
 
     filter_folder->expand();
 
@@ -74,7 +74,7 @@ void Application::setup() {
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
     ofxDatGuiFolder *illumination_folder = gui->addFolder("Illumination Moderne", ofColor::pink);
-    toggle_PBR_shader = illumination_folder-> addToggle("Activate illumination", false);
+    toggle_PBR_shader = illumination_folder->addToggle("Activate illumination", false);
     toggle_PBR_shader->onToggleEvent(this, &Application::onToggleEvent);
     metallic_slider = illumination_folder->addSlider("Metallicite", 0, 10);
     roughness_slider = illumination_folder->addSlider("Rugorisite", 0, 10);
@@ -86,18 +86,18 @@ void Application::setup() {
 
     ofxDatGuiFolder *classic_folder = gui->addFolder("Illumination Classique 1-5 KEYS", ofColor::yellow);
     boutonMateriel = classic_folder->addButton("Changer de materiau");
-    toggle_illuminate_shader =  classic_folder-> addToggle("Activate classical shaders", false);
+    toggle_illuminate_shader = classic_folder->addToggle("Activate classical shaders", false);
     toggle_illuminate_shader->onToggleEvent(this, &Application::onToggleEvent);
-    toggle_light_ambiant = classic_folder-> addToggle("Lumiere ambiante", false);
+    toggle_light_ambiant = classic_folder->addToggle("Lumiere ambiante", false);
     toggle_light_ambiant->onToggleEvent(this, &Application::onToggleEvent);
-    toggle_light_direct = classic_folder-> addToggle("Lumiere directionnelle", false);
+    toggle_light_direct = classic_folder->addToggle("Lumiere directionnelle", false);
     toggle_light_direct->onToggleEvent(this, &Application::onToggleEvent);
-    toggle_light_point = classic_folder-> addToggle("Lumiere ponctuelle", false);
+    toggle_light_point = classic_folder->addToggle("Lumiere ponctuelle", false);
     toggle_light_point->onToggleEvent(this, &Application::onToggleEvent);
-    toggle_light_spot = classic_folder-> addToggle("Lumiere projecteur", false);
+    toggle_light_spot = classic_folder->addToggle("Lumiere projecteur", false);
     toggle_light_spot->onToggleEvent(this, &Application::onToggleEvent);
-  //  primitive3D_folder->expand();
-  //  menu3DShape->expand();
+    //  primitive3D_folder->expand();
+    //  menu3DShape->expand();
 
     ofSetWindowTitle("Equipe ###### : Partie 2");
 
@@ -167,20 +167,20 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         } else if (nbClick % 6 == 3) {
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
-        } else if (nbClick % 6 == 4){
+        } else if (nbClick % 6 == 4) {
             boutonModeSwitcher->setLabel("Mode actuel : Raytracer");
             renderer.raytracer->setup();
             renderer.Mode = Renderer::modes::isRaytracer;
             //std::thread t1(callRaytracer);
             //t1.detach();
-        } else if (nbClick % 6 == 5){
+        } else if (nbClick % 6 == 5) {
             boutonModeSwitcher->setLabel("Mode actuel : Parametric");
             renderer.Mode = Renderer::modes::isParametric;
             renderer.parametric_renderer->setup();
         } else {
-          boutonModeSwitcher->setLabel("Mode actuel : Catmull_Rom");
-          renderer.Mode = Renderer::modes::isCatmull;
-          renderer.catmull_rom->setup();
+            boutonModeSwitcher->setLabel("Mode actuel : Catmull_Rom");
+            renderer.Mode = Renderer::modes::isCatmull;
+            renderer.catmull_rom->setup();
         }
 
 
@@ -252,22 +252,48 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
         else
             boutonFilterSwitch->setLabel("Reinhard");
     }
-   // if (event.target == boutonTextureProceduraleSwitch) {
-   //     renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
-   // }
-   // if (event.target == boutonMappingSwitch) {
+    // if (event.target == boutonTextureProceduraleSwitch) {
+    //     renderer.texture_procedurale_toggle = (!renderer.texture_procedurale_toggle);
+    // }
+    // if (event.target == boutonMappingSwitch) {
     //    renderer.tone_mapping_toggle = (!renderer.tone_mapping_toggle);
-   // }
+    // }
 
 
 }
 
 void Application::onToggleEvent(ofxDatGuiToggleEvent event) {
-     if (event.target == toggle_test) {
-         if(event.target->getChecked())
-            cout << "onToggleEvent: " << event.target->getLabel() << "::" <<  event.target->getChecked() << endl;
-     }
+    //  if (event.target == toggle_test) {
+    //     if (event.target->getChecked())
+    //         cout << "onToggleEvent: " << event.target->getLabel() << "::" << event.target->getChecked() << endl;
+    if (event.target == toggle_mapping_tonal) {
+        renderer.tone_mapping_toggle = event.target->getChecked();
+    }
+    if (event.target == toggle_textural_procedure)
+        renderer.texture_procedurale_toggle = event.target->getChecked();
+    // }
+    if (event.target == toggle_illuminate_shader) {
+        if (event.target->getChecked()) {
+            toggle_textural_procedure->setChecked(false);
+            toggle_mapping_tonal->setChecked(false);
+            renderer.tone_mapping_toggle = false;
+            renderer.texture_procedurale_toggle = false;
 
+        }
+
+        renderer.illuminate_toggle = event.target->getChecked();
+        renderer.lights_toggle = (!event.target->getChecked());
+    }
+    if (event.target == toggle_light_ambiant)
+        renderer.is_active_ligh_ambient = event.target->getChecked();
+    if (event.target == toggle_light_direct)
+        renderer.is_active_light_directional = event.target->getChecked();
+    if (event.target == toggle_light_point)
+        renderer.is_active_light_point = event.target->getChecked();
+    if (event.target == toggle_light_spot)
+        renderer.is_active_light_spot = event.target->getChecked();
+
+    renderer.update();
 
 }
 
@@ -296,9 +322,9 @@ void Application::openFileSelected(ofFileDialogResult openFileResult) {
 }
 
 void Application::draw() {
-      ofSetColor(255, 255, 255);
-	ofDrawBitmapString("Point Light On (1) : ",
-					   20, 20);
+    ofSetColor(255, 255, 255);
+    ofDrawBitmapString("Point Light On (1) : ",
+                       20, 20);
     renderer.draw();
     cursor->drawCursor();
     gui->update();
@@ -365,16 +391,16 @@ void Application::update() {
         // déplacement sur le plan XZ en fonction de l'état des flèches du clavier
         if (is_key_press_up)
             renderer.offset_z += renderer.delta_z * time_elapsed;
-            //*renderer.parametric_renderer->selected_ctrl_pointy -= renderer.delta_z * time_elapsed;
+        //*renderer.parametric_renderer->selected_ctrl_pointy -= renderer.delta_z * time_elapsed;
         if (is_key_press_down)
             renderer.offset_z -= renderer.delta_z * time_elapsed;
-            //*renderer.parametric_renderer->selected_ctrl_pointy += renderer.delta_z * time_elapsed;
+        //*renderer.parametric_renderer->selected_ctrl_pointy += renderer.delta_z * time_elapsed;
         if (is_key_press_left)
             renderer.offset_x += renderer.delta_x * time_elapsed;
-            //*renderer.parametric_renderer->selected_ctrl_pointx -= renderer.delta_x * time_elapsed;
+        //*renderer.parametric_renderer->selected_ctrl_pointx -= renderer.delta_x * time_elapsed;
         if (is_key_press_right)
             renderer.offset_x -= renderer.delta_x * time_elapsed;
-            //*renderer.parametric_renderer->selected_ctrl_pointx += renderer.delta_x * time_elapsed;
+        //*renderer.parametric_renderer->selected_ctrl_pointx += renderer.delta_x * time_elapsed;
     } else {
 
         // Mode 2D:
@@ -412,6 +438,7 @@ void Application::keyReleased(int key) {
 
             renderer.shader_active = ShaderType::color_fill;
             ofLog() << "<shader: color fill>";
+
             break;
 
         case 50:  // key 2

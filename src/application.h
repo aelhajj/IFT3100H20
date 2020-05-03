@@ -32,8 +32,8 @@ public:
 
     ofxDatGuiButton *boutonFilterSwitch;
 
- //   ofxDatGuiButton *boutonMappingSwitch;
- //   ofxDatGuiButton *boutonTextureProceduraleSwitch;
+    //   ofxDatGuiButton *boutonMappingSwitch;
+    //   ofxDatGuiButton *boutonTextureProceduraleSwitch;
 
     ofxDatGuiButton *boutonImporter;
     ofxDatGuiButton *boutonRogner;

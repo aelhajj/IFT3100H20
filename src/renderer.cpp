@@ -42,6 +42,7 @@ void Renderer::setup() {
     filter_tint.set(255, 255, 255);
 
     image_source.load("teapot.jpg");
+    // image_source.load("data/materiau/stone_1.jpg");
 
     // dimensions de l'image source
     image_width = image_source.getWidth();
@@ -66,8 +67,8 @@ void Renderer::setup() {
         reset();
     }
 
-    tone_mapping_toggle = false;
-    texture_procedurale_toggle = true;
+    // tone_mapping_toggle = false;
+    texture_procedurale_toggle = false;
 
     shader.load("shader/tone_mapping_330_vs.glsl", "shader/tone_mapping_330_fs.glsl");
     shader_texture_procedurale.load("shader/texture_procedurale_vs.glsl", "shader/texture_procedurale_fs.glsl");
@@ -120,10 +121,11 @@ void Renderer::setup() {
     shader_active = ShaderType::blinn_phong;
 
 
-    illuminate_toggle = false;
+    illuminate_toggle = true;
     texture_toggle = true;
     tesselation_toggle = false;
-    lights_toggle = true;
+    lights_toggle = false;
+    tone_mapping_toggle = true;
     if (texture_toggle) {
         // charger les textures du matériau
         texture_diffuse.load("materiau/metal_plate_diffuse_1k.jpg");
@@ -139,31 +141,31 @@ void Renderer::setup() {
 
     }
 
-    if(tesselation_toggle) {
-        teapot.loadModel("teapot.obj",true);
+    if (tesselation_toggle) {
+        teapot.loadModel("teapot.obj", true);
 
         ofSetVerticalSync(false);
-        vector<string> shaders = shader_tesselation.load("shader/tesselation_quads_440.glsl");
-        shader_tesselation_pass = shader_tesselation.active(shaders,440);
+        vector <string> shaders = shader_tesselation.load("shader/tesselation_quads_440.glsl");
+        shader_tesselation_pass = shader_tesselation.active(shaders, 440);
 
         inner_level = 1;
         outer_level = 1;
-        light_vector = ofVec3f(30.,24.,0.);
+        light_vector = ofVec3f(30., 24., 0.);
         diffuse_vector = ofVec3f(0.04f, 0.04f, 0.04f);
         ambiant_vector = ofVec3f(0, 0.75, 0.75);
         specular_vector = ofVec3f(0, 0.5, 1.0);
         translation_vector = ofVec3f(-0.5f, 0.0f, -500.0f);
-        rotation_vector = ofVec4f(0.9,0.,0.,0.);
+        rotation_vector = ofVec4f(0.9, 0., 0., 0.);
 
-  // assimp.loadModel("teapot.obj",true);
+        // assimp.loadModel("teapot.obj",true);
 
-            //assimp.loadModel("monster-animated-character-X.X",true);
-            vbo.setMesh(teapot.getMesh(0),GL_DYNAMIC_DRAW);
+        //assimp.loadModel("monster-animated-character-X.X",true);
+        vbo.setMesh(teapot.getMesh(0), GL_DYNAMIC_DRAW);
 
-            shader_tesselation.setUniform();//Test
+        shader_tesselation.setUniform();//Test
     }
-camera_offset = 350.0f;
-    reset();
+    camera_offset = 350.0f;
+     reset();
 }
 
 void Renderer::draw() {
@@ -171,8 +173,8 @@ void Renderer::draw() {
 
     if (Mode == modes::is2D) {
 
-        if (tone_mapping_toggle)// && image_source.isAllocated())
-        {
+        // Pour le mappage tonal sur image 
+        if (tone_mapping_toggle) {
 
             shader.begin();
 
@@ -183,7 +185,7 @@ void Renderer::draw() {
             shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
             shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
 
-            // shader.end();
+            shader.end();
 
         }
 
@@ -233,36 +235,29 @@ void Renderer::draw() {
             draw_histogram();
             ofPopMatrix();
         }
-        shader.end();
+        if (tone_mapping_toggle)
+            shader.end();
+        if (texture_procedurale_toggle)
+            shader_texture_procedurale.end();
 
     } else if (Mode == modes::is3D) {
-            //  /*
+        //  /*
         // copier la matrice de transformation courante sur le dessus de la pile
-        if (tone_mapping_toggle)// && image_source.isAllocated())
-        {
-            ofPushMatrix();
-            shader.begin();
+        // Pour le mappage tonal sur objet 3D :
+        if (tone_mapping_toggle || texture_procedurale_toggle) {
 
-            // passer les attributs uniformes au shader
-          //  shader.setUniformTexture("image", image_destination.getTexture(), 1);
-          shader.setUniformTexture("image", texture_diffuse, 1);
+            if (tone_mapping_toggle) {
+                // image_source.load("materiau/stone_2.jpg");
+                shader.begin();
 
-            shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
-            shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
-            shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+                // passer les attributs uniformes au shader
+                shader.setUniformTexture("image", image_destination.getTexture(), 1);
 
-            ofPopMatrix();
+                shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+                shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+                shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+            }
 
-        }
-        if (!tesselation_toggle) {
-            ofEnableDepthTest();
-            ofEnableLighting();
-
-            // activer la lumière dynamique
-            light.enable();
-            if(illuminate_toggle)
-                shader_illuminate->begin();
-            shader_lights.begin();
             if (texture_procedurale_toggle) {
 
                 shader_texture_procedurale.begin();
@@ -272,7 +267,57 @@ void Renderer::draw() {
                 shader_texture_procedurale.setUniform1f("width", screen_width);
                 shader_texture_procedurale.setUniform1f("height", screen_height);
             }
+            ofPushMatrix();
 
+            // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+
+            ofPushMatrix();
+            for (SceneObject3D *obj : objects3D) {
+                ofTranslate(
+                        position_sphere.x + 200,
+                        position_sphere.y,
+                        position_sphere.z);
+                obj->draw();
+
+            }
+            ofPopMatrix();
+            ofPopMatrix();
+            if (tone_mapping_toggle)
+                shader.end();
+            if (texture_procedurale_toggle)
+                shader_texture_procedurale.end();
+
+        } else {
+            // copier la matrice de transformation courante sur le dessus de la pile
+            //if (illuminate_toggle) {
+            ofEnableDepthTest();
+            ofEnableLighting();
+
+            // activer la lumière dynamique
+            light.enable();
+            lighting_on();
+            if (illuminate_toggle)
+                shader_illuminate->begin();
+            else
+                shader_lights.begin();
+            if (texture_procedurale_toggle) {
+
+                shader_texture_procedurale.begin();
+                shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
+                                                        filter_tint.b / 255.0f);
+                shader_texture_procedurale.setUniform1f("factor", filter_mix);
+                shader_texture_procedurale.setUniform1f("width", screen_width);
+                shader_texture_procedurale.setUniform1f("height", screen_height);
+            }
+            if (lights_toggle) {
+                if (is_active_light_point) 
+                    light_point.draw();
+                if (is_active_light_directional)
+                    light_directional.draw();
+                if (is_active_light_spot)
+                    light_spot.draw();
+            }
             ofPushMatrix();
 
             // transformer l'origine de la scène au milieu de la fenêtre d'affichage
@@ -285,14 +330,111 @@ void Renderer::draw() {
                     position_sphere.y,
                     position_sphere.z);
 
+            if (!illuminate_toggle) 
+                material_sphere.begin();
+            
+            // dessiner une sphère
+            ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
+            
+            if (!illuminate_toggle) 
+                material_sphere.end();
+            ofPopMatrix();
+
+            ofPushMatrix();
+            if (!illuminate_toggle) {
+                teapot.disableMaterials();
+                material_teapot.begin();
+            }
+
+                // positionner le teapot
+                teapot.setPosition(
+                        position_teapot.x,
+                        position_teapot.y + 15.0f,
+                        position_teapot.z);
+
+            // dimension du teapot
+            teapot.setScale(
+                    scale_teapot,
+                    scale_teapot,
+                    scale_teapot);
+
+            // dessiner un teapot
+            teapot.draw(OF_MESH_FILL);
+            if (!illuminate_toggle)
+                material_teapot.end();
+
+            ofPushMatrix();
+            for (SceneObject3D *obj : objects3D) {
+                ofTranslate(
+                        position_teapot.x + 400,
+                        position_teapot.y,
+                        position_teapot.z);
+                obj->draw();
+
+            }
+            ofPopMatrix();
+
+            ofPopMatrix();
+
+            ofPopMatrix();
+            if (illuminate_toggle)
+                shader_illuminate->end();
+            else
+                shader_lights.end();
+            light.disable();
+            lighting_off();
+            // désactiver l'éclairage dynamique
+            ofDisableLighting();
+            ofDisableDepthTest();
+
+        }
+/*
+          //  ofEnableDepthTest();
+         //   ofEnableLighting();
+            ofPushMatrix();
+            // activer la lumière dynamique
+          //  light.enable();
+           // if (illuminate_toggle)
+           illuminate_toggle = true;
+                shader_illuminate->begin();
+           // shader_lights.begin();
+
+            //if(!tone_mapping_toggle) {
+            ofPushMatrix();
+
+            // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+
+            ofPushMatrix();
+            // positionner la sphère
+            ofTranslate(
+                    position_sphere.x,
+                    position_sphere.y,
+                    position_sphere.z);
+            sphere.mapTexCoordsFromTexture(image_destination.getTexture());
+
             material_sphere.begin();
-
-
 
             // dessiner une sphère
             ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
 
-            material_sphere.end();
+
+            // now draw
+            // sphere.draw();
+            sphere.setRadius(scale_sphere);
+            sphere.setPosition(ofPoint(0.0f, 0.0f, 0.0f));
+            vector <ofMeshFace> triangles = sphere.getMesh().getUniqueFaces();
+            sphere.draw();
+
+            /*  for (SceneObject3D *obj : objects3D) {
+                  ofTranslate(
+                      position_sphere.x+100,
+                      position_sphere.y,
+                      position_sphere.z);
+                  obj->draw();
+              }
+
+               material_sphere.end();
 
             ofPopMatrix();
 
@@ -310,37 +452,44 @@ void Renderer::draw() {
                     scale_teapot,
                     scale_teapot);
 
-           teapot.disableMaterials();
+         //   teapot.disableMaterials();
 
             // activer le matériau
-            material_teapot.begin();
+            //       material_teapot.begin();
 
-             // dessiner un teapot
-             teapot.draw(OF_MESH_FILL);
+            // dessiner un teapot
+            teapot.draw(OF_MESH_FILL);
 
-              // désactiver le matériau
-             material_teapot.end();
-
-            ofPopMatrix();
-
-
-            for (SceneObject3D *obj : objects3D) {
-                obj->draw();
-            }
+            // désactiver le matériau
+            //   material_teapot.end();
 
             ofPopMatrix();
-            if (illuminate_toggle)
-                shader_illuminate->end();
-            shader_lights.end();
-            ofPushMatrix();
-
             ofPopMatrix();
-            light.disable();
+       // }
 
-            // désactiver l'éclairage dynamique
-            ofDisableLighting();
-            ofDisableDepthTest();
-        } else {
+
+
+
+
+        //ofPopMatrix();
+       // if (illuminate_toggle)
+            shader_illuminate->end();
+
+        //    if (tone_mapping_toggle)
+        //       shader.end();
+       // shader_lights.end();
+        // ofPushMatrix();
+
+
+        //  ofPopMatrix();
+      //  light.disable();
+        ofPopMatrix();
+
+        // désactiver l'éclairage dynamique
+        ofDisableLighting();
+       // ofDisableDepthTest();
+        //  }// else {
+        if (tesselation_toggle) {
             ofEnableDepthTest();
             ofEnableLighting();
             ofPushMatrix();
@@ -352,34 +501,18 @@ void Renderer::draw() {
             draw_tesselation();
             ofPopMatrix();
 
-             light.disable();
+            light.disable();
 
             // désactiver l'éclairage dynamique
             ofDisableLighting();
             ofDisableDepthTest();
-        }
+        }}*/
 
-//*/
-        /* ofPushMatrix();
-          // inverser l'axe Y pour qu'il pointe vers le haut
-          ofScale(1.0f, is_flip_axis_y ? -1.0f : 1.0f);
-
-          // transformer l'origine de la scène au milieu de la fenêtre d'affichage
-          ofTranslate(center_x + offset_x, is_flip_axis_y ? -center_y : center_y, offset_z);
-
-          // dessiner l'origine de la scène
-          //draw_locator(10.0f);
-          for (SceneObject3D *obj : objects3D) {
-              obj->draw();
-          }
-
-          // revenir à la matrice de transformation précédente dans la pile
-          ofPopMatrix();*/
     } else if (Mode == modes::isCamera) {
         ofPushMatrix();
         camera->draw();
         ofPopMatrix();
-    } else  if (Mode == modes::isRaytracer){
+    } else if (Mode == modes::isRaytracer) {
         if (count % 1000 == 0) {
             raytracer->setup();
         } else {
@@ -389,10 +522,10 @@ void Renderer::draw() {
             count = 1;
         }
         raytracer->draw();
-    } else if (Mode == modes::isParametric){
-      parametric_renderer->draw();
+    } else if (Mode == modes::isParametric) {
+        parametric_renderer->draw();
     } else {
-      catmull_rom->draw();
+        catmull_rom->draw();
     }
 
 
@@ -565,16 +698,28 @@ void Renderer::update() {
         ofPopMatrix();
     } else {
         // Mode 3D :
-        teapot.update();
+        // Mode 3D :
         camera->update();
         center_x = ofGetWidth() / 2.0f;
         center_y = ofGetHeight() / 2.0f;
+    }
+    for (SceneObject3D *obj : objects3D) {
+        obj->setTexture(image_destination);
+    }
+    illuminate();
+    filter();
+    teapot.update();
+    camera->update();
+    center_x = ofGetWidth() / 2.0f;
+    center_y = ofGetHeight() / 2.0f;
+    light.setGlobalPosition(
+            ofMap(ofGetMouseX() / (float) ofGetWidth(), 0.0f, 1.0f, -center_x, center_y),
+            ofMap(ofGetMouseY() / (float) ofGetHeight(), 0.0f, 1.0f, -center_y, center_y),
+            -offset_z * 1.5f);
+    if (!lights_toggle) {
 
         // transformer la lumière
-        light.setGlobalPosition(
-                ofMap(ofGetMouseX() / (float) ofGetWidth(), 0.0f, 1.0f, -center_x, center_y),
-                ofMap(ofGetMouseY() / (float) ofGetHeight(), 0.0f, 1.0f, -center_y, center_y),
-                -offset_z * 1.5f);
+
         shader_lights.begin();
 
         shader_lights.setUniform3f("material_color_ambient", material_color_ambient.r / 255.0f,
@@ -608,43 +753,47 @@ void Renderer::update() {
 
         shader_lights.end();
     }
+    //  }
     for (SceneObject3D *obj : objects3D) {
         obj->setTexture(image_destination);
     }
-    translation_vector = ofVec3f(center_x + offset_x - ofGetWidth()/2, center_y- ofGetHeight()/2, offset_z-800);
+    translation_vector = ofVec3f(center_x + offset_x - ofGetWidth() / 2, center_y - ofGetHeight() / 2, offset_z - 800);
+    // transformer la lumière
+
+    // mise à jour d'une valeur numérique animée par un oscillateur
+    float oscillation =
+            oscillate(ofGetElapsedTimeMillis(), oscillation_frequency, oscillation_amplitude) + oscillation_amplitude;
+
     illuminate();
     filter();
-    if(lights_toggle) {
-         ofPushMatrix();
+    if (lights_toggle) {
+        ofPushMatrix();
 
-  if (is_active_light_directional)
-  {
-    // transformer la lumière directionnelle
-    orientation_directional.makeRotate(int(ofGetElapsedTimeMillis() * 0.1f) % 360, 0, 1, 0);
+        if (is_active_light_directional) {
+            // transformer la lumière directionnelle
+            orientation_directional.makeRotate(int(ofGetElapsedTimeMillis() * 0.1f) % 360, 0, 1, 0);
 
-    light_directional.setPosition(center_x, center_y + 60, camera_offset * 0.75f);
-    light_directional.setOrientation(orientation_directional);
-  }
+            light_directional.setPosition(center_x, center_y + 60, camera_offset * 0.75f);
+            light_directional.setOrientation(orientation_directional);
+        }
 
-  if (is_active_light_point)
-  {
-    // transformer la lumière ponctuelle
-    light_point.setPosition(ofGetMouseX(), ofGetMouseY(), camera_offset * 0.75f);
-  }
+        if (is_active_light_point) {
+            // transformer la lumière ponctuelle
+            light_point.setPosition(ofGetMouseX(), ofGetMouseY(), camera_offset * 0.75f);
+        }
 
-  if (is_active_light_spot)
-  {
-    // transformer la lumière projecteur
-    oscillation = oscillate(ofGetElapsedTimeMillis(), oscillation_frequency, oscillation_amplitude);
+        if (is_active_light_spot) {
+            // transformer la lumière projecteur
+            oscillation = oscillate(ofGetElapsedTimeMillis(), oscillation_frequency, oscillation_amplitude);
 
-    orientation_spot.makeRotate(30.0f, ofVec3f(1, 0, 0), oscillation, ofVec3f(0, 1, 0), 0.0f, ofVec3f(0, 0, 1));
+            orientation_spot.makeRotate(30.0f, ofVec3f(1, 0, 0), oscillation, ofVec3f(0, 1, 0), 0.0f, ofVec3f(0, 0, 1));
 
-    light_spot.setOrientation(orientation_spot);
+            light_spot.setOrientation(orientation_spot);
 
-    light_spot.setPosition (center_x, center_y - 75.0f, camera_offset * 0.75f);
-  }
+            light_spot.setPosition(center_x, center_y - 75.0f, camera_offset * 0.75f);
+        }
 
-  ofPopMatrix();
+        ofPopMatrix();
     }
 }
 
@@ -705,68 +854,65 @@ void Renderer::reset() {
 
         // paramètres de mappage tonal
         tone_mapping_exposure = 1.0f;
-        tone_mapping_toggle = true;
-    }
-    if(lights_toggle) {
+        //  tone_mapping_toggle = true;
 
-  //use_smooth_lighting = true;
 
-  is_active_ligh_ambient = true;
-  is_active_light_directional = true;
-  is_active_light_point = true;
-  is_active_light_spot = true;
+        // centre du framebuffer
+        center_x = ofGetWidth() / 2.0f;
+        center_y = ofGetHeight() / 2.0f;
 
-  // centre du framebuffer
-  center_x = ofGetWidth() / 2.0f;
-  center_y = ofGetHeight() / 2.0f;
+        // déterminer la position des géométries
+        // position_cube.set(-ofGetWidth() * (1.0f / 4.0f), 0.0f, 0.0f);
+        position_sphere.set(0.0f, 0.0f, 0.0f);
+        position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
 
-  // déterminer la position des géométries
- // position_cube.set(-ofGetWidth() * (1.0f / 4.0f), 0.0f, 0.0f);
-  position_sphere.set(0.0f, 0.0f, 0.0f);
-  position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
+       if (lights_toggle) {
 
-  // configurer le matériau du cube
- /* material_cube.setAmbientColor(ofColor(63, 63, 63));
-  material_cube.setDiffuseColor(ofColor(127, 0, 0));
-  material_cube.setEmissiveColor(ofColor( 31, 0, 0));
-  material_cube.setSpecularColor(ofColor(127, 127, 127));
-  material_cube.setShininess(16.0f);
-*/
-  // configurer le matériau de la sphère
-  material_sphere.setAmbientColor(ofColor(63, 63, 63));
-  material_sphere.setDiffuseColor(ofColor(191, 63, 0));
-  material_sphere.setEmissiveColor(ofColor(0, 31, 0));
-  material_sphere.setSpecularColor(ofColor(255, 255, 64));
-  material_sphere.setShininess(8.0f);
+            //use_smooth_lighting = true;
 
-  // configurer le matériau du teapot
-  material_teapot.setAmbientColor(ofColor(63, 63, 63));
-  material_teapot.setDiffuseColor(ofColor(63, 0, 63));
-  material_teapot.setEmissiveColor(ofColor(0, 0, 31));
-  material_teapot.setSpecularColor(ofColor(191, 191, 191));
-  material_teapot.setShininess(8.0f);
+            is_active_ligh_ambient = true;
+            is_active_light_directional = true;
+            is_active_light_point = true;
+            is_active_light_spot = true;
 
-  // configurer la lumière ambiante
-  light_ambient.set(127, 127, 127);
 
-  // configurer la lumière directionnelle
-  light_directional.setDiffuseColor(ofColor(31, 255, 31));
-  light_directional.setSpecularColor(ofColor(191, 191, 191));
-  light_directional.setOrientation(ofVec3f(0.0f, 0.0f, 0.0f));
-  light_directional.setDirectional();
+            // configurer le matériau de la sphère
+            material_sphere.setAmbientColor(ofColor(63, 63, 63));
+            material_sphere.setDiffuseColor(ofColor(191, 63, 0));
+            material_sphere.setEmissiveColor(ofColor(0, 31, 0));
+            material_sphere.setSpecularColor(ofColor(255, 255, 64));
+            material_sphere.setShininess(8.0f);
 
-  // configurer la lumière ponctuelle
-  light_point.setDiffuseColor(ofColor(255, 255, 255));
-  light_point.setSpecularColor(ofColor(191, 191, 191));
-  light_point.setPointLight();
+            // configurer le matériau du teapot
+            material_teapot.setAmbientColor(ofColor(63, 63, 63));
+            material_teapot.setDiffuseColor(ofColor(63, 0, 63));
+            material_teapot.setEmissiveColor(ofColor(0, 0, 31));
+            material_teapot.setSpecularColor(ofColor(191, 191, 191));
+            material_teapot.setShininess(8.0f);
 
-  // configurer la lumière projecteur
-  light_spot.setDiffuseColor(ofColor(191, 191, 191));
-  light_spot.setSpecularColor(ofColor(191, 191, 191));
-  light_spot.setOrientation(ofVec3f(0.0f, 0.0f, 0.0f));
-  light_spot.setSpotConcentration(2);
-  light_spot.setSpotlightCutOff(30);
-  light_spot.setSpotlight();
+            // configurer la lumière ambiante
+            light_ambient.set(127, 127, 127);
+
+            // configurer la lumière directionnelle
+            light_directional.setDiffuseColor(ofColor(31, 255, 31));
+            light_directional.setSpecularColor(ofColor(191, 191, 191));
+            light_directional.setOrientation(ofVec3f(0.0f, 0.0f, 0.0f));
+            light_directional.setDirectional();
+
+            // configurer la lumière ponctuelle
+            light_point.setDiffuseColor(ofColor(255, 255, 255));
+            light_point.setSpecularColor(ofColor(191, 191, 191));
+            light_point.setPointLight();
+
+            // configurer la lumière projecteur
+            light_spot.setDiffuseColor(ofColor(191, 191, 191));
+            light_spot.setSpecularColor(ofColor(191, 191, 191));
+            light_spot.setOrientation(ofVec3f(0.0f, 0.0f, 0.0f));
+            light_spot.setSpotConcentration(2);
+            light_spot.setSpotlightCutOff(30);
+            light_spot.setSpotlight();
+        }
+
     }
 }
 
@@ -990,55 +1136,56 @@ float Renderer::oscillate(float time, float frequency, float amplitude) {
 }
 
 void Renderer::draw_tesselation() {
-            ofEnableDepthTest();
-            shader_tesselation_pass.begin();
-            ofMatrix4x4 camdist;
-            ofPushMatrix();
+    ofEnableDepthTest();
+    shader_tesselation_pass.begin();
+    ofMatrix4x4 camdist;
+    ofPushMatrix();
 
-            camdist.preMultTranslate(translation_vector);
-            camdist.preMultRotate(ofQuaternion(rotation_vector));
-            ofPopMatrix();
+    camdist.preMultTranslate(translation_vector);
+    camdist.preMultRotate(ofQuaternion(rotation_vector));
+    ofPopMatrix();
 
-            shader_tesselation_pass.setUniform3f("vLightPosition",light_vector.x,light_vector.y,light_vector.z);
-            shader_tesselation_pass.setUniform4f("diffuseColor",diffuse_vector.x,diffuse_vector.y,diffuse_vector.z,1.);
-            shader_tesselation_pass.setUniform4f("ambientColor",ambiant_vector.x,ambiant_vector.y,ambiant_vector.z,1.);
-            shader_tesselation_pass.setUniform4f("specularColor",specular_vector.x,specular_vector.y,specular_vector.z,1.);
-            shader_tesselation_pass.setUniformMatrix4f("mvMatrix",teapot.getModelMatrix()*camdist);
-            shader_tesselation_pass.setUniformMatrix3f("normalMatrix",shader_tesselation.mat4ToMat3(ofGetCurrentNormalMatrix()));
-            shader_tesselation_pass.setUniformMatrix4f("pMatrix",cam.getProjectionMatrix());
+    shader_tesselation_pass.setUniform3f("vLightPosition", light_vector.x, light_vector.y, light_vector.z);
+    shader_tesselation_pass.setUniform4f("diffuseColor", diffuse_vector.x, diffuse_vector.y, diffuse_vector.z, 1.);
+    shader_tesselation_pass.setUniform4f("ambientColor", ambiant_vector.x, ambiant_vector.y, ambiant_vector.z, 1.);
+    shader_tesselation_pass.setUniform4f("specularColor", specular_vector.x, specular_vector.y, specular_vector.z, 1.);
+    shader_tesselation_pass.setUniformMatrix4f("mvMatrix", teapot.getModelMatrix() * camdist);
+    shader_tesselation_pass.setUniformMatrix3f("normalMatrix",
+                                               shader_tesselation.mat4ToMat3(ofGetCurrentNormalMatrix()));
+    shader_tesselation_pass.setUniformMatrix4f("pMatrix", cam.getProjectionMatrix());
 
-            shader_tesselation_pass.setUniform1f("TessLevelInner",inner_level);
-            shader_tesselation_pass.setUniform1f("TessLevelOuter",outer_level);
+    shader_tesselation_pass.setUniform1f("TessLevelInner", inner_level);
+    shader_tesselation_pass.setUniform1f("TessLevelOuter", outer_level);
 
-                    // vbo patches
-                    glPatchParameteri(GL_PATCH_VERTICES, 3);
-                    vbo.drawElements(GL_PATCHES, vbo.getNumVertices()*vbo.getNumVertices());
+    // vbo patches
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+    vbo.drawElements(GL_PATCHES, vbo.getNumVertices() * vbo.getNumVertices());
 
-            shader_tesselation_pass.end();
-        //    ofDisableDepthTest();
-            //cam.end();
+    shader_tesselation_pass.end();
+    //    ofDisableDepthTest();
+    //cam.end();
 
 }
 
 void Renderer::lighting_on() {
-      if (is_active_ligh_ambient)
-    ofSetGlobalAmbientColor(light_ambient);
-  else
-    ofSetGlobalAmbientColor(ofColor(0, 0, 0));
+    if (is_active_ligh_ambient)
+        ofSetGlobalAmbientColor(light_ambient);
+    else
+        ofSetGlobalAmbientColor(ofColor(0, 0, 0));
 
-  if (is_active_light_directional)
-    light_directional.enable();
+    if (is_active_light_directional)
+        light_directional.enable();
 
-  if (is_active_light_point)
-    light_point.enable();
+    if (is_active_light_point)
+        light_point.enable();
 
-  if (is_active_light_spot)
-    light_spot.enable();
+    if (is_active_light_spot)
+        light_spot.enable();
 }
 
 void Renderer::lighting_off() {
-      ofSetGlobalAmbientColor(ofColor(0, 0, 0));
-  light_directional.disable();
-  light_point.disable();
-  light_spot.disable();
+    ofSetGlobalAmbientColor(ofColor(0, 0, 0));
+    light_directional.disable();
+    light_point.disable();
+    light_spot.disable();
 }

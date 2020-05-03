@@ -584,30 +584,32 @@ obj/linux64/Release/src/main.o: \
  /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxAssimpModelLoader/src/ofxAssimpAnimation.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/model3D.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/raytracer.h \
+ /home/amanie/Documents/Infographie/IFT3100H20/src/parametric.h \
+ /home/amanie/Documents/Infographie/IFT3100H20/src/catmull_rom.h \
  /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxShaderSelect/src/ofxShaderSelect.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/cursor.h \
  /home/amanie/Documents/Infographie/IFT3100H20/src/actions.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/ofxDatGui.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiGroups.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiLabel.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiComponent.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiIntObject.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/themes/ofxDatGuiThemes.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/themes/ofxDatGuiTheme.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/libs/ofxSmartFont/ofxSmartFont.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiEvents.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiConstants.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiButton.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiSlider.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTextInputField.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTextInput.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiFRM.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGui2dPad.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiColorPicker.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiMatrix.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTimeGraph.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiScrollView.h \
- /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiControls.h
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/ofxDatGui.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiGroups.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiLabel.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiComponent.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiIntObject.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/themes/ofxDatGuiThemes.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/themes/ofxDatGuiTheme.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiEvents.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiConstants.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiButton.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiSlider.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTextInputField.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiFRM.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGui2dPad.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h \
+ /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiControls.h
 
 /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/libs/openFrameworks/ofMain.h:
 
@@ -1811,50 +1813,54 @@ obj/linux64/Release/src/main.o: \
 
 /home/amanie/Documents/Infographie/IFT3100H20/src/raytracer.h:
 
+/home/amanie/Documents/Infographie/IFT3100H20/src/parametric.h:
+
+/home/amanie/Documents/Infographie/IFT3100H20/src/catmull_rom.h:
+
 /home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxShaderSelect/src/ofxShaderSelect.h:
 
 /home/amanie/Documents/Infographie/IFT3100H20/src/cursor.h:
 
 /home/amanie/Documents/Infographie/IFT3100H20/src/actions.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/ofxDatGui.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/ofxDatGui.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiGroups.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiLabel.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiLabel.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiComponent.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiComponent.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiIntObject.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiIntObject.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/themes/ofxDatGuiThemes.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/themes/ofxDatGuiThemes.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/themes/ofxDatGuiTheme.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/themes/ofxDatGuiTheme.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/libs/ofxSmartFont/ofxSmartFont.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiEvents.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiEvents.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/core/ofxDatGuiConstants.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/core/ofxDatGuiConstants.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiButton.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiButton.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiSlider.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiSlider.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTextInputField.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTextInputField.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTextInput.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiFRM.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiFRM.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGui2dPad.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGui2dPad.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiColorPicker.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiMatrix.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiTimeGraph.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiScrollView.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:
 
-/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui-master/src/components/ofxDatGuiControls.h:
+/home/amanie/Downloads/of_v0.11.0_linux64gcc6_release/addons/ofxDatGui/src/components/ofxDatGuiControls.h:

@@ -127,14 +127,15 @@ public:
     ofLight light_spot;
 
 
-  ofColor light_ambient;
+    ofColor light_ambient;
 
-  ofMaterial material_cube;
-  ofMaterial material_sphere;
-  ofMaterial material_teapot;
+    ofMaterial material_cube;
+    ofMaterial material_sphere;
+    ofMaterial material_teapot;
 
 
     ofxAssimpModelLoader teapot;
+    ofSpherePrimitive sphere;
 
     ofVec3f position_cube;
     ofVec3f position_sphere;
@@ -150,8 +151,8 @@ public:
     int inner_level;
     int outer_level;
 
-     ofQuaternion orientation_directional;
-  ofQuaternion orientation_spot;
+    ofQuaternion orientation_directional;
+    ofQuaternion orientation_spot;
 
 
     string shader_name;
@@ -173,9 +174,9 @@ public:
     bool texture_toggle;
 
     bool is_active_ligh_ambient = true;
-  bool is_active_light_directional = true;
-  bool is_active_light_point = true;
-  bool is_active_light_spot = true;
+    bool is_active_light_directional = true;
+    bool is_active_light_point = true;
+    bool is_active_light_spot = true;
 
     ofColor material_color_ambient;
     ofColor material_color_diffuse;
@@ -274,14 +275,13 @@ public:
 
     void draw_tesselation();
 
-     void lighting_on();
+    void lighting_on();
 
     void lighting_off();
 
     ~Renderer();
 
     ofEasyCam cam;
-
 
 
 };
