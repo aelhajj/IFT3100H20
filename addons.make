@@ -2,3 +2,4 @@ ofxAssimpModelLoader
 ofxDatGui-master
 ofxHistogram
 ofxOpenCv
+ofxShaderSelect

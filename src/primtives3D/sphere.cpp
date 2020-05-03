@@ -8,10 +8,10 @@ Sphere::Sphere(float _posX, float _posY, float _width, float _height, ofColor &_
     r = _width;
 
     sphere.setRadius(r);
-    sphere.setPosition(-_width * .5 + _width * 2 / 4.f, _height * 1.1 / 6.f, 0);
+    sphere.setPosition(_posX * .5 + _posX * 2 / 4.f, _posY * 1.1 / 6.f, 0);
 
     boundBox.setScale(r / 5);
-    boundBox.setPosition(-_width * .5 + _width * 2 / 4.f, _height * 1.1 / 6.f, 0);
+    boundBox.setPosition(_posX * .5 + _posX * 2 / 4.f, _posY * 1.1 / 6.f, 0);
     type = SceneObjectType3D::sphere;
 }
 

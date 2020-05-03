@@ -69,7 +69,9 @@ void Renderer::setup() {
 
     shader.load("shader/tone_mapping_330_vs.glsl", "shader/tone_mapping_330_fs.glsl");
     shader_texture_procedurale.load("shader/texture_procedurale_vs.glsl", "shader/texture_procedurale_fs.glsl");
-
+    shader_lights.load(
+            "shader/pbr_330_vs.glsl",
+            "shader/pbr_330_fs.glsl");
     // charger, compiler et linker les sources des shaders
     // paramètres
     oscillation_amplitude = 32.0f;
@@ -80,6 +82,8 @@ void Renderer::setup() {
     scale_cube = 100.0f;
     scale_sphere = 80.0f;
     scale_teapot = 0.618f;
+    position_3d_y = 0;
+    position_3d_x = 0;
 
     // initialisation des variables
     offset_x = initial_x;
@@ -115,34 +119,52 @@ void Renderer::setup() {
 
 
     illuminate_toggle = true;
+    lights_toggle = true;
+    if (lights_toggle) {
+        // charger les textures du matériau
+        texture_diffuse.load("materiau/metal_plate_diffuse_1k.jpg");
+        texture_metallic.load("materiau/metal_plate_metallic_1k.jpg");
+        texture_roughness.load("materiau/metal_plate_roughness_1k.jpg");
+        texture_occlusion.load("materiau/metal_plate_ao_1k.jpg");
+
+        // paramètres des textures du matériau
+        texture_diffuse.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+        texture_metallic.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+        texture_roughness.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+        texture_occlusion.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+
+    }
     reset();
 }
 
 void Renderer::draw() {
-    if (tone_mapping_toggle)// && image_source.isAllocated())
-    {
-        //ofPushMatrix();
-        shader.begin();
 
-        // passer les attributs uniformes au shader
-        shader.setUniformTexture("image", image_destination.getTexture(), 1);
-
-        shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
-        shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
-        shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
-
-    }
-
-    if (texture_procedurale_toggle) {
-        shader_texture_procedurale.begin();
-        shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
-                                                filter_tint.b / 255.0f);
-        shader_texture_procedurale.setUniform1f("factor", filter_mix);
-        shader_texture_procedurale.setUniform1f("width", screen_width);
-        shader_texture_procedurale.setUniform1f("height", screen_height);
-    }
 
     if (Mode == modes::is2D) {
+        if (tone_mapping_toggle)// && image_source.isAllocated())
+        {
+            //ofPushMatrix();
+            shader.begin();
+
+            // passer les attributs uniformes au shader
+            shader.setUniformTexture("image", image_destination.getTexture(), 1);
+
+            shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+            shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+            shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+
+            // shader.end();
+
+        }
+
+        if (texture_procedurale_toggle) {
+            shader_texture_procedurale.begin();
+            shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
+                                                    filter_tint.b / 255.0f);
+            shader_texture_procedurale.setUniform1f("factor", filter_mix);
+            shader_texture_procedurale.setUniform1f("width", screen_width);
+            shader_texture_procedurale.setUniform1f("height", screen_height);
+        }
         //cam.begin();
         // afficher l'image sur toute la surface de la fenêtre d'affichage
         for (SceneObject *obj : objects) {
@@ -181,9 +203,27 @@ void Renderer::draw() {
             draw_histogram();
             ofPopMatrix();
         }
+        shader.end();
 
     } else if (Mode == modes::is3D) {
+        
         // copier la matrice de transformation courante sur le dessus de la pile
+        if (tone_mapping_toggle)// && image_source.isAllocated())
+        {
+            ofPushMatrix();
+            shader.begin();
+
+            // passer les attributs uniformes au shader
+          //  shader.setUniformTexture("image", image_destination.getTexture(), 1);
+          shader.setUniformTexture("image", texture_diffuse, 1);
+
+            shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+            shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+            shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+
+            ofPopMatrix();
+
+        }
         if (illuminate_toggle) {
             ofEnableDepthTest();
             ofEnableLighting();
@@ -191,6 +231,7 @@ void Renderer::draw() {
             // activer la lumière dynamique
             light.enable();
             shader_illuminate->begin();
+            shader_lights.begin();
             if (texture_procedurale_toggle) {
 
                 shader_texture_procedurale.begin();
@@ -234,20 +275,22 @@ void Renderer::draw() {
             // dessiner un teapot
             teapot.draw(OF_MESH_FILL);
 
+            ofPopMatrix();
+            
+
             for (SceneObject3D *obj : objects3D) {
                 obj->draw();
             }
-
-            ofPopMatrix();
-
             ofPopMatrix();
             shader_illuminate->end();
+            shader_lights.end();
             light.disable();
 
             // désactiver l'éclairage dynamique
             ofDisableLighting();
             ofDisableDepthTest();
         }
+
 
         /* ofPushMatrix();
           // inverser l'axe Y pour qu'il pointe vers le haut
@@ -390,15 +433,18 @@ void Renderer::add_primitive(SceneObjectType type) {
 
 void Renderer::add_primitive3D(SceneObjectType3D type) {
     // Test, pour pas que les objets se stack dans la zone d'affichage l'un par dessus l'autre.
-    if (!objects3D.empty())
-        objects3D.pop_back();
+    // if (!objects3D.empty())
+    //   objects3D.pop_back();
     SceneObject3D *newShape;
     ofColor testColor(100, 100, 190);
+
+    // position_3d_y += 100;
+    position_3d_x += 400;
 
 
     switch (type) {
         case SceneObjectType3D::sphere:
-            newShape = new Sphere(mouse_press_x, mouse_press_y, 100, 100, testColor);
+            newShape = new Sphere(mouse_press_x + position_3d_x, mouse_press_y + position_3d_y, 100, 100, testColor);
 
             break;
 
@@ -449,6 +495,44 @@ void Renderer::update() {
         camera->update();
         center_x = ofGetWidth() / 2.0f;
         center_y = ofGetHeight() / 2.0f;
+
+        // transformer la lumière
+        light.setGlobalPosition(
+                ofMap(ofGetMouseX() / (float) ofGetWidth(), 0.0f, 1.0f, -center_x, center_y),
+                ofMap(ofGetMouseY() / (float) ofGetHeight(), 0.0f, 1.0f, -center_y, center_y),
+                -offset_z * 1.5f);
+        shader_lights.begin();
+
+        shader_lights.setUniform3f("material_color_ambient", material_color_ambient.r / 255.0f,
+                                   material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+        shader_lights.setUniform3f("material_color_diffuse", material_color_diffuse.r / 255.0f,
+                                   material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+        shader_lights.setUniform3f("material_color_specular", material_color_specular.r / 255.0f,
+                                   material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+
+        shader_lights.setUniform1f("material_brightness", material_brightness);
+        shader_lights.setUniform1f("material_metallic", material_metallic);
+        shader_lights.setUniform1f("material_roughness", material_roughness);
+        shader_lights.setUniform1f("material_occlusion", material_occlusion);
+
+        shader_lights.setUniform3f("material_fresnel_ior", material_fresnel_ior);
+
+        shader_lights.setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+        shader_lights.setUniformTexture("texture_metallic", texture_metallic.getTexture(), 2);
+        shader_lights.setUniformTexture("texture_roughness", texture_roughness.getTexture(), 3);
+        shader_lights.setUniformTexture("texture_occlusion", texture_occlusion.getTexture(), 4);
+
+        shader_lights.setUniform1f("light_intensity", light_intensity);
+        shader_lights.setUniform3f("light_color", light_color.r / 255.0f, light_color.g / 255.0f,
+                                   light_color.b / 255.0f);
+        shader_lights.setUniform3f("light_position", glm::vec4(light.getGlobalPosition(), 0.0f) *
+                                                     ofGetCurrentMatrix(OF_MATRIX_MODELVIEW));
+
+        shader_lights.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+        shader_lights.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+        shader_lights.setUniform1i("tone_mapping_toggle", tone_mapping_toggle);
+
+        shader_lights.end();
     }
     for (SceneObject3D *obj : objects3D) {
         obj->setTexture(image_destination);
@@ -493,6 +577,27 @@ void Renderer::reset() {
         position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
         position_sphere.set(0.0f, 0.0f, 0.0f);
         ofLog() << "<Mode 3D : reset>";
+
+        // paramètres du matériau
+        material_color_ambient = ofColor(63, 63, 63);
+        material_color_diffuse = ofColor(255, 255, 255);
+        material_color_specular = ofColor(255, 255, 255);
+
+        material_metallic = 0.5f;
+        material_roughness = 0.5f;
+        material_occlusion = 1.0f;
+        material_brightness = 1.0f;
+
+        material_fresnel_ior = glm::vec3(0.04f, 0.04f, 0.04f);
+
+        // paramètres de la lumière
+        light_color = ofColor(255, 255, 255);
+        light_intensity = 10.0f;
+        light_motion = true;
+
+        // paramètres de mappage tonal
+        tone_mapping_exposure = 1.0f;
+        tone_mapping_toggle = true;
     }
 }
 
@@ -714,3 +819,4 @@ void Renderer::illuminate() {
 float Renderer::oscillate(float time, float frequency, float amplitude) {
     return sinf(time * 2.0f * PI / frequency) * amplitude;
 }
+

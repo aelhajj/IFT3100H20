@@ -67,6 +67,9 @@ public:
     int mouse_current_x;
     int mouse_current_y;
 
+    int position_3d_x;
+    int position_3d_y;
+
     bool is_mouse_button_pressed;
     bool is_ready_croping = false;
     bool is_draw_mode = false;
@@ -90,6 +93,8 @@ public:
 
     ofShader shader;
 
+    ofShader shader_lights;
+
     ofShader shader_texture_procedurale;
 
     // shader d'illumination
@@ -104,6 +109,10 @@ public:
     ofShader shader_blinn_phong;
 
     ofLight light;
+
+    ofLight light_point;
+    ofLight light_spotlight;
+    ofLight light_directionnal;
 
     ofxAssimpModelLoader teapot;
 
@@ -125,6 +134,28 @@ public:
     float speed_motion;
 
     bool illuminate_toggle;
+    bool lights_toggle;
+
+    ofColor material_color_ambient;
+    ofColor material_color_diffuse;
+    ofColor material_color_specular;
+
+    float material_metallic;
+    float material_roughness;
+    float material_occlusion;
+    float material_brightness;
+
+    glm::vec3 material_fresnel_ior;
+
+    ofImage texture_diffuse;
+    ofImage texture_metallic;
+    ofImage texture_roughness;
+    ofImage texture_occlusion;
+
+    ofColor light_color;
+    float light_intensity;
+    bool light_motion;
+
 
     ofColor filter_tint;
     float filter_mix;

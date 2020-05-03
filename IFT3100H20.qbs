@@ -69,6 +69,7 @@ Project{
             'ofxDatGui-master',
             'ofxHistogram',
             'ofxOpenCv',
+            'ofxShaderSelect',
         ]
 
         // additional flags for the project. the of module sets some
