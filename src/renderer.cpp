@@ -142,6 +142,7 @@ void Renderer::setup() {
         
 
     }
+    tesselation_toggle = true;
 
     if (tesselation_toggle) {
         teapot.loadModel("teapot.obj", true);
@@ -490,25 +491,8 @@ void Renderer::draw() {
         // désactiver l'éclairage dynamique
         ofDisableLighting();
        // ofDisableDepthTest();
-        //  }// else {
-        if (tesselation_toggle) {
-            ofEnableDepthTest();
-            ofEnableLighting();
-            ofPushMatrix();
-            ofTranslate(center_x + offset_x, center_y, offset_z);
-            ofPopMatrix();
-            // activer la lumière dynamique
-            light.enable();
-            ofPushMatrix();
-            draw_tesselation();
-            ofPopMatrix();
-
-            light.disable();
-
-            // désactiver l'éclairage dynamique
-            ofDisableLighting();
-            ofDisableDepthTest();
-        }}*/
+        //  }// else {*/
+    
 
     } else if (Mode == modes::isCamera) {
         ofPushMatrix();
@@ -527,7 +511,7 @@ void Renderer::draw() {
     } else if (Mode == modes::isParametric) {
         parametric_renderer->draw();
     } else if(Mode == modes::isModernIllumination) {
-           if (tone_mapping_toggle)// && image_source.isAllocated())
+        if (tone_mapping_toggle)// && image_source.isAllocated())
         {
             ofPushMatrix();
             shader.begin();
@@ -543,7 +527,7 @@ void Renderer::draw() {
             ofPopMatrix();
 
         }
-        if (illuminate_toggle) {
+        if (!tesselation_toggle) {
             ofEnableDepthTest();
             ofEnableLighting();
 
@@ -603,6 +587,25 @@ void Renderer::draw() {
             ofPopMatrix();
             shader_illuminate->end();
             shader_lights.end();
+            light.disable();
+
+            // désactiver l'éclairage dynamique
+            ofDisableLighting();
+            ofDisableDepthTest();
+        }
+        else {
+
+            ofEnableDepthTest();
+            ofEnableLighting();
+            ofPushMatrix();
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+            ofPopMatrix();
+            // activer la lumière dynamique
+            light.enable();
+            ofPushMatrix();
+            draw_tesselation();
+            ofPopMatrix();
+
             light.disable();
 
             // désactiver l'éclairage dynamique

@@ -74,7 +74,7 @@ void Application::setup() {
     boutonModel3D = primitive3D_folder->addButton("Importer Modele 3D");
 
     ofxDatGuiFolder *illumination_folder = gui->addFolder("Illumination Moderne", ofColor::pink);
-    toggle_PBR_shader = illumination_folder->addToggle("Activate illumination", false);
+    toggle_PBR_shader = illumination_folder->addToggle("Activate Tesselation", false);
     toggle_PBR_shader->onToggleEvent(this, &Application::onToggleEvent);
     metallic_slider = illumination_folder->addSlider("Metallicite", 0, 10);
     roughness_slider = illumination_folder->addSlider("Rugorisite", 0, 10);
@@ -182,9 +182,7 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
             boutonModeSwitcher->setLabel("Mode actuel : Illumination moderne");
             renderer.Mode = Renderer::modes::isModernIllumination;
             renderer.update();
-        }
-        
-         else {
+        } else {
             boutonModeSwitcher->setLabel("Mode actuel : Catmull_Rom");
             renderer.Mode = Renderer::modes::isCatmull;
             renderer.catmull_rom->setup();
@@ -299,6 +297,8 @@ void Application::onToggleEvent(ofxDatGuiToggleEvent event) {
         renderer.is_active_light_point = event.target->getChecked();
     if (event.target == toggle_light_spot)
         renderer.is_active_light_spot = event.target->getChecked();
+    if(event.target == toggle_PBR_shader)
+        renderer.tesselation_toggle = !event.target->getChecked();
 
     renderer.update();
 
