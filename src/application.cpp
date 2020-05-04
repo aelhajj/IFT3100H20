@@ -83,6 +83,7 @@ void Application::setup() {
     ambiant_color_picker = illumination_folder->addColorPicker("Couleur de lumiere ambiante", ofColor(255, 0, 0, 5));
     diffuse_color_picker = illumination_folder->addColorPicker("Couleur de lumiere diffuse", ofColor(255, 0, 0, 5));
     specular_color_picker = illumination_folder->addColorPicker("Couleur de lumiere speculaire", ofColor(255, 0, 0, 5));
+    light_color_picker = illumination_folder->addColorPicker("Couleur de lumiere", ofColor(255, 0, 0, 5));
 
     ofxDatGuiFolder *classic_folder = gui->addFolder("Illumination Classique 1-5 KEYS", ofColor::yellow);
     boutonMateriel = classic_folder->addButton("Changer de materiau");
@@ -158,26 +159,32 @@ void Application::onButtonEvent(ofxDatGuiButtonEvent event) {
 
     if (event.target == boutonModeSwitcher) {
         nbClick++;
-        if (nbClick % 6 == 1) {
+        if (nbClick % 7 == 1) {
             boutonModeSwitcher->setLabel("Mode actuel : 2D");
             renderer.Mode = Renderer::modes::is2D;
-        } else if (nbClick % 6 == 2) {
+        } else if (nbClick % 7 == 2) {
             boutonModeSwitcher->setLabel("Mode actuel : 3D");
             renderer.Mode = Renderer::modes::is3D;
-        } else if (nbClick % 6 == 3) {
+        } else if (nbClick % 7 == 3) {
             boutonModeSwitcher->setLabel("Mode actuel : Camera");
             renderer.Mode = Renderer::modes::isCamera;
-        } else if (nbClick % 6 == 4) {
+        } else if (nbClick % 7 == 4) {
             boutonModeSwitcher->setLabel("Mode actuel : Raytracer");
             renderer.raytracer->setup();
             renderer.Mode = Renderer::modes::isRaytracer;
             //std::thread t1(callRaytracer);
             //t1.detach();
-        } else if (nbClick % 6 == 5) {
+        } else if (nbClick % 7 == 5) {
             boutonModeSwitcher->setLabel("Mode actuel : Parametric");
             renderer.Mode = Renderer::modes::isParametric;
             renderer.parametric_renderer->setup();
-        } else {
+        } else if(nbClick % 7 == 6) {
+            boutonModeSwitcher->setLabel("Mode actuel : Illumination moderne");
+            renderer.Mode = Renderer::modes::isModernIllumination;
+            renderer.update();
+        }
+        
+         else {
             boutonModeSwitcher->setLabel("Mode actuel : Catmull_Rom");
             renderer.Mode = Renderer::modes::isCatmull;
             renderer.catmull_rom->setup();
@@ -416,6 +423,18 @@ void Application::update() {
 
     renderer.filter_mix = filter_mix_slider->getValue();
     renderer.filter_tint = filter_tint_color_picker->getColor();
+
+    renderer.material_brightness = brightness_slider->getValue();
+    renderer.material_metallic = metallic_slider->getValue();
+    renderer.material_occlusion = occlusion_slider->getValue();
+    renderer.material_roughness = roughness_slider->getValue();
+
+    renderer.material_color_ambient = ambiant_color_picker->getColor();
+    renderer.material_color_diffuse = diffuse_color_picker->getColor();
+    renderer.material_color_specular = specular_color_picker->getColor();
+    
+    renderer.light_color = light_color_picker->getColor();
+    renderer.light_intensity = brightness_slider->getValue();
 
     // if(tone_mapping_type)
     //   tone_mapping_type.set("aces filmic", true);

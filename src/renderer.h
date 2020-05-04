@@ -40,7 +40,7 @@ public:
     Raytracer *raytracer = new Raytracer();
     Catmull_Rom *catmull_rom = new Catmull_Rom();
     enum modes {
-        is2D, is3D, isCamera, isRaytracer, isParametric, isCatmull
+        is2D, is3D, isCamera, isRaytracer, isParametric, isCatmull, isModernIllumination
     };
 
     Parametric *parametric_renderer = new Parametric();
@@ -197,7 +197,7 @@ public:
     ofColor light_color;
     float light_intensity;
     bool light_motion;
-
+    bool material_toggle;
 
     ofColor filter_tint;
     float filter_mix;

@@ -54,6 +54,7 @@ public:
     ofxDatGuiColorPicker *stroke_color_picker;
 
     ofxDatGuiColorPicker *filter_tint_color_picker;
+    ofxDatGuiColorPicker *light_color_picker;
 
     ofxDatGuiColorPicker *ambiant_color_picker;
     ofxDatGuiColorPicker *diffuse_color_picker;

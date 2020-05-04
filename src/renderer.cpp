@@ -139,6 +139,8 @@ void Renderer::setup() {
         texture_roughness.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
         texture_occlusion.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
+        
+
     }
 
     if (tesselation_toggle) {
@@ -524,7 +526,93 @@ void Renderer::draw() {
         raytracer->draw();
     } else if (Mode == modes::isParametric) {
         parametric_renderer->draw();
-    } else {
+    } else if(Mode == modes::isModernIllumination) {
+           if (tone_mapping_toggle)// && image_source.isAllocated())
+        {
+            ofPushMatrix();
+            shader.begin();
+
+            // passer les attributs uniformes au shader
+          //  shader.setUniformTexture("image", image_destination.getTexture(), 1);
+          shader.setUniformTexture("image", texture_diffuse, 1);
+
+            shader.setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
+            shader.setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
+            shader.setUniform1i("tone_mapping_aces", tone_mapping_aces);
+
+            ofPopMatrix();
+
+        }
+        if (illuminate_toggle) {
+            ofEnableDepthTest();
+            ofEnableLighting();
+
+            // activer la lumière dynamique
+            light.enable();
+            shader_illuminate->begin();
+            shader_lights.begin();
+            if (texture_procedurale_toggle) {
+
+                shader_texture_procedurale.begin();
+                shader_texture_procedurale.setUniform3f("tint", filter_tint.r / 255.0f, filter_tint.g / 255.0f,
+                                                        filter_tint.b / 255.0f);
+                shader_texture_procedurale.setUniform1f("factor", filter_mix);
+                shader_texture_procedurale.setUniform1f("width", screen_width);
+                shader_texture_procedurale.setUniform1f("height", screen_height);
+            }
+            ofPushMatrix();
+
+            // transformer l'origine de la scène au milieu de la fenêtre d'affichage
+            ofTranslate(center_x + offset_x, center_y, offset_z);
+
+            ofPushMatrix();
+            // positionner la sphère
+            ofTranslate(
+                    position_sphere.x,
+                    position_sphere.y,
+                    position_sphere.z);
+
+            // dessiner une sphère
+            ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
+
+            ofPopMatrix();
+
+            ofPushMatrix();
+
+            // positionner le teapot
+            teapot.setPosition(
+                    position_teapot.x,
+                    position_teapot.y + 15.0f,
+                    position_teapot.z);
+
+            // dimension du teapot
+            teapot.setScale(
+                    scale_teapot,
+                    scale_teapot,
+                    scale_teapot);
+
+            // dessiner un teapot
+            teapot.draw(OF_MESH_FILL);
+
+            ofPopMatrix();
+            
+
+            for (SceneObject3D *obj : objects3D) {
+                obj->draw();
+            }
+            ofPopMatrix();
+            shader_illuminate->end();
+            shader_lights.end();
+            light.disable();
+
+            // désactiver l'éclairage dynamique
+            ofDisableLighting();
+            ofDisableDepthTest();
+        }
+
+    }
+    
+    else {
         catmull_rom->draw();
     }
 
@@ -1189,3 +1277,4 @@ void Renderer::lighting_off() {
     light_point.disable();
     light_spot.disable();
 }
+
